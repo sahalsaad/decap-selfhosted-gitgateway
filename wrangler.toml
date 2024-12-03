@@ -9,6 +9,12 @@ compatibility_date = "2024-11-27"
 [observability]
 enabled = true
 
+[[d1_databases]]
+binding = "DB"
+database_name = "git-gateway-db"
+database_id = "fce7622c-8e16-46f3-85ae-b5c8cdfe348d"
+migrations_dir = "migrations"
+
 # Automatically place your workloads in an optimal location to minimize latency.
 # If you are running back-end logic in a Worker, running it closer to your back-end infrastructure
 # rather than the end user may result in better performance.
