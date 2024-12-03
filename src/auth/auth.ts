@@ -3,29 +3,6 @@ import {Hono} from "hono";
 const auth = new Hono<{ Bindings: CloudflareBindings }>();
 const encoder = new TextEncoder();
 
-function timingSafeEqual(a: string, b: string) {
-    const aBytes = encoder.encode(a);
-    const bBytes = encoder.encode(b);
-
-    if (aBytes.byteLength !== bBytes.byteLength) {
-        // Strings must be the same length in order to compare
-        // with crypto.subtle.timingSafeEqual
-        return false;
-    }
-
-    return crypto.subtle.timingSafeEqual(aBytes, bBytes);
-}
-
-function isAuthorized(credentials: string, username: string, password: string) {
-    // The username and password are split by the first colon.
-    //=> example: "username:password"
-    const index = credentials.indexOf(":");
-    const user = credentials.substring(0, index);
-    const pass = credentials.substring(index + 1);
-
-    return timingSafeEqual(username, user) && timingSafeEqual(password, pass);
-}
-
 auth.post('/token', async (ctx) => {
     const BASIC_USER = "admin";
     const BASIC_PASS = "password";
@@ -50,6 +27,7 @@ auth.post('/token', async (ctx) => {
 
 auth.get('/user' as const, async (ctx) => {
     const userdata = {
+        "email": "caalenter@gmail.com",
         "user_metadata": {
             "full_name": "Sahal Saad"
         }
@@ -57,5 +35,28 @@ auth.get('/user' as const, async (ctx) => {
 
     return ctx.json(userdata);
 })
+
+function timingSafeEqual(a: string, b: string) {
+    const aBytes = encoder.encode(a);
+    const bBytes = encoder.encode(b);
+
+    if (aBytes.byteLength !== bBytes.byteLength) {
+        // Strings must be the same length in order to compare
+        // with crypto.subtle.timingSafeEqual
+        return false;
+    }
+
+    return crypto.subtle.timingSafeEqual(aBytes, bBytes);
+}
+
+function isAuthorized(credentials: string, username: string, password: string) {
+    // The username and password are split by the first colon.
+    //=> example: "username:password"
+    const index = credentials.indexOf(":");
+    const user = credentials.substring(0, index);
+    const pass = credentials.substring(index + 1);
+
+    return timingSafeEqual(username, user) && timingSafeEqual(password, pass);
+}
 
 export { auth };

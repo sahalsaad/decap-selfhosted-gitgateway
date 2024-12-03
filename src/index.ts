@@ -7,13 +7,13 @@ import {github} from "./gitgateway/github";
 const app = new Hono<{ Bindings: CloudflareBindings }>()
 
 app.get('/', (c) => {
-  return c.text('Hello Hono!')
+  return c.text('Hello!')
 })
 
 app.use('*', cors())
 
 app.route('/auth', auth);
 app.route('/settings', settings);
-app.route('github', github);
+app.route('/github', github);
 
 export default app
