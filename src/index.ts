@@ -1,8 +1,8 @@
 import { Hono } from 'hono'
-import {auth} from "./auth/auth";
+import {auth} from "./routes/auth/auth";
 import { cors } from 'hono/cors'
-import {settings} from "./settings/settings";
-import {github} from "./gitgateway/github";
+import {settings} from "./routes/settings/settings";
+import {github} from "./routes/gitgateway/github";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>()
 
