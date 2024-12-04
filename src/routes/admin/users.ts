@@ -38,7 +38,7 @@ usersApi.put('/:userId', async ctx => {
 
     firstName = firstName || existingUser.firstName;
     lastName = lastName || existingUser.lastName;
-    password = password || existingUser.password;
+    password = password ? hashPassword(password, ctx.env.ENCRYPTION_KEY) : existingUser.password;
     const result = await db.update(users).set({
         firstName, lastName, password
     }).where(eq(users.id, userId)).returning();
