@@ -1,7 +1,9 @@
-import {int, sqliteTable, text} from "drizzle-orm/sqlite-core";
+import {sqliteTable, text} from "drizzle-orm/sqlite-core";
 
 export const sites = sqliteTable("sites", {
-    id: int().primaryKey({ autoIncrement: true }),
+    id: text().notNull().primaryKey(),
     url: text().notNull().unique(),
-    githubToken: text().notNull(),
+    gitToken: text().notNull(),
+    gitRepo: text().notNull(),
+    tokenNonce: text().notNull(),
 })

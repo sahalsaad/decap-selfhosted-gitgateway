@@ -6,15 +6,17 @@
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
   "dependencies": {
-    "dotenv": "^16.4.6",
-    "drizzle-orm": "^0.36.4",
-    "hono": "^4.6.12"
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.37.0",
+    "hono": "^4.6.12",
+    "tweetnacl": "^1.0.3",
+    "tweetnacl-util": "^0.15.1"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241127.0",
+    "@cloudflare/workers-types": "^4.20241202.0",
     "@types/node": "^22.10.1",
-    "drizzle-kit": "^0.28.1",
+    "drizzle-kit": "^0.29.1",
     "tsx": "^4.19.2",
-    "wrangler": "^3.88.0"
+    "wrangler": "^3.92.0"
   }
 }

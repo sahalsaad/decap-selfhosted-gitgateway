@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "37ba3269-f95b-4346-b7c8-c5cc04cd2958",
+  "id": "82fa2676-f039-4cc2-b0a2-7045d63130bf",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "sites": {
@@ -9,10 +9,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "url": {
           "name": "url",
@@ -21,8 +21,22 @@
           "notNull": true,
           "autoincrement": false
         },
-        "githubToken": {
-          "name": "githubToken",
+        "gitToken": {
+          "name": "gitToken",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "gitRepo": {
+          "name": "gitRepo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tokenNonce": {
+          "name": "tokenNonce",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -48,14 +62,14 @@
       "columns": {
         "user_id": {
           "name": "user_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
         "site_id": {
           "name": "site_id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -107,10 +121,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "text",
           "primaryKey": true,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "email": {
           "name": "email",
