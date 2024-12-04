@@ -1,7 +1,8 @@
-import { drizzle } from "drizzle-orm/d1";
+import {drizzle} from "drizzle-orm/d1";
 import {Hono} from "hono";
 import {users} from "../../db/users";
 import {eq} from "drizzle-orm";
+import {usersToSites} from "../../db/users-sites-relations";
 
 const usersApi = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -16,7 +17,7 @@ usersApi.post('/', async ctx => {
 
 usersApi.put('/:userId', async ctx => {
     let {firstName, lastName, password} = await ctx.req.json();
-    const userId= ctx.req.param('userId');
+    const userId = ctx.req.param('userId');
 
     const db = drizzle(ctx.env.DB);
     const existingUser = await db.select().from(users).where(eq(users.id, Number(userId))).get();
@@ -27,13 +28,15 @@ usersApi.put('/:userId', async ctx => {
     firstName = firstName || existingUser.firstName;
     lastName = lastName || existingUser.lastName;
     password = password || existingUser.password;
-    const result = await db.update(users).set({firstName, lastName, password}).where(eq(users.id, Number(userId))).returning();
+    const result = await db.update(users).set({
+        firstName, lastName, password
+    }).where(eq(users.id, Number(userId))).returning();
 
     return ctx.json(result);
 })
 
 usersApi.delete('/:userId', async ctx => {
-    const userId= ctx.req.param('userId');
+    const userId = ctx.req.param('userId');
     const db = drizzle(ctx.env.DB);
     const result = await db.delete(users).where(eq(users.id, Number(userId)));
 
@@ -45,7 +48,7 @@ usersApi.delete('/:userId', async ctx => {
 })
 
 usersApi.get('/:userId', async ctx => {
-    const userId= ctx.req.param('userId');
+    const userId = ctx.req.param('userId');
     const db = drizzle(ctx.env.DB);
     const result = await db.select().from(users).where(eq(users.id, Number(userId))).get();
 
@@ -63,4 +66,14 @@ usersApi.get('/', async ctx => {
     return ctx.json(userList);
 })
 
-export { usersApi }
+usersApi.post('/:userId/sites', async ctx => {
+    const {siteId} = await ctx.req.json();
+    const userId = ctx.req.param('userId');
+
+    const db = drizzle(ctx.env.DB);
+    const result = await db.insert(usersToSites).values({siteId: Number(siteId), userId: Number(userId)}).returning();
+
+    return ctx.json(result);
+})
+
+export {usersApi}
