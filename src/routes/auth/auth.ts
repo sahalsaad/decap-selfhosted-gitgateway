@@ -1,62 +1,75 @@
 import {Hono} from "hono";
+import {drizzle} from "drizzle-orm/d1";
+import {users} from "../../db/users";
+import {and, eq} from "drizzle-orm";
+import {hashPassword} from "../../helpers/encryption";
+import {usersToSites} from "../../db/users-sites";
+import {sites} from "../../db/sites";
+import {sign} from 'hono/jwt'
+import {JWTPayload} from "hono/utils/jwt/types";
+import {jwtMiddleware} from "../middlewares/jwt";
 
-const auth = new Hono<{ Bindings: CloudflareBindings }>();
+const auth = new Hono<{ Bindings: CloudflareBindings, Variables: JWTPayload}>();
 const encoder = new TextEncoder();
 
-auth.post('/token', async (ctx) => {
-    const BASIC_USER = "admin";
-    const BASIC_PASS = "password";
-
+auth.post('/:siteId/token', async (ctx) => {
     const data = await ctx.req.formData();
-    const username = data.get("username");
-    const password = data.get("password");
+    const username = data.get("username")?.toString();
+    const password = data.get("password")?.toString();
+    const siteId = ctx.req.param('siteId');
 
-    if (isAuthorized(`${username}:${password}`, BASIC_USER, BASIC_PASS)) {
-        const jwt = {
-            "token_type": "bearer",
-            "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBfbWV0YWRhdGEiOnsicmVwbyI6InNhaGFsc2FhZC8wOHB",
-            "expires_in": 86400000,
-            "refresh_token": "KwxIOji4EAPR7F-v3V9ZTzDcOtCAZjuvjvkBS6hJHd5Whtme26Vsx5UdHYevrSAG"
-        }
-
-        return ctx.json(jwt);
+    if (!username || !password) {
+        return ctx.body(null, 401);
     }
 
-    return ctx.body('Unauthorized!', {status: 401});
+    const db = drizzle(ctx.env.DB);
+    const hashedPassword = hashPassword(password, ctx.env.ENCRYPTION_KEY);
+    const user = await db.select()
+        .from(users)
+        .leftJoin(usersToSites, eq(usersToSites.userId, users.id))
+        .leftJoin(sites, eq(sites.id, usersToSites.siteId))
+        .where(and(eq(users.email, username), eq(users.password, hashedPassword), eq(usersToSites.siteId, siteId)))
+        .get();
+
+    if (!user) {
+        return ctx.body(null, 401);
+    }
+
+    const tokenData: JWTPayload = {
+        firstName: user.users.firstName,
+        lastName: user.users.lastName,
+        email: user.users.email,
+        id: user.users.id,
+        role: user.users.role,
+        gitToken: user.sites!.gitToken,
+        gitProvider: user.sites!.gitProvider,
+        exp: Math.floor(Date.now() / 1000) + 60 * 60 * 12
+    }
+
+    const accessToken = await sign(tokenData, ctx.env.ENCRYPTION_KEY!);
+    const jwt = {
+        "token_type": "bearer",
+        "access_token": accessToken,
+        "expires_in": 43200000
+    }
+
+    return ctx.json(jwt);
 })
 
-auth.get('/user' as const, async (ctx) => {
+auth.use('/:siteId/user', jwtMiddleware)
+auth.get('/:siteId/user', async (ctx) => {
+    const payload = ctx.get('jwtPayload') as JWTPayload;
     const userdata = {
-        "email": "caalenter@gmail.com",
+        "email": payload.email,
+        "first_name": payload.firstName,
+        "last_name": payload.lastName,
+        "provider": payload.gitProvider,
         "user_metadata": {
-            "full_name": "Sahal Saad"
+            "full_name": `${payload.firstName} ${payload.lastName}`
         }
     }
 
     return ctx.json(userdata);
 })
-
-function timingSafeEqual(a: string, b: string) {
-    const aBytes = encoder.encode(a);
-    const bBytes = encoder.encode(b);
-
-    if (aBytes.byteLength !== bBytes.byteLength) {
-        // Strings must be the same length in order to compare
-        // with crypto.subtle.timingSafeEqual
-        return false;
-    }
-
-    return crypto.subtle.timingSafeEqual(aBytes, bBytes);
-}
-
-function isAuthorized(credentials: string, username: string, password: string) {
-    // The username and password are split by the first colon.
-    //=> example: "username:password"
-    const index = credentials.indexOf(":");
-    const user = credentials.substring(0, index);
-    const pass = credentials.substring(index + 1);
-
-    return timingSafeEqual(username, user) && timingSafeEqual(password, pass);
-}
 
 export { auth };

@@ -3,6 +3,7 @@ CREATE TABLE `sites` (
 	`url` text NOT NULL,
 	`gitToken` text NOT NULL,
 	`gitRepo` text NOT NULL,
+	`gitProvider` text NOT NULL,
 	`tokenNonce` text NOT NULL
 );
 --> statement-breakpoint

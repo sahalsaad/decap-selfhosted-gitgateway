@@ -6,5 +6,5 @@ export const users = sqliteTable("users", {
     password: text().notNull(),
     firstName: text().notNull(),
     lastName: text(),
-    role: text('role').$type<'admin' | 'contributor'>().notNull(),
+    role: text().$type<'admin' | 'contributor'>().notNull(),
 });

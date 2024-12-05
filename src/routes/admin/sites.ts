@@ -8,13 +8,14 @@ import {randomUUID} from "node:crypto";
 const sitesApi = new Hono<{ Bindings: CloudflareBindings }>();
 
 sitesApi.post('/', async ctx => {
-    const {url, gitToken, gitRepo} = await ctx.req.json();
+    const {url, gitToken, gitRepo, gitProvider} = await ctx.req.json();
     const db = drizzle(ctx.env.DB);
     const encryptedToken = encrypt(gitToken, ctx.env.ENCRYPTION_KEY!);
     const [{id}] = await db.insert(sites).values({
         id: randomUUID(),
         url,
         gitRepo,
+        gitProvider,
         gitToken: encryptedToken.encryptedSecret,
         tokenNonce: encryptedToken.nonce
     }).returning();
@@ -22,7 +23,7 @@ sitesApi.post('/', async ctx => {
 })
 
 sitesApi.put('/:siteId', async ctx => {
-    let {gitToken, gitRepo} = await ctx.req.json();
+    let {gitToken, gitRepo, gitProvider} = await ctx.req.json();
     const siteId = ctx.req.param('siteId');
 
     const db = drizzle(ctx.env.DB);
@@ -39,6 +40,10 @@ sitesApi.put('/:siteId', async ctx => {
 
     if (gitRepo) {
         updateSite = {...updateSite, gitRepo}
+    }
+
+    if (gitProvider) {
+        updateSite = {...updateSite, gitProvider}
     }
 
     await db.update(sites).set(updateSite).where(eq(sites.id, siteId));

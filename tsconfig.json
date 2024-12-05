@@ -10,7 +10,8 @@
     ],
     "types": [
       "@cloudflare/workers-types/2023-07-01",
-      "@types/node"
+      "@types/node",
+      "@types/jsonwebtoken"
     ],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"

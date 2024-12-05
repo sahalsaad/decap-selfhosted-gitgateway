@@ -5,5 +5,6 @@ export const sites = sqliteTable("sites", {
     url: text().notNull().unique(),
     gitToken: text().notNull(),
     gitRepo: text().notNull(),
+    gitProvider: text().$type<'github' | 'gitlab' | 'bitbucket'>().notNull(),
     tokenNonce: text().notNull(),
 })
