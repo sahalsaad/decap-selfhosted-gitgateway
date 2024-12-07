@@ -1,5 +1,5 @@
 interface SiteResponse {
-    id: string
-    url: string
-    gitRepo: string
+  id: string;
+  url: string;
+  gitRepo: string;
 }
