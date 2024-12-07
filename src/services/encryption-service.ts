@@ -2,19 +2,19 @@ import nacl from 'tweetnacl';
 import util from 'tweetnacl-util';
 import crypto from 'node:crypto';
 
-const encrypt = (secret: string, encryptKey: string): { encryptedSecret: string; nonce: string } => {
+const separator = "::";
+
+const encrypt = (secret: string, encryptKey: string): string => {
     const keyBytes = util.decodeUTF8(encryptKey);
     const nonce = nacl.randomBytes(24);
     const encryptedSecret = nacl.secretbox(util.decodeUTF8(secret), nonce, keyBytes);
 
-    return {
-        encryptedSecret: util.encodeBase64(encryptedSecret),
-        nonce: util.encodeBase64(nonce),
-    };
+    return `${util.encodeBase64(encryptedSecret)}${separator}${util.encodeBase64(nonce)}`;
 };
 
-const decrypt = (encryptedSecret: string, nonce: string, encryptKey: string): string => {
-    const encryptedSecretBytes = util.decodeBase64(encryptedSecret);
+const decrypt = (encryptedSecret: string, encryptKey: string): string => {
+    const [secretString, nonce] = encryptedSecret.split(separator);
+    const encryptedSecretBytes = util.decodeBase64(secretString);
     const nonceBytes = util.decodeBase64(nonce);
     const keyBytes = util.decodeUTF8(encryptKey);
     const secret = nacl.secretbox.open(encryptedSecretBytes, nonceBytes, keyBytes);

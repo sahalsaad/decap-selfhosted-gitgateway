@@ -3,7 +3,7 @@ import {Context, Next} from "hono";
 
 const jwtMiddleware = (ctx:Context<{Bindings: CloudflareBindings}>, next: Next) => {
     const jwtMiddleware = jwt({
-        secret: ctx.env.ENCRYPTION_KEY,
+        secret: ctx.env.AUTH_SECRET_KEY,
     })
     return jwtMiddleware(ctx, next)
 }

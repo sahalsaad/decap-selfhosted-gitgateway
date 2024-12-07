@@ -14,7 +14,7 @@ app.get('/', (c) => {
 
 app.use('*', cors())
 
-app.route('/auth', auth);
+app.route('/:siteId/auth', auth);
 app.route('/:siteId/settings', settings);
 app.route('/:siteId/github', github);
 app.route('/api/admin/sites', sitesApi);

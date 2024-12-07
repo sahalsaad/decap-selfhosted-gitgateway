@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "54abca55-1047-4883-921a-ae30154e3b96",
+  "id": "d2b31e33-444f-4266-b4c5-387608426700",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "sites": {
@@ -37,13 +37,6 @@
         },
         "gitProvider": {
           "name": "gitProvider",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "tokenNonce": {
-          "name": "tokenNonce",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
