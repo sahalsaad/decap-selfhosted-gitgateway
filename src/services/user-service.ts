@@ -71,13 +71,12 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
       };
     },
     getAllUser: async () => {
-      const userList = await db.select().from(users).all();
-      return userList;
+      return await db.select().from(users).all();
     },
-    create: async (userRequest: UserRequest) => {
+    create: (userRequest: UserRequest) => {
       const hashedPassword = hashPassword(userRequest.password, authSecretKey);
 
-      const result = await db
+      return db
         .insert(users)
         .values({
           id: randomUUID(),
@@ -90,8 +89,6 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
         .returning({
           id: users.id,
         });
-
-      return result;
     },
     updateUser: async (userId: string, userRequest: UserRequest) => {
       const existingUser = await db
