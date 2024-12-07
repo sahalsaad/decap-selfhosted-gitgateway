@@ -70,6 +70,19 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
         site: result.sites!,
       };
     },
+    getUserByEmail: async (email: string) => {
+      const result = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .get();
+
+      if (!result) {
+        return null;
+      }
+
+      return result;
+    },
     getAllUser: async () => {
       return await db.select().from(users).all();
     },
