@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { hashPassword } from "../../services/encryption-service";
 import { sign } from "hono/jwt";
-import { jwtMiddleware } from "../middlewares/jwt";
+import { jwtMiddleware } from "../../middlewares/jwt";
 import { UserService } from "../../services/user-service";
 import { timingSafeEqual } from "hono/utils/buffer";
 import { JwtPayload } from "../../types/jwt-payload";

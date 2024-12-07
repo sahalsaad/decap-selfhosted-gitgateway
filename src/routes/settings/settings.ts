@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { jwtMiddleware } from "../middlewares/jwt";
+import { jwtMiddleware } from "../../middlewares/jwt";
 import { Variables } from "../../types/variables";
 
 const settings = new Hono<{
