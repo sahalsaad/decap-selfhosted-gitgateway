@@ -15,6 +15,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
                         id: sites.id,
                         url: sites.url,
                         gitRepo: sites.gitRepo,
+                        gitHost: sites.gitHost,
                     }
                 })
                 .from(sites)
@@ -26,6 +27,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
                     id: sites.id,
                     url: sites.url,
                     gitRepo: sites.gitRepo,
+                    gitHost: sites.gitHost,
                 }
             }).from(sites).all();
         },
@@ -37,6 +39,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
                 gitRepo: siteRequest.gitRepo,
                 gitProvider: siteRequest.gitProvider,
                 gitToken: encryptedToken,
+                gitHost: siteRequest.gitHost,
             }).returning({
                 id: sites.id,
             });
@@ -63,6 +66,10 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
 
             if (siteRequest.url) {
                 updateSite = {...updateSite, url: siteRequest.url}
+            }
+
+            if (siteRequest.gitHost) {
+                updateSite = {...updateSite, gitHost: siteRequest.gitHost}
             }
 
             const result = await db.update(sites).set(updateSite).where(eq(sites.id, siteId));

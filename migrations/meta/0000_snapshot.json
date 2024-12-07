@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "d2b31e33-444f-4266-b4c5-387608426700",
+  "id": "a2ef20bd-4acd-43c8-840b-ba65223b284a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "sites": {
@@ -40,6 +40,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "gitHost": {
+          "name": "gitHost",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },

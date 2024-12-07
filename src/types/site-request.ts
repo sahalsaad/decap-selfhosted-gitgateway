@@ -3,4 +3,5 @@ interface SiteRequest {
     gitRepo: string
     gitToken: string
     gitProvider: "github" | "gitlab" | "bitbucket"
+    gitHost: string | undefined
 }

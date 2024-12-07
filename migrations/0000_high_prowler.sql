@@ -3,7 +3,8 @@ CREATE TABLE `sites` (
 	`url` text NOT NULL,
 	`gitToken` text NOT NULL,
 	`gitRepo` text NOT NULL,
-	`gitProvider` text NOT NULL
+	`gitProvider` text NOT NULL,
+	`gitHost` text
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `sites_url_unique` ON `sites` (`url`);--> statement-breakpoint

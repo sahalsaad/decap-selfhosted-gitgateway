@@ -1,16 +1,16 @@
 import {Hono} from "hono";
-import {JWTPayload} from "hono/utils/jwt/types";
 import {jwtMiddleware} from "../middlewares/jwt";
+import {Variables} from "../../types/variables";
 
-const settings = new Hono<{ Bindings: CloudflareBindings }>();
+const settings = new Hono<{ Bindings: CloudflareBindings, Variables: Variables }>();
 
 settings.use('/', jwtMiddleware)
 settings.get('/', async (ctx) => {
-    const jwtPayload = ctx.get('jwtPayload') as JWTPayload;
+    const jwtPayload = ctx.get('jwtPayload');
     const settings = {
-        "github_enabled": jwtPayload.gitProvider === 'github',
-        "gitlab_enabled": jwtPayload.gitProvider === 'gitlab',
-        "bitbucket_enabled": jwtPayload.gitProvider === 'bitbucket',
+        "github_enabled": jwtPayload.git.provider === 'github',
+        "gitlab_enabled": jwtPayload.git.provider === 'gitlab',
+        "bitbucket_enabled": jwtPayload.git.provider === 'bitbucket',
         "roles": null
     };
 

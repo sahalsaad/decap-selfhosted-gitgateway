@@ -1,12 +1,13 @@
 import {Hono} from "hono";
 import {hashPassword} from "../../services/encryption-service";
 import {sign} from 'hono/jwt'
-import {JWTPayload} from "hono/utils/jwt/types";
 import {jwtMiddleware} from "../middlewares/jwt";
 import {UserService} from "../../services/user-service";
 import {timingSafeEqual} from "hono/utils/buffer";
+import {JwtPayload} from "../../types/jwt-payload";
+import {Variables} from "../../types/variables";
 
-const auth = new Hono<{ Bindings: CloudflareBindings, Variables: JWTPayload}>();
+const auth = new Hono<{ Bindings: CloudflareBindings, Variables: Variables}>();
 
 auth.post('/token', async (ctx) => {
     const data = await ctx.req.formData();
@@ -27,13 +28,19 @@ auth.post('/token', async (ctx) => {
         return ctx.body(null, 401);
     }
 
-    const tokenData: JWTPayload = {
-        firstName: result.user.firstName,
-        lastName: result.user.lastName,
-        email: result.user.email,
-        id: result.user.id,
-        gitToken: result.site.gitToken,
-        gitProvider: result.site.gitProvider,
+    const tokenData: JwtPayload = {
+        user: {
+            firstName: result.user.firstName,
+            lastName: result.user.lastName,
+            email: result.user.email,
+            id: result.user.id,
+        },
+        git: {
+            token: result.site.gitToken,
+            provider: result.site.gitProvider,
+            host: result.site.gitUrl,
+            repo: result.site.gitRepo,
+        },
         exp: Math.floor(Date.now() / 1000) + 60 * 60 * 12
     }
 
@@ -49,14 +56,14 @@ auth.post('/token', async (ctx) => {
 
 auth.use('/user', jwtMiddleware)
 auth.get('/user', async (ctx) => {
-    const payload = ctx.get('jwtPayload') as JWTPayload;
+    const payload = ctx.get('jwtPayload');
     const userdata = {
-        "email": payload.email,
-        "first_name": payload.firstName,
-        "last_name": payload.lastName,
-        "provider": payload.gitProvider,
+        "email": payload.user.email,
+        "first_name": payload.user.firstName,
+        "last_name": payload.user.lastName,
+        "provider": payload.git.provider,
         "user_metadata": {
-            "full_name": `${payload.firstName} ${payload.lastName}`
+            "full_name": `${payload.user.firstName} ${payload.user.lastName}`
         }
     }
 

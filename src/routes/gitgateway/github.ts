@@ -1,21 +1,20 @@
 import {Hono} from "hono";
 import {decrypt} from "../../services/encryption-service";
 import {jwtMiddleware} from "../middlewares/jwt";
-import {JWTPayload} from "hono/utils/jwt/types";
+import {Variables} from "../../types/variables";
 
-const github = new Hono<{ Bindings: CloudflareBindings, Variables: JWTPayload }>();
+const github = new Hono<{ Bindings: CloudflareBindings, Variables: Variables }>();
 
 github.use('/:path{.+}', jwtMiddleware)
 github.all('/:path{.+}', async ctx => {
-    const referer = ctx.req.raw.headers.get('referer');
-    const jwtPayload = ctx.get('jwtPayload') as JWTPayload;
+    const jwtPayload = ctx.get('jwtPayload');
 
-    const gitToken = decrypt(jwtPayload.gitToken as string, ctx.env.AUTH_SECRET_KEY)
+    const gitToken = decrypt(jwtPayload.git.token, ctx.env.AUTH_SECRET_KEY)
     const req = new Request(ctx.req.raw)
     req.headers.set('authorization', `Bearer ${gitToken}`);
     ctx.req.raw = req;
 
-    return await fetch('https://api.github.com/repos/sahalsaad/08photo/' + ctx.req.param('path'), {
+    return await fetch(`https://api.${jwtPayload.git.host ?? 'github.com'}/repos/${jwtPayload.git.repo}/${ctx.req.param('path')}`, {
         method: ctx.req.method,
         headers: ctx.req.raw.headers,
         body: ctx.req.raw.body,
