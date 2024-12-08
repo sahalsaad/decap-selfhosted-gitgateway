@@ -2,13 +2,13 @@ import { Hono } from "hono";
 import { jwtMiddleware } from "../../middlewares/jwt";
 import { Variables } from "../../../types/variables";
 
-const settings = new Hono<{
+const settingsRoute = new Hono<{
   Bindings: CloudflareBindings;
   Variables: Variables;
 }>();
 
-settings.use("/", jwtMiddleware);
-settings.get("/", async (ctx) => {
+settingsRoute.use("/", jwtMiddleware);
+settingsRoute.get("/", async (ctx) => {
   const jwtPayload = ctx.get("jwtPayload");
   const settings = {
     github_enabled: jwtPayload.git.provider === "github",
@@ -20,4 +20,4 @@ settings.get("/", async (ctx) => {
   return ctx.json(settings);
 });
 
-export { settings };
+export { settingsRoute };

@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 import { UserService } from "../../services/user-service";
 
-const usersApi = new Hono<{ Bindings: CloudflareBindings }>();
+const usersRoute = new Hono<{ Bindings: CloudflareBindings }>();
 
-usersApi.post("/", async (ctx) => {
+usersRoute.post("/", async (ctx) => {
   const userRequest: UserRequest = await ctx.req.json();
   // TODO: add validation
 
@@ -12,7 +12,7 @@ usersApi.post("/", async (ctx) => {
   return ctx.json(result, 201);
 });
 
-usersApi.put("/:userId", async (ctx) => {
+usersRoute.put("/:userId", async (ctx) => {
   let userRequest: UserRequest = await ctx.req.json();
   // TODO: add validation
 
@@ -27,7 +27,7 @@ usersApi.put("/:userId", async (ctx) => {
   return ctx.body(null, 204);
 });
 
-usersApi.delete("/:userId", async (ctx) => {
+usersRoute.delete("/:userId", async (ctx) => {
   const userId = ctx.req.param("userId");
   const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
   const isSuccess = await userService.deleteUser(userId);
@@ -39,7 +39,7 @@ usersApi.delete("/:userId", async (ctx) => {
   return ctx.notFound();
 });
 
-usersApi.get("/:userId", async (ctx) => {
+usersRoute.get("/:userId", async (ctx) => {
   const userId = ctx.req.param("userId");
   const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
   const user = await userService.getUserById(userId);
@@ -51,13 +51,13 @@ usersApi.get("/:userId", async (ctx) => {
   return ctx.json(user);
 });
 
-usersApi.get("/", async (ctx) => {
+usersRoute.get("/", async (ctx) => {
   const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
   const userList = await userService.getAllUser();
   return ctx.json(userList);
 });
 
-usersApi.put("/:userId/sites", async (ctx) => {
+usersRoute.put("/:userId/sites", async (ctx) => {
   const { siteId } = await ctx.req.json();
   const userId = ctx.req.param("userId");
 
@@ -66,4 +66,4 @@ usersApi.put("/:userId/sites", async (ctx) => {
   return ctx.body(null, 204);
 });
 
-export { usersApi };
+export { usersRoute };

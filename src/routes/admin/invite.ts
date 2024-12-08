@@ -2,9 +2,9 @@ import { Hono } from "hono";
 import { InviteService } from "../../services/invite-service";
 import { UserService } from "../../services/user-service";
 
-const inviteApi = new Hono<{ Bindings: CloudflareBindings }>();
+const inviteRoute = new Hono<{ Bindings: CloudflareBindings }>();
 
-inviteApi.post("/", async (ctx) => {
+inviteRoute.post("/", async (ctx) => {
   const inviteRequest: InviteRequest = await ctx.req.json();
 
   const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
@@ -20,4 +20,4 @@ inviteApi.post("/", async (ctx) => {
   return ctx.json(result, 201);
 });
 
-export { inviteApi };
+export { inviteRoute };

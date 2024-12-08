@@ -5,12 +5,12 @@ import { hashPassword } from "../../services/encryption-service";
 import { timingSafeEqual } from "hono/utils/buffer";
 import { sign } from "hono/jwt";
 
-const authApi = new Hono<{
+const adminAuthRoute = new Hono<{
   Bindings: CloudflareBindings;
   Variables: { user: { id: string; email: string; role: string } };
 }>();
 
-authApi.use(
+adminAuthRoute.use(
   "/",
   basicAuth({
     verifyUser: async (email: string, password: string, ctx: Context) => {
@@ -38,7 +38,7 @@ authApi.use(
     invalidUserMessage: "Invalid username or password or not admin",
   }),
 );
-authApi.post("/", async (ctx) => {
+adminAuthRoute.post("/", async (ctx) => {
   const duration = 60 * 60 * 12;
   const user = ctx.get("user");
   const jwtPayload = {
@@ -59,4 +59,4 @@ authApi.post("/", async (ctx) => {
   return ctx.json(jwt);
 });
 
-export { authApi };
+export { adminAuthRoute };

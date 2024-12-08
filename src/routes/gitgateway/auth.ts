@@ -7,9 +7,12 @@ import { timingSafeEqual } from "hono/utils/buffer";
 import { JwtPayload } from "../../../types/jwt-payload";
 import { Variables } from "../../../types/variables";
 
-const auth = new Hono<{ Bindings: CloudflareBindings; Variables: Variables }>();
+const gitGatewayAuthRoute = new Hono<{
+  Bindings: CloudflareBindings;
+  Variables: Variables;
+}>();
 
-auth.post("/token", async (ctx) => {
+gitGatewayAuthRoute.post("/token", async (ctx) => {
   const data = await ctx.req.formData();
   const username = data.get("username")?.toString();
   const password = data.get("password")?.toString();
@@ -58,8 +61,8 @@ auth.post("/token", async (ctx) => {
   return ctx.json(jwt);
 });
 
-auth.use("/user", jwtMiddleware);
-auth.get("/user", async (ctx) => {
+gitGatewayAuthRoute.use("/user", jwtMiddleware);
+gitGatewayAuthRoute.get("/user", async (ctx) => {
   const payload = ctx.get("jwtPayload");
   const userdata = {
     email: payload.user.email,
@@ -74,4 +77,4 @@ auth.get("/user", async (ctx) => {
   return ctx.json(userdata);
 });
 
-export { auth };
+export { gitGatewayAuthRoute };

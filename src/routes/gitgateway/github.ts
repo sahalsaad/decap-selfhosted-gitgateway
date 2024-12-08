@@ -3,13 +3,13 @@ import { decrypt } from "../../services/encryption-service";
 import { jwtMiddleware } from "../../middlewares/jwt";
 import { Variables } from "../../../types/variables";
 
-const github = new Hono<{
+const githubRoute = new Hono<{
   Bindings: CloudflareBindings;
   Variables: Variables;
 }>();
 
-github.use("/:path{.+}", jwtMiddleware);
-github.all("/:path{.+}", async (ctx) => {
+githubRoute.use("/:path{.+}", jwtMiddleware);
+githubRoute.all("/:path{.+}", async (ctx) => {
   const jwtPayload = ctx.get("jwtPayload");
 
   const gitToken = decrypt(jwtPayload.git.token, ctx.env.AUTH_SECRET_KEY);
@@ -27,4 +27,4 @@ github.all("/:path{.+}", async (ctx) => {
   );
 });
 
-export { github };
+export { githubRoute };
