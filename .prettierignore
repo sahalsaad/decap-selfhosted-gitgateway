@@ -6,3 +6,4 @@ migrations
 .wrangler
 .idea
 wrangler.toml
+pnpm-lock.yaml
