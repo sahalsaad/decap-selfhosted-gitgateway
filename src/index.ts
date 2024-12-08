@@ -8,6 +8,8 @@ import { usersRoute } from "./routes/admin/users";
 import { inviteRoute } from "./routes/admin/invite";
 import { adminAuthRoute } from "./routes/admin/auth";
 import { jwtMiddleware } from "./middlewares/jwt";
+import { showRoutes } from "hono/dev";
+import { logger } from "hono/logger";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -16,6 +18,7 @@ app.get("/", (c) => {
 });
 
 app.use("*", cors());
+app.use("*", logger());
 
 // git gateway endpoints
 app.route("/:siteId/auth", gitGatewayAuthRoute);
@@ -23,12 +26,17 @@ app.route("/:siteId/settings", settingsRoute);
 app.route("/:siteId/github", githubRoute);
 
 // admin endpoints
-app.use("/api/admin/*", jwtMiddleware);
-app.route("/api/admin/sites", sitesRoute);
-app.route("/api/admin/users", usersRoute);
-app.route("/api/admin/invite", inviteRoute);
-app.route("/api/admin/auth", adminAuthRoute);
+const adminApi = app.basePath("/api/admin");
+adminApi.use("/*", jwtMiddleware);
+adminApi.route("/sites", sitesRoute);
+adminApi.route("/users", usersRoute);
+adminApi.route("/invite", inviteRoute);
+adminApi.route("/auth", adminAuthRoute);
 
 // public endpoints
 
 export default app;
+
+showRoutes(app, {
+  verbose: true,
+});
