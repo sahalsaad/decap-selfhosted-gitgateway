@@ -7,19 +7,15 @@ export const InviteService = (d1Database: D1Database) => {
   const db = drizzle(d1Database);
 
   return {
-    createInvite: async (
-      email: string,
-      siteId: string,
-      role: "admin" | "contributor",
-    ) => {
+    createInvite: (inviteRequest: InviteRequest) => {
       return db
         .insert(invite)
         .values({
           id: randomUUID(),
           allowSetEmail: false,
-          email: email,
-          siteId: siteId,
-          role: role,
+          email: inviteRequest.email,
+          siteId: inviteRequest.siteId,
+          role: inviteRequest.role,
         })
         .returning({
           id: invite.id,
