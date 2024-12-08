@@ -31,6 +31,7 @@ auth.post("/token", async (ctx) => {
     return ctx.body(null, 401);
   }
 
+  const duration = 60 * 60 * 12;
   const tokenData: JwtPayload = {
     user: {
       firstName: result.user.firstName,
@@ -44,14 +45,14 @@ auth.post("/token", async (ctx) => {
       host: result.site.gitHost,
       repo: result.site.gitRepo,
     },
-    exp: Math.floor(Date.now() / 1000) + 60 * 60 * 12,
+    exp: Math.floor(Date.now() / 1000) + duration,
   };
 
   const accessToken = await sign(tokenData, ctx.env.AUTH_SECRET_KEY!);
   const jwt = {
     token_type: "bearer",
     access_token: accessToken,
-    expires_in: 43200000,
+    expires_in: duration * 1000,
   };
 
   return ctx.json(jwt);
