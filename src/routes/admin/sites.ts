@@ -1,28 +1,34 @@
 import { Hono } from "hono";
+import { zValidator } from "@hono/zod-validator";
 import { SiteService } from "../../services/site-service";
+import { createSiteSchema, updateSiteSchema } from "../../../types/sites";
 
 const sitesRoute = new Hono<{ Bindings: CloudflareBindings }>();
 
-sitesRoute.post("/", async (ctx) => {
-  const siteRequest: SiteRequest = await ctx.req.json();
+sitesRoute.post("/", zValidator("json", createSiteSchema), async (ctx) => {
+  const siteCreateRequest = ctx.req.valid("json");
   const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-  const [result] = await siteService.createSite(siteRequest);
+  const [result] = await siteService.createSite(siteCreateRequest);
   return ctx.json(result, 201);
 });
 
-sitesRoute.put("/:siteId", async (ctx) => {
-  let siteRequest: SiteRequest = await ctx.req.json();
-  const siteId = ctx.req.param("siteId");
+sitesRoute.put(
+  "/:siteId",
+  zValidator("json", updateSiteSchema),
+  async (ctx) => {
+    const siteUpdateRequest = ctx.req.valid("json");
+    const siteId = ctx.req.param("siteId");
 
-  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-  const isSuccess = await siteService.updateSite(siteId, siteRequest);
+    const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
+    const isSuccess = await siteService.updateSite(siteId, siteUpdateRequest);
 
-  if (!isSuccess) {
-    return ctx.notFound();
-  }
+    if (!isSuccess) {
+      return ctx.notFound();
+    }
 
-  return ctx.body(null, 204);
-});
+    return ctx.body(null, 204);
+  },
+);
 
 sitesRoute.delete("/:siteId", async (ctx) => {
   const siteId = ctx.req.param("siteId");

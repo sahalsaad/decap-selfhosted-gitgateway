@@ -1,10 +1,16 @@
-import { int, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
-export const users = sqliteTable("users", {
+const users = sqliteTable("users", {
   id: text().notNull().primaryKey(),
   email: text().notNull().unique(),
   password: text().notNull(),
   firstName: text().notNull(),
   lastName: text(),
-  role: text().$type<"admin" | "contributor">().notNull(),
+  role: text({ enum: ["admin", "contributor"] }).notNull(),
 });
+
+const insertUsersSchema = createInsertSchema(users);
+const selectUsersSchema = createSelectSchema(users);
+
+export { users, insertUsersSchema, selectUsersSchema };

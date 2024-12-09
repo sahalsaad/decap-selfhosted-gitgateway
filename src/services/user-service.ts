@@ -5,6 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { usersToSites } from "../db/users-sites";
 import { sites } from "../db/sites";
 import { randomUUID } from "node:crypto";
+import { UserCreateRequest, UserUpdateRequest } from "../../types/user";
 
 export const UserService = (d1Database: D1Database, authSecretKey: string) => {
   const db = drizzle(d1Database);
@@ -86,7 +87,7 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
     getAllUser: async () => {
       return await db.select().from(users).all();
     },
-    create: (userRequest: UserRequest) => {
+    create: (userRequest: UserCreateRequest) => {
       const hashedPassword = hashPassword(userRequest.password, authSecretKey);
 
       return db
@@ -103,7 +104,7 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
           id: users.id,
         });
     },
-    updateUser: async (userId: string, userRequest: UserRequest) => {
+    updateUser: async (userId: string, userRequest: UserUpdateRequest) => {
       const existingUser = await db
         .select()
         .from(users)

@@ -3,6 +3,7 @@ import { sites } from "../db/sites";
 import { eq } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 import { encrypt } from "./encryption-service";
+import { SiteCreateRequest, SiteUpdateRequest } from "../../types/sites";
 
 export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
   const db = drizzle(d1Database);
@@ -35,7 +36,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
         .from(sites)
         .all();
     },
-    createSite: (siteRequest: SiteRequest) => {
+    createSite: (siteRequest: SiteCreateRequest) => {
       const encryptedToken = encrypt(siteRequest.gitToken, authSecretKey);
       return db
         .insert(sites)
@@ -51,7 +52,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
           id: sites.id,
         });
     },
-    updateSite: async (siteId: string, siteRequest: SiteRequest) => {
+    updateSite: async (siteId: string, siteRequest: SiteUpdateRequest) => {
       const existingSite = await db
         .select()
         .from(sites)
