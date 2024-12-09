@@ -1,8 +1,8 @@
 {
+  "id": "fd3aefd9-8067-487c-a033-b77c2bb856e3",
+  "prevId": "3f71c195-8dff-47be-97b1-53267326fec0",
   "version": "6",
   "dialect": "sqlite",
-  "id": "3f71c195-8dff-47be-97b1-53267326fec0",
-  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "invite": {
       "name": "invite",
@@ -147,28 +147,28 @@
         "users_to_sites_user_id_users_id_fk": {
           "name": "users_to_sites_user_id_users_id_fk",
           "tableFrom": "users_to_sites",
-          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
+          "tableTo": "users",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "users_to_sites_site_id_sites_id_fk": {
           "name": "users_to_sites_site_id_sites_id_fk",
           "tableFrom": "users_to_sites",
-          "tableTo": "sites",
           "columnsFrom": [
             "site_id"
           ],
+          "tableTo": "sites",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -247,9 +247,9 @@
   "views": {},
   "enums": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
+    "tables": {}
   },
   "internal": {
     "indexes": {}

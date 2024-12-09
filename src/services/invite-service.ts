@@ -8,14 +8,14 @@ export const InviteService = (d1Database: D1Database) => {
   const db = drizzle(d1Database);
 
   return {
-    createInvite: (inviteRequest: InviteCreateRequest) => {
+    createInvite: (siteId: string, inviteRequest: InviteCreateRequest) => {
       return db
         .insert(invite)
         .values({
           id: randomUUID(),
           allowSetEmail: false,
           email: inviteRequest.email,
-          siteId: inviteRequest.siteId,
+          siteId: siteId,
           role: inviteRequest.role,
         })
         .returning({

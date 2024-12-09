@@ -5,7 +5,11 @@ import { and, eq } from "drizzle-orm";
 import { usersToSites } from "../db/users-sites";
 import { sites } from "../db/sites";
 import { randomUUID } from "node:crypto";
-import { UserCreateRequest, UserUpdateRequest } from "../../types/user";
+import {
+  UserCreateRequest,
+  UserResponse,
+  UserUpdateRequest,
+} from "../../types/user";
 
 export const UserService = (d1Database: D1Database, authSecretKey: string) => {
   const db = drizzle(d1Database);
@@ -25,6 +29,8 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
             id: sites.id,
             url: sites.url,
             gitRepo: sites.gitRepo,
+            gitHost: sites.gitHost,
+            gitProvider: sites.gitProvider,
           },
         })
         .from(users)

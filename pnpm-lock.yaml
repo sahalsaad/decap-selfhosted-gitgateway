@@ -21,8 +21,8 @@ importers:
         specifier: ^0.37.0
         version: 0.37.0(@cloudflare/workers-types@4.20241205.0)
       drizzle-zod:
-        specifier: ^0.5.1
-        version: 0.5.1(drizzle-orm@0.37.0(@cloudflare/workers-types@4.20241205.0))(zod@3.23.8)
+        specifier: ^0.6.0
+        version: 0.6.0(drizzle-orm@0.37.0(@cloudflare/workers-types@4.20241205.0))(zod@3.23.8)
       hono:
         specifier: ^4.6.13
         version: 4.6.13
@@ -46,8 +46,8 @@ importers:
         specifier: ^22.10.1
         version: 22.10.1
       drizzle-kit:
-        specifier: ^0.29.1
-        version: 0.29.1
+        specifier: ^0.30.0
+        version: 0.30.0
       husky:
         specifier: ^9.1.7
         version: 9.1.7
@@ -800,8 +800,8 @@ packages:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
 
-  drizzle-kit@0.29.1:
-    resolution: {integrity: sha512-OvHL8RVyYiPR3LLRE3SHdcON8xGXl+qMfR9uTTnFWBPIqVk/3NWYZPb7nfpM1Bhix3H+BsxqPyyagG7YZ+Z63A==}
+  drizzle-kit@0.30.0:
+    resolution: {integrity: sha512-zAf0qg/BX2lV/Xip4igXrtbDv+Ub8S39U6qSOEGNvqcHrnmaQjS4mkkFZOUsgXRbuH56QUeWZxfnLHefrKCV5g==}
     hasBin: true
 
   drizzle-orm@0.37.0:
@@ -896,11 +896,11 @@ packages:
       sqlite3:
         optional: true
 
-  drizzle-zod@0.5.1:
-    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
+  drizzle-zod@0.6.0:
+    resolution: {integrity: sha512-7K1k7Y/5Jw9D4cTlrHL3mRTLg3oaglbi4VvBIYmSAtMvYkgqvusPtra7cnntMCe1r1cBcwxhlEkfiNdU23lp2g==}
     peerDependencies:
-      drizzle-orm: '>=0.23.13'
-      zod: '*'
+      drizzle-orm: '>=0.36.0'
+      zod: '>=3.0.0'
 
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
@@ -1776,7 +1776,7 @@ snapshots:
 
   dotenv@16.4.7: {}
 
-  drizzle-kit@0.29.1:
+  drizzle-kit@0.30.0:
     dependencies:
       '@drizzle-team/brocli': 0.10.2
       '@esbuild-kit/esm-loader': 2.6.5
@@ -1789,7 +1789,7 @@ snapshots:
     optionalDependencies:
       '@cloudflare/workers-types': 4.20241205.0
 
-  drizzle-zod@0.5.1(drizzle-orm@0.37.0(@cloudflare/workers-types@4.20241205.0))(zod@3.23.8):
+  drizzle-zod@0.6.0(drizzle-orm@0.37.0(@cloudflare/workers-types@4.20241205.0))(zod@3.23.8):
     dependencies:
       drizzle-orm: 0.37.0(@cloudflare/workers-types@4.20241205.0)
       zod: 3.23.8

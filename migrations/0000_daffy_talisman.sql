@@ -1,3 +1,13 @@
+CREATE TABLE `invite` (
+	`id` text PRIMARY KEY NOT NULL,
+	`allowSetEmail` integer NOT NULL,
+	`email` text NOT NULL,
+	`siteId` text NOT NULL,
+	`role` text NOT NULL
+);
+--> statement-breakpoint
+CREATE UNIQUE INDEX `invite_email_unique` ON `invite` (`email`);--> statement-breakpoint
+CREATE UNIQUE INDEX `invite_siteId_unique` ON `invite` (`siteId`);--> statement-breakpoint
 CREATE TABLE `sites` (
 	`id` text PRIMARY KEY NOT NULL,
 	`url` text NOT NULL,

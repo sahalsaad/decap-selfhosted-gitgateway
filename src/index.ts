@@ -5,7 +5,6 @@ import { settingsRoute } from "./routes/gitgateway/settings";
 import { githubRoute } from "./routes/gitgateway/github";
 import { sitesRoute } from "./routes/admin/sites";
 import { usersRoute } from "./routes/admin/users";
-import { inviteRoute } from "./routes/admin/invite";
 import { adminAuthRoute } from "./routes/admin/auth";
 import { jwtMiddleware } from "./middlewares/jwt";
 import { showRoutes } from "hono/dev";
@@ -30,7 +29,6 @@ const adminApi = app.basePath("/api/admin");
 adminApi.use("/*", jwtMiddleware);
 adminApi.route("/sites", sitesRoute);
 adminApi.route("/users", usersRoute);
-adminApi.route("/invite", inviteRoute);
 adminApi.route("/auth", adminAuthRoute);
 
 // public endpoints

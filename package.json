@@ -11,7 +11,7 @@
     "@types/jsonwebtoken": "^9.0.7",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.37.0",
-    "drizzle-zod": "^0.5.1",
+    "drizzle-zod": "^0.6.0",
     "hono": "^4.6.13",
     "jsonwebtoken": "^9.0.2",
     "tweetnacl": "^1.0.3",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241205.0",
     "@types/node": "^22.10.1",
-    "drizzle-kit": "^0.29.1",
+    "drizzle-kit": "^0.30.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
     "prettier": "3.4.2",

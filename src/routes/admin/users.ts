@@ -63,13 +63,4 @@ usersRoute.get("/", async (ctx) => {
   return ctx.json(userList);
 });
 
-usersRoute.put("/:userId/sites", async (ctx) => {
-  const { siteId } = await ctx.req.json();
-  const userId = ctx.req.param("userId");
-
-  const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-  await userService.addUserSite(userId, siteId);
-  return ctx.body(null, 204);
-});
-
 export { usersRoute };
