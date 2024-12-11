@@ -3,13 +3,9 @@ import { gitGatewayAuthRoute } from "./routes/gitgateway/auth";
 import { cors } from "hono/cors";
 import { settingsRoute } from "./routes/gitgateway/settings";
 import { githubRoute } from "./routes/gitgateway/github";
-import { sitesRoute } from "./routes/admin/sites";
-import { usersRoute } from "./routes/admin/users";
-import { adminAuthRoute } from "./routes/admin/auth";
-import { jwtMiddleware } from "./middlewares/jwt";
-import { showRoutes } from "hono/dev";
 import { logger } from "hono/logger";
-import { register } from "./client/register";
+import { register } from "./routes/client/register";
+import { apiRoute } from "./routes/api";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -28,16 +24,9 @@ app.route("/:siteId/github", githubRoute);
 app.route("/register", register);
 
 // admin endpoints
-const adminApi = app.basePath("/api/admin");
-adminApi.use("/*", jwtMiddleware);
-adminApi.route("/sites", sitesRoute);
-adminApi.route("/users", usersRoute);
-adminApi.route("/auth", adminAuthRoute);
+const api = app.basePath("/api");
+api.route("/api", apiRoute);
 
 // public endpoints
 
 export default app;
-
-showRoutes(app, {
-  verbose: true,
-});

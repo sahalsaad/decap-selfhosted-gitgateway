@@ -4,6 +4,7 @@ export const renderer = jsxRenderer(({ children, title }) => {
   return (
     <html>
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         {import.meta.env.PROD ? (
           <>
             <link href="/static/style.css" rel="stylesheet" />
@@ -17,18 +18,11 @@ export const renderer = jsxRenderer(({ children, title }) => {
         )}
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+          href="https://unpkg.com/bamboo.css/dist/light.min.css"
         />
         <title>{title}</title>
       </head>
-      <body>
-        <div
-          id="container"
-          className="flex flex-col items-center justify-center h-screen text-center"
-        >
-          {children}
-        </div>
-      </body>
+      <body className="md:container md:mx-auto">{children}</body>
     </html>
   );
 });

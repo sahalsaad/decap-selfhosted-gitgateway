@@ -1,7 +1,7 @@
 # prod
 dist/
 .idea/
-public/
+public/static/
 
 # dev
 .yarn/
