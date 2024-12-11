@@ -9,6 +9,7 @@ import { adminAuthRoute } from "./routes/admin/auth";
 import { jwtMiddleware } from "./middlewares/jwt";
 import { showRoutes } from "hono/dev";
 import { logger } from "hono/logger";
+import { register } from "./client/register";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -23,6 +24,8 @@ app.use("*", logger());
 app.route("/:siteId/auth", gitGatewayAuthRoute);
 app.route("/:siteId/settings", settingsRoute);
 app.route("/:siteId/github", githubRoute);
+
+app.route("/register", register);
 
 // admin endpoints
 const adminApi = app.basePath("/api/admin");

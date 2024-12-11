@@ -9,7 +9,8 @@
     "types": [
       "@cloudflare/workers-types/2023-07-01",
       "@types/node",
-      "@types/jsonwebtoken"
+      "@types/jsonwebtoken",
+      "vite/client"
     ],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"
