@@ -6,6 +6,7 @@ import { SiteService } from "../../services/site-service";
 import { sitesRoute } from "../admin/sites";
 import { usersRoute } from "../admin/users";
 import { adminAuthRoute } from "../admin/auth";
+import { jwtMiddleware } from "../../middlewares/jwt";
 
 const apiRoute = new Hono<{
   Bindings: CloudflareBindings;
@@ -13,6 +14,7 @@ const apiRoute = new Hono<{
 }>();
 
 const admin = apiRoute.basePath("/admin");
+admin.use("/*", jwtMiddleware);
 admin.route("/sites", sitesRoute);
 admin.route("/users", usersRoute);
 admin.route("/auth", adminAuthRoute);

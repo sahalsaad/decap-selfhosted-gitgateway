@@ -50,7 +50,8 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
         })
         .returning({
           id: sites.id,
-        });
+        })
+        .get();
     },
     updateSite: async (siteId: string, siteRequest: SiteUpdateRequest) => {
       const existingSite = await db

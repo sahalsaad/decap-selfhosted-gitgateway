@@ -20,7 +20,10 @@ adminAuthRoute.use(
         return false;
       }
 
+      console.log(user.password);
+
       const hashedPassword = hashPassword(password, ctx.env.AUTH_SECRET_KEY);
+      console.log(hashedPassword);
       if (
         (await timingSafeEqual(user.password, hashedPassword)) &&
         user.role === "admin"
@@ -30,7 +33,7 @@ adminAuthRoute.use(
           email: user.email,
           role: user.role,
         });
-        return false;
+        return true;
       }
 
       return false;
@@ -38,7 +41,7 @@ adminAuthRoute.use(
     invalidUserMessage: "Invalid username or password or not admin",
   }),
 );
-adminAuthRoute.post("/", async (ctx) => {
+adminAuthRoute.get("/", async (ctx) => {
   const duration = 60 * 60 * 12;
   const user = ctx.get("user");
   const jwtPayload = {
