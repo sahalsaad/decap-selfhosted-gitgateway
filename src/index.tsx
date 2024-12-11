@@ -21,12 +21,10 @@ app.route("/:siteId/auth", gitGatewayAuthRoute);
 app.route("/:siteId/settings", settingsRoute);
 app.route("/:siteId/github", githubRoute);
 
+// client routes
 app.route("/register", register);
 
-// admin endpoints
-const api = app.basePath("/api");
-api.route("/api", apiRoute);
-
-// public endpoints
+// api endpoints
+app.route("/api", apiRoute);
 
 export default app;

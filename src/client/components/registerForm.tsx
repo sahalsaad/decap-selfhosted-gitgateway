@@ -9,8 +9,10 @@ const RegisterForm = (props: {
     <div className="p-10 bg-white rounded-lg ">
       <form
         className="flex flex-col gap-2"
+        hx-target="#response"
         hx-post="/api/register"
-        hx-vals={{ inviteId: props.inviteId }}
+        hx-vals={JSON.stringify({ inviteId: props.inviteId })}
+        hx-ext="json-enc"
       >
         <span className="text-3xl font-bold">Register</span>
         <label for="email">
@@ -20,18 +22,24 @@ const RegisterForm = (props: {
             name="email"
             value={props.email ?? ""}
             disabled={!props.enableEmail}
+            required
           />
+        </label>
+        <label for="firstName">
+          First Name
+          <input type="text" name="firstName" required />
+        </label>
+        <label for="lastName">
+          Last Name
+          <input type="text" name="lastName" />
         </label>
         <label for="password">
           Password
-          <input type="password" name="password" />
-        </label>
-        <label for="re-password">
-          Email
-          <input type="password" name="re-password" />
+          <input type="password" name="password" required />
         </label>
         <button type="submit">Register</button>
       </form>
+      <div id="response"></div>
     </div>
   </div>
 );

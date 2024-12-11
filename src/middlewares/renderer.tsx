@@ -20,6 +20,8 @@ export const renderer = jsxRenderer(({ children, title }) => {
           rel="stylesheet"
           href="https://unpkg.com/bamboo.css/dist/light.min.css"
         />
+        <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+        <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
         <title>{title}</title>
       </head>
       <body className="md:container md:mx-auto">{children}</body>

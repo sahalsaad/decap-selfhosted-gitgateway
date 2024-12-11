@@ -21,7 +21,7 @@ apiRoute.post("/register", async (ctx) => {
   const json = await ctx.req.json();
 
   const inviteService = InviteService(ctx.env.DB);
-  const invite = await inviteService.getInviteById(json.invite);
+  const invite = await inviteService.getInviteById(json.inviteId);
 
   if (!invite) {
     return ctx.json(null, 400);
@@ -38,6 +38,8 @@ apiRoute.post("/register", async (ctx) => {
     role: invite.role,
   });
 
+  await inviteService.deleteInvite(invite.id);
+
   if (invite.siteId) {
     await userService.addUserSite(createdUser.id, invite.siteId);
     const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
@@ -45,7 +47,7 @@ apiRoute.post("/register", async (ctx) => {
     return ctx.redirect(site!.sites.url);
   }
 
-  return ctx.body("User created!", 204);
+  return ctx.json({}, 204);
 });
 
 export { apiRoute };
