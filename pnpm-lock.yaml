@@ -23,6 +23,12 @@ importers:
       hono:
         specifier: ^4.6.13
         version: 4.6.13
+      htmx-ext-json-enc:
+        specifier: ^2.0.1
+        version: 2.0.1
+      htmx.org:
+        specifier: 2.0.3
+        version: 2.0.3
       tweetnacl:
         specifier: ^1.0.3
         version: 1.0.3
@@ -1419,6 +1425,12 @@ packages:
   hono@4.6.13:
     resolution: {integrity: sha512-haV0gaMdSjy9URCRN9hxBPlqHa7fMm/T72kAImIxvw4eQLbNz1rgjN4hHElLJSieDiNuiIAXC//cC6YGz2KCbg==}
     engines: {node: '>=16.9.0'}
+
+  htmx-ext-json-enc@2.0.1:
+    resolution: {integrity: sha512-5LDA1GV1F/EbQsqw5pwPNGCb+usAgjVnQZ067oVsTQ73Gww2jfsEqEcL+CSdDTKxTxqrrmibL6xgerKL1u5DRQ==}
+
+  htmx.org@2.0.3:
+    resolution: {integrity: sha512-AeoJUAjkCVVajbfKX+3sVQBTCt8Ct4lif1T+z/tptTXo8+8yyq3QIMQQe/IT+R8ssfrO1I0DeX4CAronzCL6oA==}
 
   human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
@@ -2915,6 +2927,10 @@ snapshots:
       function-bind: 1.1.2
 
   hono@4.6.13: {}
+
+  htmx-ext-json-enc@2.0.1: {}
+
+  htmx.org@2.0.3: {}
 
   human-signals@5.0.0: {}
 

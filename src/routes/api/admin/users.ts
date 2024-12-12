@@ -1,11 +1,7 @@
 import { Hono } from "hono";
-import { UserService } from "../../services/user-service";
-import {
-  createUserSchema,
-  updateUserSchema,
-  UserCreateRequest,
-} from "../../../types/user";
 import { zValidator } from "@hono/zod-validator";
+import { createUserSchema, updateUserSchema } from "../../../../types/user";
+import { UserService } from "../../../services/user-service";
 
 const usersRoute = new Hono<{ Bindings: CloudflareBindings }>();
 
