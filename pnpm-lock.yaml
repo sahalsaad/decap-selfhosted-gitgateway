@@ -11,9 +11,6 @@ importers:
       '@hono/zod-validator':
         specifier: ^0.4.1
         version: 0.4.1(hono@4.6.13)(zod@3.24.0)
-      dotenv:
-        specifier: ^16.4.7
-        version: 16.4.7
       drizzle-orm:
         specifier: ^0.38.0
         version: 0.38.0(@cloudflare/workers-types@4.20241205.0)
@@ -23,12 +20,6 @@ importers:
       hono:
         specifier: ^4.6.13
         version: 4.6.13
-      htmx-ext-json-enc:
-        specifier: ^2.0.1
-        version: 2.0.1
-      htmx.org:
-        specifier: 2.0.3
-        version: 2.0.3
       tweetnacl:
         specifier: ^1.0.3
         version: 1.0.3
@@ -1186,10 +1177,6 @@ packages:
   dlv@1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
 
-  dotenv@16.4.7:
-    resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
-    engines: {node: '>=12'}
-
   drizzle-kit@0.30.0:
     resolution: {integrity: sha512-zAf0qg/BX2lV/Xip4igXrtbDv+Ub8S39U6qSOEGNvqcHrnmaQjS4mkkFZOUsgXRbuH56QUeWZxfnLHefrKCV5g==}
     hasBin: true
@@ -1425,12 +1412,6 @@ packages:
   hono@4.6.13:
     resolution: {integrity: sha512-haV0gaMdSjy9URCRN9hxBPlqHa7fMm/T72kAImIxvw4eQLbNz1rgjN4hHElLJSieDiNuiIAXC//cC6YGz2KCbg==}
     engines: {node: '>=16.9.0'}
-
-  htmx-ext-json-enc@2.0.1:
-    resolution: {integrity: sha512-5LDA1GV1F/EbQsqw5pwPNGCb+usAgjVnQZ067oVsTQ73Gww2jfsEqEcL+CSdDTKxTxqrrmibL6xgerKL1u5DRQ==}
-
-  htmx.org@2.0.3:
-    resolution: {integrity: sha512-AeoJUAjkCVVajbfKX+3sVQBTCt8Ct4lif1T+z/tptTXo8+8yyq3QIMQQe/IT+R8ssfrO1I0DeX4CAronzCL6oA==}
 
   human-signals@5.0.0:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
@@ -2671,8 +2652,6 @@ snapshots:
 
   dlv@1.1.3: {}
 
-  dotenv@16.4.7: {}
-
   drizzle-kit@0.30.0:
     dependencies:
       '@drizzle-team/brocli': 0.10.2
@@ -2927,10 +2906,6 @@ snapshots:
       function-bind: 1.1.2
 
   hono@4.6.13: {}
-
-  htmx-ext-json-enc@2.0.1: {}
-
-  htmx.org@2.0.3: {}
 
   human-signals@5.0.0: {}
 

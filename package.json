@@ -10,12 +10,9 @@
   },
   "dependencies": {
     "@hono/zod-validator": "^0.4.1",
-    "dotenv": "^16.4.7",
     "drizzle-orm": "^0.38.0",
     "drizzle-zod": "^0.6.0",
     "hono": "^4.6.13",
-    "htmx-ext-json-enc": "^2.0.1",
-    "htmx.org": "2.0.3",
     "tweetnacl": "^1.0.3",
     "tweetnacl-util": "^0.15.1",
     "typed-htmx": "^0.3.1",
