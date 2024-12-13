@@ -2,9 +2,11 @@ import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { createUserSchema, updateUserSchema } from "../../../../types/user";
 import { UserService } from "../../../services/user-service";
+import { jwtMiddleware } from "../../../middlewares/jwt";
 
 const usersRoute = new Hono<{ Bindings: CloudflareBindings }>();
 
+usersRoute.use("/*", jwtMiddleware);
 usersRoute.post("/", zValidator("json", createUserSchema), async (ctx) => {
   const userRequest = ctx.req.valid("json");
   const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);

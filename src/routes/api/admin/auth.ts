@@ -14,16 +14,14 @@ adminAuthRoute.use(
   "/",
   basicAuth({
     verifyUser: async (email: string, password: string, ctx: Context) => {
+      console.log("here");
       const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
       const user = await userService.getUserByEmail(email);
       if (!user) {
         return false;
       }
 
-      console.log(user.password);
-
       const hashedPassword = hashPassword(password, ctx.env.AUTH_SECRET_KEY);
-      console.log(hashedPassword);
       if (
         (await timingSafeEqual(user.password, hashedPassword)) &&
         user.role === "admin"

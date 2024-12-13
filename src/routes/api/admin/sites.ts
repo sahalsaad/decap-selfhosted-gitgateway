@@ -6,12 +6,14 @@ import { SiteService } from "../../../services/site-service";
 import { UserService } from "../../../services/user-service";
 import { createInviteSchema } from "../../../../types/invite";
 import { InviteService } from "../../../services/invite-service";
+import { jwtMiddleware } from "../../../middlewares/jwt";
 
 const sitesRoute = new Hono<{
   Bindings: CloudflareBindings;
   Variables: Variables;
 }>();
 
+sitesRoute.use("/*", jwtMiddleware);
 sitesRoute.post("/", zValidator("json", createSiteSchema), async (ctx) => {
   const { user } = ctx.get("jwtPayload");
 
