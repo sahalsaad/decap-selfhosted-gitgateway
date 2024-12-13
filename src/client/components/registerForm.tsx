@@ -1,5 +1,3 @@
-import logoImage from "../../../assets/logo.png?inline";
-
 const RegisterForm = (props: {
   siteData: SiteData;
   email: string | null;
@@ -7,12 +5,12 @@ const RegisterForm = (props: {
   inviteId: string;
 }) => (
   <div className="flex flex-col items-center justify-center pt-20">
-    <img src={logoImage} alt="logo" className="w-32 h-auto opacity-70" />
+    <img src="/logo.png" alt="logo" className="w-32 h-auto opacity-70" />
     <div className="p-10 bg-white rounded-lg ">
       <form
         className="flex flex-col gap-2"
         hx-target="#response"
-        hx-post="/api/register"
+        hx-post="/register/handle-invite"
         hx-vals={JSON.stringify({ inviteId: props.inviteId })}
         hx-ext="json-enc"
       >
