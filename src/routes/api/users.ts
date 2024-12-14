@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { updateUserSchema } from "../../../types/user";
-import { UserService } from "../../services/user-service";
-import { jwtMiddleware } from "../../middlewares/jwt";
-import { InviteService } from "../../services/invite-service";
-import { SiteService } from "../../services/site-service";
+import { updateUserSchema } from "@selfTypes/user";
+import { UserService } from "@services/user-service";
+import { jwtMiddleware } from "@server/middlewares/jwt";
+import { InviteService } from "@services/invite-service";
+import { SiteService } from "@services/site-service";
 
 const usersRoute = new Hono<{ Bindings: CloudflareBindings }>();
 

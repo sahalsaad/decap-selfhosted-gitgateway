@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { Variables } from "../../../types/variables";
+import { Variables } from "@selfTypes/variables";
 import { sitesRoute } from "./sites";
 import { usersRoute } from "./users";
 import { adminAuthRoute } from "./auth";

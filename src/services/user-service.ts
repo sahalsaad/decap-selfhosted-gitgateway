@@ -1,9 +1,9 @@
 import { drizzle } from "drizzle-orm/d1";
-import { users } from "../db/users";
+import { users } from "@db/users";
 import { hashPassword } from "./encryption-service";
 import { and, eq } from "drizzle-orm";
-import { usersToSites } from "../db/users-sites";
-import { sites } from "../db/sites";
+import { usersToSites } from "@db/users-sites";
+import { sites } from "@db/sites";
 import { randomUUID } from "node:crypto";
 import {
   UserCreateRequest,

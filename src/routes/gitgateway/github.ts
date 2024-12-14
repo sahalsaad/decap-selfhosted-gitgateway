@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { decrypt } from "../../services/encryption-service";
-import { jwtMiddleware } from "../../middlewares/jwt";
-import { Variables } from "../../../types/variables";
+import { decrypt } from "@services/encryption-service";
+import { jwtMiddleware } from "@server/middlewares/jwt";
+import { Variables } from "@selfTypes/variables";
 
 const githubRoute = new Hono<{
   Bindings: CloudflareBindings;

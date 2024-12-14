@@ -1,6 +1,6 @@
 import { Hono } from "hono";
-import { jwtMiddleware } from "../../middlewares/jwt";
-import { Variables } from "../../../types/variables";
+import { jwtMiddleware } from "@server/middlewares/jwt";
+import { Variables } from "@selfTypes/variables";
 
 const settingsRoute = new Hono<{
   Bindings: CloudflareBindings;

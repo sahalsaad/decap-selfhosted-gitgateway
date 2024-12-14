@@ -1,8 +1,8 @@
 import { drizzle } from "drizzle-orm/d1";
-import { invite } from "../db/invite";
+import { invite } from "@db/invite";
 import { randomUUID } from "node:crypto";
 import { eq } from "drizzle-orm";
-import { InviteCreateRequest } from "../../types/invite";
+import { InviteCreateRequest } from "@selfTypes/invite";
 
 export const InviteService = (d1Database: D1Database) => {
   const db = drizzle(d1Database);

@@ -1,11 +1,11 @@
 import { Hono } from "hono";
-import { hashPassword } from "../../services/encryption-service";
+import { hashPassword } from "@services/encryption-service";
 import { sign } from "hono/jwt";
-import { jwtMiddleware } from "../../middlewares/jwt";
-import { UserService } from "../../services/user-service";
+import { jwtMiddleware } from "@server/middlewares/jwt";
+import { UserService } from "@services/user-service";
 import { timingSafeEqual } from "hono/utils/buffer";
-import { JwtPayload } from "../../../types/jwt-payload";
-import { Variables } from "../../../types/variables";
+import { JwtPayload } from "@selfTypes/jwt-payload";
+import { Variables } from "@selfTypes/variables";
 
 const gitGatewayAuthRoute = new Hono<{
   Bindings: CloudflareBindings;

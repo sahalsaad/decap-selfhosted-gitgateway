@@ -1,9 +1,9 @@
 import { drizzle } from "drizzle-orm/d1";
-import { sites } from "../db/sites";
+import { sites } from "@db/sites";
 import { eq } from "drizzle-orm";
 import { randomUUID } from "node:crypto";
 import { encrypt } from "./encryption-service";
-import { SiteCreateRequest, SiteUpdateRequest } from "../../types/sites";
+import { SiteCreateRequest, SiteUpdateRequest } from "@selfTypes/sites";
 
 export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
   const db = drizzle(d1Database);

@@ -1,9 +1,7 @@
 import { Hono } from "hono";
-import { renderer } from "../../middlewares/renderer";
-import { RegisterForm } from "../../client/components/registerForm";
-import { InviteService } from "../../services/invite-service";
-import { UserService } from "../../services/user-service";
-import { SiteService } from "../../services/site-service";
+import { renderer } from "@server/middlewares/renderer";
+import { RegisterForm } from "@client/components/registerForm";
+import { InviteService } from "@services/invite-service";
 
 const register = new Hono<{ Bindings: CloudflareBindings }>();
 
