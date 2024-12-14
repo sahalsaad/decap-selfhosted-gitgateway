@@ -3,12 +3,10 @@ import { renderer } from "@server/middlewares/renderer";
 import { RegisterForm } from "@client/components/registerForm";
 import { InviteService } from "@services/invite-service";
 
-const register = new Hono<{ Bindings: CloudflareBindings }>();
+const registerClientRoute = new Hono<{ Bindings: CloudflareBindings }>();
 
-register;
-
-register.use("*", renderer);
-register.get("/", async (ctx) => {
+registerClientRoute.use("*", renderer);
+registerClientRoute.get("/", async (ctx) => {
   const inviteId = ctx.req.query("invite");
   if (!inviteId) {
     return ctx.body("Invalid invite", 400);
@@ -32,4 +30,4 @@ register.get("/", async (ctx) => {
   return ctx.render(<RegisterForm {...props} />);
 });
 
-export { register };
+export { registerClientRoute };

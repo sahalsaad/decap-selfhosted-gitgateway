@@ -10,9 +10,10 @@ const RegisterForm = (props: {
       <form
         className="flex flex-col gap-2"
         hx-target="#response"
-        hx-post="/register/handle-invite"
+        hx-post="/api/register"
         hx-vals={JSON.stringify({ inviteId: props.inviteId })}
         hx-ext="json-enc"
+        hx-swap="outerHTML"
       >
         <span className="text-3xl font-bold">Register</span>
         <label for="email">
