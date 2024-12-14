@@ -74,7 +74,7 @@ sitesRoute.get("/", async (ctx) => {
   return ctx.json(result);
 });
 
-sitesRoute.post(
+sitesRoute.put(
   "/:siteId/invite",
   zValidator("json", createInviteSchema),
   async (ctx) => {

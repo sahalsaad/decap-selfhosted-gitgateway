@@ -93,7 +93,7 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
     getAllUser: async () => {
       return await db.select().from(users).all();
     },
-    create: (userRequest: UserCreateRequest) => {
+    createUser: (userRequest: UserCreateRequest) => {
       const hashedPassword = hashPassword(userRequest.password, authSecretKey);
 
       return db
@@ -120,12 +120,8 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
         throw new Error("User not found");
       }
 
-      const email = userRequest.email || existingUser.email;
       const firstName = userRequest.firstName || existingUser.firstName;
       const lastName = userRequest.lastName || existingUser.lastName;
-      const password = userRequest.password
-        ? hashPassword(userRequest.password, authSecretKey)
-        : existingUser.password;
       const role = userRequest.role || existingUser.role;
 
       const result = await db
@@ -133,8 +129,6 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
         .set({
           firstName,
           lastName,
-          password,
-          email,
           role,
         })
         .where(eq(users.id, userId));

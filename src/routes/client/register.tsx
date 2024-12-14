@@ -20,7 +20,7 @@ register.post("/handle-invite", async (ctx) => {
   const email = invite.allowSetEmail ? json.email : invite.email;
 
   const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-  const [createdUser] = await userService.create({
+  const [createdUser] = await userService.createUser({
     email,
     firstName: json.firstName,
     lastName: json.lastName,
