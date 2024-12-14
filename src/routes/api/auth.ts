@@ -2,8 +2,8 @@ import { Context, Hono } from "hono";
 import { basicAuth } from "hono/basic-auth";
 import { timingSafeEqual } from "hono/utils/buffer";
 import { sign } from "hono/jwt";
-import { UserService } from "../../../services/user-service";
-import { hashPassword } from "../../../services/encryption-service";
+import { UserService } from "../../services/user-service";
+import { hashPassword } from "../../services/encryption-service";
 
 const adminAuthRoute = new Hono<{
   Bindings: CloudflareBindings;

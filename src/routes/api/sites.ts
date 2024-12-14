@@ -1,12 +1,12 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
-import { createSiteSchema, updateSiteSchema } from "../../../../types/sites";
-import { Variables } from "../../../../types/variables";
-import { SiteService } from "../../../services/site-service";
-import { UserService } from "../../../services/user-service";
-import { createInviteSchema } from "../../../../types/invite";
-import { InviteService } from "../../../services/invite-service";
-import { jwtMiddleware } from "../../../middlewares/jwt";
+import { createSiteSchema, updateSiteSchema } from "../../../types/sites";
+import { Variables } from "../../../types/variables";
+import { SiteService } from "../../services/site-service";
+import { UserService } from "../../services/user-service";
+import { createInviteSchema } from "../../../types/invite";
+import { InviteService } from "../../services/invite-service";
+import { jwtMiddleware } from "../../middlewares/jwt";
 
 const sitesRoute = new Hono<{
   Bindings: CloudflareBindings;
