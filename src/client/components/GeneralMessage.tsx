@@ -1,8 +1,4 @@
-const GeneralMessage = (props: {
-  siteData: SiteData;
-  title: string;
-  message: string;
-}) => (
+const GeneralMessage = (props: GeneralUiProps) => (
   <div className="text-center">
     <div className="text-2xl font-bold">{props.title}</div>
     <p>{props.message}</p>

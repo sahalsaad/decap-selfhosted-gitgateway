@@ -1,9 +1,4 @@
-const RegisterForm = (props: {
-  siteData: SiteData;
-  email: string | null;
-  enableEmail: boolean;
-  inviteId: string;
-}) => (
+const RegisterForm = (props: RegisterProps) => (
   <div id="register-form" className="p-10 bg-white rounded-lg">
     <form
       className="flex flex-col gap-2"
