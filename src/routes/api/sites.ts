@@ -1,91 +1,83 @@
-import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
-import { createSiteSchema, updateSiteSchema } from "@selfTypes/sites";
-import { Variables } from "@selfTypes/variables";
-import { SiteService } from "@services/site-service";
-import { UserService } from "@services/user-service";
-import { createInviteSchema } from "@selfTypes/invite";
-import { InviteService } from "@services/invite-service";
-import { jwtMiddleware } from "@server/middlewares/jwt";
+import { zValidator } from '@hono/zod-validator'
+import { createInviteSchema } from '@selfTypes/invite'
+import { createSiteSchema, updateSiteSchema } from '@selfTypes/sites'
+import type { Variables } from '@selfTypes/variables'
+import { jwtMiddleware } from '@server/middlewares/jwt'
+import { InviteService } from '@services/invite-service'
+import { SiteService } from '@services/site-service'
+import { UserService } from '@services/user-service'
+import { Hono } from 'hono'
 
 const sitesRoute = new Hono<{
-  Bindings: CloudflareBindings;
-  Variables: Variables;
-}>();
+  Bindings: CloudflareBindings
+  Variables: Variables
+}>()
 
-sitesRoute.use("/*", jwtMiddleware);
-sitesRoute.post("/", zValidator("json", createSiteSchema), async (ctx) => {
-  const { user } = ctx.get("jwtPayload");
+sitesRoute.use('/*', jwtMiddleware)
+sitesRoute.post('/', zValidator('json', createSiteSchema), async (ctx) => {
+  const { user } = ctx.get('jwtPayload')
 
-  const siteCreateRequest = ctx.req.valid("json");
-  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-  const createdSite = await siteService.createSite(siteCreateRequest);
-  const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-  await userService.addUserSite(user.id, createdSite.id);
+  const siteCreateRequest = ctx.req.valid('json')
+  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+  const createdSite = await siteService.createSite(siteCreateRequest)
+  const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+  await userService.addUserSite(user.id, createdSite.id)
 
-  return ctx.json(createdSite, 201);
-});
+  return ctx.json(createdSite, 201)
+})
 
-sitesRoute.put(
-  "/:siteId",
-  zValidator("json", updateSiteSchema),
-  async (ctx) => {
-    const siteUpdateRequest = ctx.req.valid("json");
-    const siteId = ctx.req.param("siteId");
+sitesRoute.put('/:siteId', zValidator('json', updateSiteSchema), async (ctx) => {
+  const siteUpdateRequest = ctx.req.valid('json')
+  const siteId = ctx.req.param('siteId')
 
-    const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-    const isSuccess = await siteService.updateSite(siteId, siteUpdateRequest);
+  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+  const isSuccess = await siteService.updateSite(siteId, siteUpdateRequest)
 
-    if (!isSuccess) {
-      return ctx.notFound();
-    }
+  if (!isSuccess) {
+    return ctx.notFound()
+  }
 
-    return ctx.body(null, 204);
-  },
-);
+  return ctx.body(null, 204)
+})
 
-sitesRoute.delete("/:siteId", async (ctx) => {
-  const siteId = ctx.req.param("siteId");
-  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-  const isSuccess = await siteService.deleteSite(siteId);
+sitesRoute.delete('/:siteId', async (ctx) => {
+  const siteId = ctx.req.param('siteId')
+  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+  const isSuccess = await siteService.deleteSite(siteId)
 
   if (isSuccess) {
-    return ctx.body(null, 204);
+    return ctx.body(null, 204)
   }
 
-  return ctx.notFound();
-});
+  return ctx.notFound()
+})
 
-sitesRoute.get("/:siteId", async (ctx) => {
-  const siteId = ctx.req.param("siteId");
-  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-  const result = await siteService.getSiteById(siteId);
+sitesRoute.get('/:siteId', async (ctx) => {
+  const siteId = ctx.req.param('siteId')
+  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+  const result = await siteService.getSiteById(siteId)
 
   if (!result) {
-    return ctx.notFound();
+    return ctx.notFound()
   }
 
-  return ctx.json(result);
-});
+  return ctx.json(result)
+})
 
-sitesRoute.get("/", async (ctx) => {
-  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
-  const result = await siteService.getAllSite();
-  return ctx.json(result);
-});
+sitesRoute.get('/', async (ctx) => {
+  const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+  const result = await siteService.getAllSite()
+  return ctx.json(result)
+})
 
-sitesRoute.put(
-  "/:siteId/invite",
-  zValidator("json", createInviteSchema),
-  async (ctx) => {
-    const siteId = ctx.req.param("siteId");
-    const inviteRequest = ctx.req.valid("json");
+sitesRoute.put('/:siteId/invite', zValidator('json', createInviteSchema), async (ctx) => {
+  const siteId = ctx.req.param('siteId')
+  const inviteRequest = ctx.req.valid('json')
 
-    const inviteService = InviteService(ctx.env.DB);
-    const [result] = await inviteService.createInvite(siteId, inviteRequest);
+  const inviteService = InviteService(ctx.env.DB)
+  const [result] = await inviteService.createInvite(siteId, inviteRequest)
 
-    return ctx.json(result, 201);
-  },
-);
+  return ctx.json(result, 201)
+})
 
-export { sitesRoute };
+export { sitesRoute }

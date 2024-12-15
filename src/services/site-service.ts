@@ -1,12 +1,12 @@
-import { drizzle } from "drizzle-orm/d1";
-import { sites } from "@db/sites";
-import { eq } from "drizzle-orm";
-import { randomUUID } from "node:crypto";
-import { encrypt } from "./encryption-service";
-import { SiteCreateRequest, SiteUpdateRequest } from "@selfTypes/sites";
+import { sites } from '@db/sites'
+import type { SiteCreateRequest, SiteUpdateRequest } from '@selfTypes/sites'
+import { eq } from 'drizzle-orm'
+import { drizzle } from 'drizzle-orm/d1'
+import { randomUUID } from 'node:crypto'
+import { encrypt } from './encryption-service'
 
 export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
-  const db = drizzle(d1Database);
+  const db = drizzle(d1Database)
 
   return {
     getSiteById: (siteId: string) => {
@@ -19,7 +19,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
         })
         .from(sites)
         .where(eq(sites.id, siteId))
-        .get();
+        .get()
     },
     getAllSite: () => {
       return db
@@ -30,10 +30,10 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
           gitHost: sites.gitHost,
         })
         .from(sites)
-        .all();
+        .all()
     },
     createSite: (siteRequest: SiteCreateRequest) => {
-      const encryptedToken = encrypt(siteRequest.gitToken, authSecretKey);
+      const encryptedToken = encrypt(siteRequest.gitToken, authSecretKey)
       return db
         .insert(sites)
         .values({
@@ -47,49 +47,42 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
         .returning({
           id: sites.id,
         })
-        .get();
+        .get()
     },
     updateSite: async (siteId: string, siteRequest: SiteUpdateRequest) => {
-      const existingSite = await db
-        .select()
-        .from(sites)
-        .where(eq(sites.id, siteId))
-        .get();
+      const existingSite = await db.select().from(sites).where(eq(sites.id, siteId)).get()
       if (!existingSite) {
-        throw new Error("Site not found");
+        throw new Error('Site not found')
       }
 
-      let updateSite = {};
+      let updateSite = {}
       if (siteRequest.gitToken) {
-        const encryptedToken = encrypt(siteRequest.gitToken, authSecretKey);
-        updateSite = { gitToken: encryptedToken };
+        const encryptedToken = encrypt(siteRequest.gitToken, authSecretKey)
+        updateSite = { gitToken: encryptedToken }
       }
 
       if (siteRequest.gitRepo) {
-        updateSite = { ...updateSite, gitRepo: siteRequest.gitRepo };
+        updateSite = { ...updateSite, gitRepo: siteRequest.gitRepo }
       }
 
       if (siteRequest.gitProvider) {
-        updateSite = { ...updateSite, gitProvider: siteRequest.gitProvider };
+        updateSite = { ...updateSite, gitProvider: siteRequest.gitProvider }
       }
 
       if (siteRequest.url) {
-        updateSite = { ...updateSite, url: siteRequest.url };
+        updateSite = { ...updateSite, url: siteRequest.url }
       }
 
       if (siteRequest.gitHost) {
-        updateSite = { ...updateSite, gitHost: siteRequest.gitHost };
+        updateSite = { ...updateSite, gitHost: siteRequest.gitHost }
       }
 
-      const result = await db
-        .update(sites)
-        .set(updateSite)
-        .where(eq(sites.id, siteId));
-      return result.success;
+      const result = await db.update(sites).set(updateSite).where(eq(sites.id, siteId))
+      return result.success
     },
     deleteSite: async (siteId: string) => {
-      const result = await db.delete(sites).where(eq(sites.id, siteId));
-      return result.success;
+      const result = await db.delete(sites).where(eq(sites.id, siteId))
+      return result.success
     },
-  };
-};
+  }
+}
