@@ -28,14 +28,20 @@ registerRoute.post("/", async (ctx) => {
 
   await inviteService.deleteInvite(invite.id);
 
+  let successMessage = [<div>Register successful.</div>];
+
   if (invite.siteId) {
     await userService.addUserSite(createdUser.id, invite.siteId);
     const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!);
     const site = await siteService.getSiteById(invite.siteId);
-    ctx.header("HX-Redirect", site!.sites.url);
+    successMessage.push(
+      <a className="text-blue-500" href={site!.url}>
+        Go to CMS
+      </a>,
+    );
   }
 
-  return ctx.json({}, 204);
+  return ctx.render(<div className="text-center">{successMessage}</div>);
 });
 
 export { registerRoute };

@@ -12,12 +12,10 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
     getSiteById: (siteId: string) => {
       return db
         .select({
-          sites: {
-            id: sites.id,
-            url: sites.url,
-            gitRepo: sites.gitRepo,
-            gitHost: sites.gitHost,
-          },
+          id: sites.id,
+          url: sites.url,
+          gitRepo: sites.gitRepo,
+          gitHost: sites.gitHost,
         })
         .from(sites)
         .where(eq(sites.id, siteId))
@@ -26,12 +24,10 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
     getAllSite: () => {
       return db
         .select({
-          sites: {
-            id: sites.id,
-            url: sites.url,
-            gitRepo: sites.gitRepo,
-            gitHost: sites.gitHost,
-          },
+          id: sites.id,
+          url: sites.url,
+          gitRepo: sites.gitRepo,
+          gitHost: sites.gitHost,
         })
         .from(sites)
         .all();

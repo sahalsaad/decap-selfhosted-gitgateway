@@ -24,7 +24,12 @@ export const renderer = jsxRenderer(({ children, title }) => {
         <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
         <title>{title}</title>
       </head>
-      <body className="md:container md:mx-auto">{children}</body>
+      <body className="md:container md:mx-auto">
+        <div className="flex flex-col items-center justify-center pt-20">
+          <img src="/logo.png" alt="logo" className="w-32 h-auto opacity-70" />
+          {children}
+        </div>
+      </body>
     </html>
   );
 });
