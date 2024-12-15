@@ -4,7 +4,7 @@ const RegisterForm = (props: {
   enableEmail: boolean;
   inviteId: string;
 }) => (
-  <div id="register-form" className="p-10 bg-white rounded-lg ">
+  <div id="register-form" className="p-10 bg-white rounded-lg">
     <form
       className="flex flex-col gap-2"
       hx-post="/api/register"
