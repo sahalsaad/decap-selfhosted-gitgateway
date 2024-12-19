@@ -17,10 +17,10 @@ registerRoute.post('/', zValidator('json', handleInviteSchema), async (ctx) => {
     return ctx.json(null, 400)
   }
 
-  const email = invite.allowSetEmail ? createUserRequest.email : invite.email
+  const email = invite.email ? invite.email : createUserRequest.email
 
   const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
-  const [createdUser] = await userService.createUser({
+  const createdUser = await userService.createUser({
     email,
     firstName: createUserRequest.firstName,
     lastName: createUserRequest.lastName,
@@ -37,7 +37,7 @@ registerRoute.post('/', zValidator('json', handleInviteSchema), async (ctx) => {
     const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
     const site = await siteService.getSiteById(invite.siteId)
     successMessage.push(
-      <a className='text-blue-500' href={site!.url}>
+      <a className='text-blue-500' href={site!.cmsUrl}>
         Go to CMS
       </a>
     )

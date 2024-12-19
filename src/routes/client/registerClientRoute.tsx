@@ -37,7 +37,7 @@ registerClientRoute.get('/', async (ctx) => {
 
   const props = {
     email: invite.email,
-    enableEmail: invite.allowSetEmail,
+    enableEmail: !invite.email,
     inviteId,
     siteData,
   }

@@ -1,9 +1,7 @@
 import { zValidator } from '@hono/zod-validator'
-import { createInviteSchema } from '@selfTypes/invite'
 import { createSiteSchema, updateSiteSchema } from '@selfTypes/sites'
 import type { Variables } from '@selfTypes/variables'
 import { jwtMiddleware } from '@server/middlewares/jwt'
-import { InviteService } from '@services/invite-service'
 import { SiteService } from '@services/site-service'
 import { UserService } from '@services/user-service'
 import { Hono } from 'hono'
@@ -68,16 +66,6 @@ sitesRoute.get('/', async (ctx) => {
   const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
   const result = await siteService.getAllSite()
   return ctx.json(result)
-})
-
-sitesRoute.put('/:siteId/invite', zValidator('json', createInviteSchema), async (ctx) => {
-  const siteId = ctx.req.param('siteId')
-  const inviteRequest = ctx.req.valid('json')
-
-  const inviteService = InviteService(ctx.env.DB)
-  const result = await inviteService.createInvite(siteId, inviteRequest)
-
-  return ctx.json(result, 201)
 })
 
 export { sitesRoute }

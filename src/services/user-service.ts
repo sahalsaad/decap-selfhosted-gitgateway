@@ -3,7 +3,6 @@ import { users } from '@db/users'
 import { usersToSites } from '@db/users-sites'
 import { and, eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
-import { randomUUID } from 'node:crypto'
 import { hashPassword } from './encryption-service'
 import type { UserCreateRequest, UserResponse, UserUpdateRequest } from '@/types/user'
 
@@ -20,13 +19,15 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
             lastName: users.lastName,
             email: users.email,
             role: users.role,
+            createdAt: users.createdAt,
           },
           sites: {
             id: sites.id,
-            url: sites.url,
+            cmsUrl: sites.cmsUrl,
             gitRepo: sites.gitRepo,
             gitHost: sites.gitHost,
             gitProvider: sites.gitProvider,
+            createdAt: sites.createdAt,
           },
         })
         .from(users)
@@ -91,7 +92,6 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
       return db
         .insert(users)
         .values({
-          id: randomUUID(),
           firstName: userRequest.firstName,
           lastName: userRequest.lastName,
           email: userRequest.email,
@@ -101,6 +101,7 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
         .returning({
           id: users.id,
         })
+        .get()
     },
     updateUser: async (userId: string, userRequest: UserUpdateRequest) => {
       const existingUser = await db.select().from(users).where(eq(users.id, userId)).get()

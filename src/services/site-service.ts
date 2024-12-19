@@ -12,7 +12,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
       return db
         .select({
           id: sites.id,
-          url: sites.url,
+          cmsUrl: sites.cmsUrl,
           gitRepo: sites.gitRepo,
           gitHost: sites.gitHost,
         })
@@ -24,7 +24,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
       return db
         .select({
           id: sites.id,
-          url: sites.url,
+          cmsUrl: sites.cmsUrl,
           gitRepo: sites.gitRepo,
           gitHost: sites.gitHost,
         })
@@ -36,7 +36,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
       return db
         .insert(sites)
         .values({
-          url: siteRequest.url,
+          cmsUrl: siteRequest.cmsUrl,
           gitRepo: siteRequest.gitRepo,
           gitProvider: siteRequest.gitProvider,
           gitToken: encryptedToken,
@@ -67,8 +67,8 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
         updateSite = { ...updateSite, gitProvider: siteRequest.gitProvider }
       }
 
-      if (siteRequest.url) {
-        updateSite = { ...updateSite, url: siteRequest.url }
+      if (siteRequest.cmsUrl) {
+        updateSite = { ...updateSite, url: siteRequest.cmsUrl }
       }
 
       if (siteRequest.gitHost) {

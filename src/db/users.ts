@@ -1,7 +1,7 @@
+import { sql } from 'drizzle-orm'
 import { index, sqliteTable, text, unique } from 'drizzle-orm/sqlite-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { randomUUID } from 'node:crypto'
-import { sql } from 'drizzle-orm'
 
 const users = sqliteTable(
   'users',
