@@ -6,10 +6,19 @@
     "strict": true,
     "skipLibCheck": true,
     "lib": ["ESNext"],
-    "types": ["@cloudflare/workers-types/2023-07-01", "@types/node", "vite/client", "typed-htmx"],
+    "types": [
+      "@cloudflare/workers-types/2023-07-01",
+      "@types/node",
+      "vite/client",
+      "typed-htmx",
+      "vitest/globals",
+      "@cloudflare/workers-types/experimental",
+      "@cloudflare/vitest-pool-workers"
+    ],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "paths": {
+      "@/*": ["./*"],
       "@server/*": ["./src/*"],
       "@db/*": ["./src/db/*"],
       "@selfTypes/*": ["./types/*"],

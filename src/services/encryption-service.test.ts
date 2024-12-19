@@ -1,6 +1,6 @@
+import { faker } from '@faker-js/faker'
 import { decrypt, encrypt, hashPassword } from '@services/encryption-service'
 import { describe, expect, expectTypeOf, it } from 'vitest'
-import { faker } from '@faker-js/faker'
 
 describe('encryption service', () => {
   describe('encryption', () => {

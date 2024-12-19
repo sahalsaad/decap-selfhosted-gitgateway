@@ -1,5 +1,5 @@
-import { JwtPayload } from "./jwt-payload";
+import type { JwtPayload } from './jwt-payload'
 
 export interface Variables {
-  jwtPayload: JwtPayload;
+  jwtPayload: JwtPayload
 }

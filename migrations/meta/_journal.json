@@ -15,6 +15,13 @@
       "when": 1733758195952,
       "tag": "0001_seed-first-user-invite",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1734616229951,
+      "tag": "0002_keen_apocalypse",
+      "breakpoints": true
     }
   ]
 }

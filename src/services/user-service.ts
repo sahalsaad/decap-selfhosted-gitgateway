@@ -1,11 +1,11 @@
 import { sites } from '@db/sites'
 import { users } from '@db/users'
 import { usersToSites } from '@db/users-sites'
-import type { UserCreateRequest, UserResponse, UserUpdateRequest } from '@selfTypes/user'
 import { and, eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
 import { randomUUID } from 'node:crypto'
 import { hashPassword } from './encryption-service'
+import type { UserCreateRequest, UserResponse, UserUpdateRequest } from '@/types/user'
 
 export const UserService = (d1Database: D1Database, authSecretKey: string) => {
   const db = drizzle(d1Database)

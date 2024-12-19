@@ -1,8 +1,8 @@
 import { zValidator } from '@hono/zod-validator'
-import { updateUserSchema } from '@selfTypes/user'
 import { jwtMiddleware } from '@server/middlewares/jwt'
 import { UserService } from '@services/user-service'
 import { Hono } from 'hono'
+import { updateUserSchema } from '@/types/user'
 
 const usersRoute = new Hono<{ Bindings: CloudflareBindings }>()
 

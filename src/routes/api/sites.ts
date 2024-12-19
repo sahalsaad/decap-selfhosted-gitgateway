@@ -75,7 +75,7 @@ sitesRoute.put('/:siteId/invite', zValidator('json', createInviteSchema), async 
   const inviteRequest = ctx.req.valid('json')
 
   const inviteService = InviteService(ctx.env.DB)
-  const [result] = await inviteService.createInvite(siteId, inviteRequest)
+  const result = await inviteService.createInvite(siteId, inviteRequest)
 
   return ctx.json(result, 201)
 })

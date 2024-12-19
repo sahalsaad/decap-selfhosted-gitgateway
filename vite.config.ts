@@ -10,6 +10,7 @@ export default defineConfig(({ mode }) => {
   if (mode === 'client') {
     return {
       alias: {
+        '@/components': path.resolve(__dirname, '../'),
         '@server': path.resolve(__dirname, '../src'),
         '@db': path.resolve(__dirname, '../src/db'),
         '@assets': path.resolve(__dirname, '../assets'),
@@ -39,7 +40,7 @@ export default defineConfig(({ mode }) => {
         typescript: true,
         eslint: {
           // for example, lint .ts and .tsx
-          lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+          lintCommand: 'eslint src types vitest',
           useFlatConfig: true,
         },
       }),
