@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "6",
-      "when": 1733754639038,
-      "tag": "0000_daffy_talisman",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "6",
-      "when": 1733758195952,
-      "tag": "0001_seed-first-user-invite",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "6",
-      "when": 1734616229951,
-      "tag": "0002_keen_apocalypse",
+      "when": 1734626087091,
+      "tag": "0000_luxuriant_brother_voodoo",
       "breakpoints": true
     }
   ]

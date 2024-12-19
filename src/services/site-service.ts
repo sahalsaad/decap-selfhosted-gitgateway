@@ -2,7 +2,6 @@ import { sites } from '@db/sites'
 import type { SiteCreateRequest, SiteUpdateRequest } from '@selfTypes/sites'
 import { eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
-import { randomUUID } from 'node:crypto'
 import { encrypt } from './encryption-service'
 
 export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
@@ -32,12 +31,11 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
         .from(sites)
         .all()
     },
-    createSite: (siteRequest: SiteCreateRequest) => {
-      const encryptedToken = encrypt(siteRequest.gitToken, authSecretKey)
+    createSite: async (siteRequest: SiteCreateRequest) => {
+      const encryptedToken = await encrypt(siteRequest.gitToken, authSecretKey)
       return db
         .insert(sites)
         .values({
-          id: randomUUID(),
           url: siteRequest.url,
           gitRepo: siteRequest.gitRepo,
           gitProvider: siteRequest.gitProvider,

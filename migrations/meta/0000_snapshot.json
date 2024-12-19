@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "3f71c195-8dff-47be-97b1-53267326fec0",
+  "id": "2fc5c399-389a-47f1-8818-574ccbd2baf4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "invite": {
@@ -10,13 +10,6 @@
         "id": {
           "name": "id",
           "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "allowSetEmail": {
-          "name": "allowSetEmail",
-          "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -25,14 +18,14 @@
           "name": "email",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
-        "siteId": {
-          "name": "siteId",
+        "site_id": {
+          "name": "site_id",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "role": {
@@ -40,21 +33,24 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "'contributor'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(current_timestamp)"
         }
       },
       "indexes": {
-        "invite_email_unique": {
-          "name": "invite_email_unique",
+        "invite_email_site_id_unique": {
+          "name": "invite_email_site_id_unique",
           "columns": [
-            "email"
-          ],
-          "isUnique": true
-        },
-        "invite_siteId_unique": {
-          "name": "invite_siteId_unique",
-          "columns": [
-            "siteId"
+            "email",
+            "site_id"
           ],
           "isUnique": true
         }
@@ -74,47 +70,63 @@
           "notNull": true,
           "autoincrement": false
         },
-        "url": {
-          "name": "url",
+        "cms_url": {
+          "name": "cms_url",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "gitToken": {
-          "name": "gitToken",
+        "git_token": {
+          "name": "git_token",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "gitRepo": {
-          "name": "gitRepo",
+        "git_repo": {
+          "name": "git_repo",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "gitProvider": {
-          "name": "gitProvider",
+        "git_provider": {
+          "name": "git_provider",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "'github'"
         },
-        "gitHost": {
-          "name": "gitHost",
+        "git_host": {
+          "name": "git_host",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(current_timestamp)"
         }
       },
       "indexes": {
-        "sites_url_unique": {
-          "name": "sites_url_unique",
+        "index_id": {
+          "name": "index_id",
           "columns": [
-            "url"
+            "id"
+          ],
+          "isUnique": false
+        },
+        "sites_cms_url_unique": {
+          "name": "sites_cms_url_unique",
+          "columns": [
+            "cms_url"
           ],
           "isUnique": true
         }
@@ -140,6 +152,14 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(current_timestamp)"
         }
       },
       "indexes": {},
@@ -207,15 +227,15 @@
           "notNull": true,
           "autoincrement": false
         },
-        "firstName": {
-          "name": "firstName",
+        "first_name": {
+          "name": "first_name",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },
-        "lastName": {
-          "name": "lastName",
+        "last_name": {
+          "name": "last_name",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
@@ -227,9 +247,31 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(current_timestamp)"
         }
       },
       "indexes": {
+        "index_id": {
+          "name": "index_id",
+          "columns": [
+            "id"
+          ],
+          "isUnique": false
+        },
+        "index_email": {
+          "name": "index_email",
+          "columns": [
+            "email"
+          ],
+          "isUnique": false
+        },
         "users_email_unique": {
           "name": "users_email_unique",
           "columns": [

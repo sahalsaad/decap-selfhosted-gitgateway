@@ -2,6 +2,7 @@ import { primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { createInsertSchema } from 'drizzle-zod'
 import { sites } from './sites'
 import { users } from './users'
+import { sql } from 'drizzle-orm'
 
 const usersToSites = sqliteTable(
   'users_to_sites',
@@ -12,10 +13,11 @@ const usersToSites = sqliteTable(
     siteId: text('site_id')
       .notNull()
       .references(() => sites.id),
+    createdAt: text('created_at')
+      .notNull()
+      .default(sql`(current_timestamp)`),
   },
-  (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.siteId] }),
-  })
+  (table) => [primaryKey({ columns: [table.userId, table.siteId] })]
 )
 
 const insertUsersToSitesSchema = createInsertSchema(usersToSites)

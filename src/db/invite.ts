@@ -18,9 +18,7 @@ const invite = sqliteTable(
       .notNull()
       .default(sql`(current_timestamp)`),
   },
-  (table) => ({
-    unq: unique().on(table.email, table.siteId),
-  })
+  (table) => [unique().on(table.email, table.siteId)]
 )
 
 const insertInviteSchema = createInsertSchema(invite)

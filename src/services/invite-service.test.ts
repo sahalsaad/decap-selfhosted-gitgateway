@@ -3,13 +3,6 @@ import { InviteService } from '@services/invite-service'
 import { env } from 'cloudflare:test'
 import { describe, expect, it } from 'vitest'
 
-declare module 'cloudflare:test' {
-  interface ProvidedEnv {
-    DB: D1Database
-    TEST_MIGRATIONS: D1Migration[]
-  }
-}
-
 describe('invite service', () => {
   describe('createInvite', () => {
     it('should be able to create invite with email', async () => {
