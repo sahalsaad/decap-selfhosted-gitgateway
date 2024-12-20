@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm'
-import { primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
+import { index, primaryKey, sqliteTable, text } from 'drizzle-orm/sqlite-core'
 import { createInsertSchema } from 'drizzle-zod'
 import { sites } from './sites'
 import { users } from './users'

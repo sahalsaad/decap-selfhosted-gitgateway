@@ -7,7 +7,33 @@ export const InviteService = (d1Database: D1Database) => {
   const db = drizzle(d1Database)
 
   return {
-    createInvite: (inviteRequest: InviteCreateRequest) => {
+    createInvite: async (inviteRequest: InviteCreateRequest) => {
+      haveExistingInvite: if (inviteRequest.email) {
+        const existingInvite = await db
+          .select({
+            id: invite.id,
+            siteId: invite.siteId,
+          })
+          .from(invite)
+          .where(eq(invite.email, inviteRequest.email))
+          .get()
+
+        if (!existingInvite) {
+          break haveExistingInvite
+        }
+
+        if (existingInvite.siteId !== inviteRequest.siteId) {
+          await db
+            .update(invite)
+            .set({ siteId: inviteRequest.siteId })
+            .where(eq(invite.id, existingInvite.id))
+        }
+
+        return {
+          id: existingInvite.id,
+        }
+      }
+
       return db
         .insert(invite)
         .values({
@@ -23,7 +49,9 @@ export const InviteService = (d1Database: D1Database) => {
     getInviteById: (inviteId: string) => {
       return db.select().from(invite).where(eq(invite.id, inviteId)).get()
     },
-    deleteInvite: async (inviteId: string) =>
-      await db.delete(invite).where(eq(invite.id, inviteId)).execute(),
+    deleteInvite: async (inviteId: string) => {
+      const result = await db.delete(invite).where(eq(invite.id, inviteId)).execute()
+      return result.meta.rows_written === 1
+    },
   }
 }

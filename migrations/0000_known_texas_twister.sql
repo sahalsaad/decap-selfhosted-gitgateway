@@ -6,7 +6,7 @@ CREATE TABLE `invite` (
 	`created_at` text DEFAULT (current_timestamp) NOT NULL
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `invite_email_site_id_unique` ON `invite` (`email`,`site_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `invite_email_unique` ON `invite` (`email`);--> statement-breakpoint
 CREATE TABLE `sites` (
 	`id` text PRIMARY KEY NOT NULL,
 	`cms_url` text NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE `sites` (
 	`created_at` text DEFAULT (current_timestamp) NOT NULL
 );
 --> statement-breakpoint
-CREATE INDEX `index_id` ON `sites` (`id`);--> statement-breakpoint
+CREATE INDEX `site_id_index` ON `sites` (`id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `sites_cms_url_unique` ON `sites` (`cms_url`);--> statement-breakpoint
 CREATE TABLE `users_to_sites` (
 	`user_id` text NOT NULL,
@@ -38,6 +38,6 @@ CREATE TABLE `users` (
 	`created_at` text DEFAULT (current_timestamp) NOT NULL
 );
 --> statement-breakpoint
-CREATE INDEX `index_id` ON `users` (`id`);--> statement-breakpoint
-CREATE INDEX `index_email` ON `users` (`email`);--> statement-breakpoint
+CREATE INDEX `users_id_index` ON `users` (`id`);--> statement-breakpoint
+CREATE INDEX `users_email_index` ON `users` (`email`);--> statement-breakpoint
 CREATE UNIQUE INDEX `users_email_unique` ON `users` (`email`);

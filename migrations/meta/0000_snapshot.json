@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "2fc5c399-389a-47f1-8818-574ccbd2baf4",
+  "id": "52885641-79c5-4400-b4ea-951d824b026a",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "invite": {
@@ -46,11 +46,10 @@
         }
       },
       "indexes": {
-        "invite_email_site_id_unique": {
-          "name": "invite_email_site_id_unique",
+        "invite_email_unique": {
+          "name": "invite_email_unique",
           "columns": [
-            "email",
-            "site_id"
+            "email"
           ],
           "isUnique": true
         }
@@ -116,8 +115,8 @@
         }
       },
       "indexes": {
-        "index_id": {
-          "name": "index_id",
+        "site_id_index": {
+          "name": "site_id_index",
           "columns": [
             "id"
           ],
@@ -258,15 +257,15 @@
         }
       },
       "indexes": {
-        "index_id": {
-          "name": "index_id",
+        "users_id_index": {
+          "name": "users_id_index",
           "columns": [
             "id"
           ],
           "isUnique": false
         },
-        "index_email": {
-          "name": "index_email",
+        "users_email_index": {
+          "name": "users_email_index",
           "columns": [
             "email"
           ],

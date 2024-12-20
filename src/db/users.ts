@@ -20,8 +20,8 @@ const users = sqliteTable(
       .default(sql`(current_timestamp)`),
   },
   (table) => [
-    index('index_id').on(table.id),
-    index('index_email').on(table.email),
+    index('users_id_index').on(table.id),
+    index('users_email_index').on(table.email),
     unique().on(table.email),
   ]
 )
