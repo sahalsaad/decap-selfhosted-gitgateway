@@ -14,6 +14,7 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
           id: sites.id,
           cmsUrl: sites.cmsUrl,
           gitRepo: sites.gitRepo,
+          gitProvider: sites.gitProvider,
           gitHost: sites.gitHost,
         })
         .from(sites)
@@ -50,12 +51,12 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
     updateSite: async (siteId: string, siteRequest: SiteUpdateRequest) => {
       const existingSite = await db.select().from(sites).where(eq(sites.id, siteId)).get()
       if (!existingSite) {
-        throw new Error('Site not found')
+        return false
       }
 
       let updateSite = {}
       if (siteRequest.gitToken) {
-        const encryptedToken = encrypt(siteRequest.gitToken, authSecretKey)
+        const encryptedToken = await encrypt(siteRequest.gitToken, authSecretKey)
         updateSite = { gitToken: encryptedToken }
       }
 
@@ -76,11 +77,11 @@ export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
       }
 
       const result = await db.update(sites).set(updateSite).where(eq(sites.id, siteId))
-      return result.success
+      return result.meta.rows_written === 1
     },
     deleteSite: async (siteId: string) => {
       const result = await db.delete(sites).where(eq(sites.id, siteId))
-      return result.success
+      return result.meta.rows_written === 1
     },
   }
 }
