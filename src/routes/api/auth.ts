@@ -15,7 +15,6 @@ adminAuthRoute.use(
   '/',
   basicAuth({
     verifyUser: async (email: string, password: string, ctx: Context) => {
-      console.log('here')
       const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
       const user = await userService.getUserByEmail(email)
       if (!user) {
