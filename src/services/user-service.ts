@@ -51,7 +51,7 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
       const firstResult = result[userId]
 
       if (!firstResult) {
-        return null
+        return undefined
       }
 
       return firstResult
@@ -66,7 +66,7 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
         .get()
 
       if (!result) {
-        return null
+        return undefined
       }
 
       return {
@@ -121,15 +121,15 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
           role,
         })
         .where(eq(users.id, userId))
-      return result.success
+      return result.meta.rows_written > 0
     },
     deleteUser: async (userId: string) => {
       const result = await db.delete(users).where(eq(users.id, userId))
-      return result.success
+      return result.meta.rows_written > 0
     },
     addUserSite: async (userId: string, siteId: string) => {
       const result = await db.insert(usersToSites).values({ siteId: siteId, userId: userId })
-      return result.success
+      return result.meta.rows_written > 0
     },
   }
 }

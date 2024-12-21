@@ -12,6 +12,7 @@ export default defineConfig((configEnv) =>
     viteConfig(configEnv),
     defineWorkersConfig({
       test: {
+        globals: true,
         setupFiles: ['./vitest/test-migrations.ts'],
         poolOptions: {
           workers: {

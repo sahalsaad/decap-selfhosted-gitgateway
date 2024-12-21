@@ -4,16 +4,8 @@ import { env } from 'cloudflare:test'
 import { eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
 import { seed } from 'drizzle-seed'
-import { describe, expect, it } from 'vitest'
 import { SiteService } from './site-service'
-
-const generateSiteRequest = () => ({
-  cmsUrl: faker.internet.url(),
-  gitToken: faker.string.uuid(),
-  gitRepo: faker.internet.url(),
-  gitProvider: faker.helpers.arrayElement(['github', 'gitlab', 'bitbucket']),
-  gitHost: faker.internet.url(),
-})
+import { generateSiteRequest } from '@/vitest/data-helpers'
 
 describe('site service', () => {
   describe('getSiteById', () => {
