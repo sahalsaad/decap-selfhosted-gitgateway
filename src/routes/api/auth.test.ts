@@ -13,6 +13,9 @@ vi.mock('@services/user-service', () => {
 })
 
 describe('auth route', () => {
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
   it('should return 401 if invalid credentials', async () => {
     const response = await adminAuthRoute.request(
       '/',

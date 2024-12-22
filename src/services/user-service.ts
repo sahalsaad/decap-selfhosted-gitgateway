@@ -106,7 +106,7 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
     updateUser: async (userId: string, userRequest: UserUpdateRequest) => {
       const existingUser = await db.select().from(users).where(eq(users.id, userId)).get()
       if (!existingUser) {
-        throw new Error('User not found')
+        return false
       }
 
       const firstName = userRequest.firstName || existingUser.firstName
