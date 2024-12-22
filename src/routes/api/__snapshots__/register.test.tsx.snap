@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`register route > should add site link if siteId provided 1`] = `"<div class="text-center"><div>Register successful.</div><a class="text-blue-500" href="https://example.com">Go to CMS</a></div>"`;
+
+exports[`register route > should return 200 if valid request 1`] = `"<div class="text-center"><div>Register successful.</div></div>"`;
