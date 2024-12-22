@@ -89,8 +89,8 @@ describe('user service', () => {
       const user = await userService.getUserByEmailAndSite(createUserRequest.email, createdSite.id)
 
       expect(user).toBeDefined()
-      expect(user!.user.id).toBe(createdUser.id)
-      expect(user!.site.id).toBe(createdSite.id)
+      expect(user!.id).toBe(createdUser.id)
+      expect(user!.sites[0].id).toBe(createdSite.id)
     })
   })
 
@@ -117,7 +117,7 @@ describe('user service', () => {
       )
     })
 
-    it('should return true if user exists', async () => {
+    it('should return true if user updated', async () => {
       const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
       const user = await userService.createUser(generateUserCreateRequest())
 
@@ -142,7 +142,7 @@ describe('user service', () => {
       expect(result).toBe(false)
     })
 
-    it('should return true if user exists', async () => {
+    it('should return true if user deleted', async () => {
       const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
       const user = await userService.createUser(generateUserCreateRequest())
       const result = await userService.deleteUser(user.id)

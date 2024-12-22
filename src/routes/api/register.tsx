@@ -1,5 +1,5 @@
 import { zValidator } from '@hono/zod-validator'
-import { handleInviteSchema } from '@selfTypes/invite'
+import { inviteHandleRequestSchema } from '@selfTypes/invite'
 import { InviteService } from '@services/invite-service'
 import { SiteService } from '@services/site-service'
 import { UserService } from '@services/user-service'
@@ -7,7 +7,7 @@ import { Hono } from 'hono'
 
 const registerRoute = new Hono<{ Bindings: CloudflareBindings }>()
 
-registerRoute.post('/', zValidator('json', handleInviteSchema), async (ctx) => {
+registerRoute.post('/', zValidator('json', inviteHandleRequestSchema), async (ctx) => {
   const createUserRequest = ctx.req.valid('json')
 
   const inviteService = InviteService(ctx.env.DB)

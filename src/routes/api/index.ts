@@ -11,10 +11,13 @@ const apiRoute = new Hono<{
   Variables: Variables
 }>()
 
+// auth routes
+apiRoute.route('/auth', adminAuthRoute)
 apiRoute.route('/sites', sitesRoute)
 apiRoute.route('/users', usersRoute)
-apiRoute.route('/auth', adminAuthRoute)
-apiRoute.route('/register', registerRoute)
 apiRoute.route('/invite', inviteRoute)
+
+// public routes
+apiRoute.route('/register', registerRoute)
 
 export { apiRoute }

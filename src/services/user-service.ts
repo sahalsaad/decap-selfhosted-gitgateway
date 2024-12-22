@@ -4,7 +4,7 @@ import { usersToSites } from '@db/users-sites'
 import { and, eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
 import { hashPassword } from './encryption-service'
-import type { UserCreateRequest, UserResponse, UserUpdateRequest } from '@/types/user'
+import type { UserCreateRequest, UserGetResponse, UserUpdateRequest } from '@/types/user'
 
 export const UserService = (d1Database: D1Database, authSecretKey: string) => {
   const db = drizzle(d1Database)
@@ -36,7 +36,7 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
         .where(eq(users.id, userId))
         .all()
 
-      const result = rows.reduce<Record<string, UserResponse>>((acc, row) => {
+      const result = rows.reduce<Record<string, UserGetResponse>>((acc, row) => {
         const user = row.users!
         const site = row.sites
         if (!acc[user.id]) {
@@ -70,8 +70,8 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
       }
 
       return {
-        user: result.users,
-        site: result.sites!,
+        ...result.users,
+        sites: [result.sites!],
       }
     },
     getUserByEmail: async (email: string) => {

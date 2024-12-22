@@ -1,4 +1,6 @@
 import { faker } from '@faker-js/faker'
+import { env } from 'cloudflare:test'
+import { sign } from 'hono/jwt'
 import type { UserCreateRequest } from '@/types/user'
 
 const generateSiteRequest = () => ({
@@ -17,4 +19,14 @@ const generateUserCreateRequest = (): UserCreateRequest => ({
   role: faker.helpers.arrayElement(['admin', 'contributor']),
 })
 
-export { generateSiteRequest, generateUserCreateRequest }
+const MOCK_ENV = {
+  DB: env.DB,
+  AUTH_SECRET_KEY: faker.string.uuid(),
+}
+
+const fakeAdminToken = await sign(
+  { user: { id: 'fake-user-id', role: 'admin' } },
+  MOCK_ENV.AUTH_SECRET_KEY
+)
+
+export { generateSiteRequest, generateUserCreateRequest, MOCK_ENV, fakeAdminToken }

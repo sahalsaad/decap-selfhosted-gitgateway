@@ -1,20 +1,24 @@
 import { z } from 'zod'
 import { insertUsersSchema, selectUsersSchema } from '../src/db/users'
-import { siteResponseSchema } from './sites'
+import { siteGetResponseSchema } from './sites'
 
-const createUserSchema = insertUsersSchema.omit({ id: true })
-
-type UserCreateRequest = z.infer<typeof createUserSchema>
-
-const updateUserSchema = createUserSchema.omit({ password: true, email: true }).partial()
-
-type UserUpdateRequest = z.infer<typeof updateUserSchema>
-
+const userCreateRequestSchema = insertUsersSchema.omit({ id: true })
+const userUpdateRequestSchema = userCreateRequestSchema
+  .omit({ password: true, email: true })
+  .partial()
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const userResponseSchema = selectUsersSchema
+const userGetResponseSchema = selectUsersSchema
   .omit({ password: true })
-  .extend({ sites: z.array(siteResponseSchema) })
+  .extend({ sites: z.array(siteGetResponseSchema) })
 
-type UserResponse = z.infer<typeof userResponseSchema>
+type UserCreateRequest = z.infer<typeof userCreateRequestSchema>
+type UserUpdateRequest = z.infer<typeof userUpdateRequestSchema>
+type UserGetResponse = z.infer<typeof userGetResponseSchema>
 
-export { UserCreateRequest, createUserSchema, UserUpdateRequest, updateUserSchema, UserResponse }
+export {
+  UserCreateRequest,
+  userCreateRequestSchema,
+  UserUpdateRequest,
+  userUpdateRequestSchema,
+  UserGetResponse,
+}

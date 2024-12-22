@@ -27,23 +27,23 @@ gitGatewayAuthRoute.post('/token', async (ctx) => {
 
   const hashedPassword = hashPassword(password, ctx.env.AUTH_SECRET_KEY)
 
-  if (!result || !(await timingSafeEqual(result.user.password, hashedPassword))) {
+  if (!result || !(await timingSafeEqual(result.password, hashedPassword))) {
     return ctx.body(null, 401)
   }
 
   const duration = 60 * 60 * 12
   const tokenData: JwtPayload = {
     user: {
-      firstName: result.user.firstName,
-      lastName: result.user.lastName,
-      email: result.user.email,
-      id: result.user.id,
+      firstName: result.firstName,
+      lastName: result.lastName,
+      email: result.email,
+      id: result.id,
     },
     git: {
-      token: result.site.gitToken,
-      provider: result.site.gitProvider,
-      host: result.site.gitHost,
-      repo: result.site.gitRepo,
+      token: result.sites[0].gitToken,
+      provider: result.sites[0].gitProvider,
+      host: result.sites[0].gitHost,
+      repo: result.sites[0].gitRepo,
     },
     exp: Math.floor(Date.now() / 1000) + duration,
   }

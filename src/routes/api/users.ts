@@ -2,12 +2,12 @@ import { zValidator } from '@hono/zod-validator'
 import { jwtMiddleware } from '@server/middlewares/jwt'
 import { UserService } from '@services/user-service'
 import { Hono } from 'hono'
-import { updateUserSchema } from '@/types/user'
+import { userUpdateRequestSchema } from '@/types/user'
 
 const usersRoute = new Hono<{ Bindings: CloudflareBindings }>()
 
 usersRoute.use('/*', jwtMiddleware)
-usersRoute.put('/:userId', zValidator('json', updateUserSchema), async (ctx) => {
+usersRoute.put('/:userId', zValidator('json', userUpdateRequestSchema), async (ctx) => {
   const userRequest = ctx.req.valid('json')
   const userId = ctx.req.param('userId')
 
