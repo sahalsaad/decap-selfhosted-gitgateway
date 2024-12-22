@@ -16,9 +16,9 @@ type UserUpdateRequest = z.infer<typeof userUpdateRequestSchema>
 type UserGetResponse = z.infer<typeof userGetResponseSchema>
 
 export {
-  UserCreateRequest,
   userCreateRequestSchema,
-  UserUpdateRequest,
   userUpdateRequestSchema,
+  UserCreateRequest,
+  UserUpdateRequest,
   UserGetResponse,
 }
