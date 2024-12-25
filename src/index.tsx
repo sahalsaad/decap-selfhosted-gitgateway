@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { apiRoute } from './routes/api'
-import { registerClientRoute } from './routes/client/registerClientRoute'
+import { registerClient } from './routes/client/register'
 import { gitGatewayAuthRoute } from './routes/gitgateway/auth'
 import { githubRoute } from './routes/gitgateway/github'
 import { settingsRoute } from './routes/gitgateway/settings'
@@ -22,7 +22,7 @@ app.route('/:siteId/settings', settingsRoute)
 app.route('/:siteId/github', githubRoute)
 
 // client routes
-app.route('/register', registerClientRoute)
+app.route('/register', registerClient)
 
 // api endpoints
 app.route('/api', apiRoute)

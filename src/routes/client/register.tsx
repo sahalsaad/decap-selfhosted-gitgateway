@@ -4,10 +4,10 @@ import { renderer } from '@server/middlewares/renderer'
 import { InviteService } from '@services/invite-service'
 import { Hono } from 'hono'
 
-const registerClientRoute = new Hono<{ Bindings: CloudflareBindings }>()
+const registerClient = new Hono<{ Bindings: CloudflareBindings }>()
 
-registerClientRoute.use('*', renderer)
-registerClientRoute.get('/', async (ctx) => {
+registerClient.use('*', renderer)
+registerClient.get('/', async (ctx) => {
   const siteData = {
     title: 'Register',
     description: 'Register for a new account',
@@ -44,4 +44,4 @@ registerClientRoute.get('/', async (ctx) => {
   return ctx.render(<RegisterForm {...props} />)
 })
 
-export { registerClientRoute }
+export { registerClient }
