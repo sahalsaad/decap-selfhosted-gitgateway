@@ -1,6 +1,11 @@
 import { faker } from '@faker-js/faker'
 import { usersRoute } from '@/src/routes/api/users'
-import { fakeAdminToken, generateUserCreateRequest, MOCK_ENV } from '@/vitest/data-helpers'
+import {
+  fakeAdminToken,
+  fakeContributorToken,
+  generateUserCreateRequest,
+  MOCK_ENV,
+} from '@/vitest/data-helpers'
 
 const mockUserService = {
   getAllUser: vi.fn(),
@@ -31,6 +36,21 @@ describe('users route', () => {
       )
       expect(response.status).toBe(401)
     })
+
+    it('should return 401 if not admin', async () => {
+      const response = await usersRoute.request(
+        '/',
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${fakeContributorToken}`,
+          },
+        },
+        MOCK_ENV
+      )
+      expect(response.status).toBe(401)
+    })
+
     it('should return user list if valid request', async () => {
       const numberOfUsers = faker.number.int({ min: 1, max: 10 })
       const userLists = Array.from({ length: numberOfUsers }, () => ({
@@ -53,6 +73,7 @@ describe('users route', () => {
       expect(await response.json()).toStrictEqual(userLists)
     })
   })
+
   describe('getUser', () => {
     it('should return 401 if invalid token', async () => {
       const response = await usersRoute.request(
@@ -61,6 +82,20 @@ describe('users route', () => {
           method: 'GET',
           headers: {
             Authorization: 'Bearer invalid',
+          },
+        },
+        MOCK_ENV
+      )
+      expect(response.status).toBe(401)
+    })
+
+    it('should return 401 if not admin', async () => {
+      const response = await usersRoute.request(
+        '/:userId',
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${fakeContributorToken}`,
           },
         },
         MOCK_ENV
@@ -114,6 +149,22 @@ describe('users route', () => {
           method: 'PUT',
           headers: {
             Authorization: 'Bearer invalid',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ firstName: faker.person.firstName() }),
+        },
+        MOCK_ENV
+      )
+      expect(response.status).toBe(401)
+    })
+
+    it('should return 401 if not admin', async () => {
+      const response = await usersRoute.request(
+        '/:userId',
+        {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${fakeContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName: faker.person.firstName() }),
@@ -187,6 +238,20 @@ describe('users route', () => {
           method: 'DELETE',
           headers: {
             Authorization: 'Bearer invalid',
+          },
+        },
+        MOCK_ENV
+      )
+      expect(response.status).toBe(401)
+    })
+
+    it('should return 401 if not admin', async () => {
+      const response = await usersRoute.request(
+        '/' + faker.string.uuid(),
+        {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${fakeContributorToken}`,
           },
         },
         MOCK_ENV

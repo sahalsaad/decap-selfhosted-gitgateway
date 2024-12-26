@@ -30,6 +30,11 @@ const fakeAdminToken = await sign(
   MOCK_ENV.AUTH_SECRET_KEY
 )
 
+const fakeContributorToken = await sign(
+  { user: { id: 'fake-user-id', role: 'contributor' } },
+  MOCK_ENV.AUTH_SECRET_KEY
+)
+
 const fakeUserAndSiteData = (password: string) => ({
   id: faker.string.uuid(),
   email: faker.internet.email(),
@@ -53,5 +58,6 @@ export {
   generateUserCreateRequest,
   MOCK_ENV,
   fakeAdminToken,
+  fakeContributorToken,
   fakeUserAndSiteData,
 }

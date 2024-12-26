@@ -38,6 +38,7 @@ gitGatewayAuthRoute.post('/token', async (ctx) => {
       lastName: result.lastName,
       email: result.email,
       id: result.id,
+      role: result.role,
     },
     git: {
       token: result.sites[0].gitToken,

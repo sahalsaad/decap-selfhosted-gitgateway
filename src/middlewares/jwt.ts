@@ -1,4 +1,5 @@
 import type { Context, Next } from 'hono'
+import { createMiddleware } from 'hono/factory'
 import { jwt } from 'hono/jwt'
 
 const jwtMiddleware = (ctx: Context<{ Bindings: CloudflareBindings }>, next: Next) => {
@@ -8,4 +9,15 @@ const jwtMiddleware = (ctx: Context<{ Bindings: CloudflareBindings }>, next: Nex
   return jwtMiddleware(ctx, next)
 }
 
-export { jwtMiddleware }
+const jwtAdminMiddleware = createMiddleware(
+  async (ctx: Context<{ Bindings: CloudflareBindings }>, next: Next) => {
+    const jwtPayload = ctx.get('jwtPayload')
+    if (jwtPayload.user.role !== 'admin') {
+      return ctx.body(null, 401)
+    }
+
+    await next()
+  }
+)
+
+export { jwtMiddleware, jwtAdminMiddleware }

@@ -6,6 +6,7 @@ export interface JwtPayload extends JWTPayload {
     lastName: string | null
     email: string
     id: string
+    role: 'admin' | 'contributor'
   }
   git: {
     token: string

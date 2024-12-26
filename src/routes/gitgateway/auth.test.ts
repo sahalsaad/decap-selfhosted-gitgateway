@@ -81,6 +81,7 @@ describe('auth route', () => {
         email: fakeUser.email,
         firstName: fakeUser.firstName,
         lastName: fakeUser.lastName,
+        role: fakeUser.role,
       },
       git: {
         token: fakeUser.sites[0].gitToken,

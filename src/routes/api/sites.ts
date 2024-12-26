@@ -1,7 +1,7 @@
 import { zValidator } from '@hono/zod-validator'
 import { siteCreateRequestSchema, siteUpdateRequestSchema } from '@selfTypes/sites'
 import type { Variables } from '@selfTypes/variables'
-import { jwtMiddleware } from '@server/middlewares/jwt'
+import { jwtAdminMiddleware, jwtMiddleware } from '@server/middlewares/jwt'
 import { SiteService } from '@services/site-service'
 import { UserService } from '@services/user-service'
 import { Hono } from 'hono'
@@ -11,7 +11,7 @@ const sitesRoute = new Hono<{
   Variables: Variables
 }>()
 
-sitesRoute.use('/*', jwtMiddleware)
+sitesRoute.use('/*', jwtMiddleware, jwtAdminMiddleware)
 sitesRoute.post('/', zValidator('json', siteCreateRequestSchema), async (ctx) => {
   const { user } = ctx.get('jwtPayload')
 

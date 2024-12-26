@@ -1,7 +1,7 @@
 import { zValidator } from '@hono/zod-validator'
 import { InviteService } from '@services/invite-service'
 import { Hono } from 'hono'
-import { jwtMiddleware } from '@/src/middlewares/jwt'
+import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
 import { inviteCreateRequestSchema } from '@/types/invite'
 import type { Variables } from '@/types/variables'
 
@@ -10,7 +10,7 @@ const inviteRoute = new Hono<{
   Variables: Variables
 }>()
 
-inviteRoute.use('/*', jwtMiddleware)
+inviteRoute.use('/*', jwtMiddleware, jwtAdminMiddleware)
 inviteRoute.post('/', zValidator('json', inviteCreateRequestSchema), async (ctx) => {
   const inviteRequest = ctx.req.valid('json')
 

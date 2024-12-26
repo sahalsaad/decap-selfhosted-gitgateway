@@ -1,5 +1,5 @@
 {
-  "name": "decap-cloudflare-git-gateway-auth",
+  "name": "decap-selfhosted-gitgateway",
   "type": "module",
   "scripts": {
     "test": "vitest --run",

@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "decap-cloudflare-git-gateway-auth"
+name = "decap-selfhosted-gitgateway"
 main = "dist/index.js"
 assets = { directory = "./assets/" }
 compatibility_date = "2024-11-06"
