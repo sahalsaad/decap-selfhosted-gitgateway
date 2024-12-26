@@ -49,7 +49,7 @@ gitGatewayAuthRoute.post('/token', async (ctx) => {
   }
 
   const accessToken = await sign(tokenData, ctx.env.AUTH_SECRET_KEY!)
-  const jwt = {
+  const jwt: JwtResponse = {
     token_type: 'bearer',
     access_token: accessToken,
     expires_in: duration * 1000,
