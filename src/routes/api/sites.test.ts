@@ -2,8 +2,8 @@ import { faker } from '@faker-js/faker'
 import { sitesRoute } from '@/src/routes/api/sites'
 import type { SiteCreatedResponse, SiteGetResponse } from '@/types/sites'
 import {
-  fakeAdminToken,
-  fakeContributorToken,
+  mockAdminToken,
+  mockContributorToken,
   generateSiteRequest,
   MOCK_ENV,
 } from '@/vitest/data-helpers'
@@ -56,7 +56,7 @@ describe('sites route', () => {
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
           },
         },
         MOCK_ENV
@@ -78,7 +78,7 @@ describe('sites route', () => {
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV
@@ -110,7 +110,7 @@ describe('sites route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
@@ -126,7 +126,7 @@ describe('sites route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ gitProvider: 'gitea' }),
@@ -149,7 +149,7 @@ describe('sites route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
@@ -182,7 +182,7 @@ describe('sites route', () => {
         {
           method: 'DELETE',
           headers: {
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
           },
         },
         MOCK_ENV
@@ -197,7 +197,7 @@ describe('sites route', () => {
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV
@@ -217,7 +217,7 @@ describe('sites route', () => {
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV
@@ -248,7 +248,7 @@ describe('sites route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
@@ -265,7 +265,7 @@ describe('sites route', () => {
         {
           method: 'DELETE',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV
@@ -280,7 +280,7 @@ describe('sites route', () => {
         {
           method: 'DELETE',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV
@@ -310,7 +310,7 @@ describe('sites route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
@@ -327,7 +327,7 @@ describe('sites route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
@@ -344,7 +344,7 @@ describe('sites route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),

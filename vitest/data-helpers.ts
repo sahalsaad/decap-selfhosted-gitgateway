@@ -25,17 +25,43 @@ const MOCK_ENV = {
   AUTH_SECRET_KEY: faker.string.uuid(),
 }
 
-const fakeAdminToken = await sign(
-  { user: { id: 'fake-user-id', role: 'admin' } },
-  MOCK_ENV.AUTH_SECRET_KEY
-)
+const mockAdminPayloadData = {
+  user: {
+    id: faker.string.uuid(),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    email: faker.internet.email(),
+    role: 'admin',
+  },
+  git: {
+    token: faker.string.uuid(),
+    provider: faker.helpers.arrayElement(['github', 'gitlab', 'bitbucket']),
+    host: faker.internet.url(),
+    repo: faker.internet.url(),
+  },
+}
 
-const fakeContributorToken = await sign(
-  { user: { id: 'fake-user-id', role: 'contributor' } },
-  MOCK_ENV.AUTH_SECRET_KEY
-)
+const mockAdminToken = await sign(mockAdminPayloadData, MOCK_ENV.AUTH_SECRET_KEY)
 
-const fakeUserAndSiteData = (password: string) => ({
+const mockContributorPayloadData = {
+  user: {
+    id: faker.string.uuid(),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    email: faker.internet.email(),
+    role: 'contributor',
+  },
+  git: {
+    token: faker.string.uuid(),
+    provider: faker.helpers.arrayElement(['github', 'gitlab', 'bitbucket']),
+    host: faker.internet.url(),
+    repo: faker.internet.url(),
+  },
+}
+
+const mockContributorToken = await sign(mockContributorPayloadData, MOCK_ENV.AUTH_SECRET_KEY)
+
+const mockUserAndSiteData = (password: string) => ({
   id: faker.string.uuid(),
   email: faker.internet.email(),
   firstName: faker.person.firstName(),
@@ -57,7 +83,9 @@ export {
   generateSiteRequest,
   generateUserCreateRequest,
   MOCK_ENV,
-  fakeAdminToken,
-  fakeContributorToken,
-  fakeUserAndSiteData,
+  mockAdminToken,
+  mockContributorToken,
+  mockUserAndSiteData,
+  mockAdminPayloadData,
+  mockContributorPayloadData,
 }

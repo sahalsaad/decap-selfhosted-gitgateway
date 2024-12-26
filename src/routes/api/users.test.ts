@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker'
 import { usersRoute } from '@/src/routes/api/users'
 import {
-  fakeAdminToken,
-  fakeContributorToken,
+  mockAdminToken,
+  mockContributorToken,
   generateUserCreateRequest,
   MOCK_ENV,
 } from '@/vitest/data-helpers'
@@ -43,7 +43,7 @@ describe('users route', () => {
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
           },
         },
         MOCK_ENV
@@ -64,7 +64,7 @@ describe('users route', () => {
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV
@@ -95,7 +95,7 @@ describe('users route', () => {
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
           },
         },
         MOCK_ENV
@@ -111,7 +111,7 @@ describe('users route', () => {
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV
@@ -132,7 +132,7 @@ describe('users route', () => {
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV
@@ -164,7 +164,7 @@ describe('users route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName: faker.person.firstName() }),
@@ -182,7 +182,7 @@ describe('users route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName: faker.person.firstName() }),
@@ -201,7 +201,7 @@ describe('users route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName: faker.person.firstName() }),
@@ -219,7 +219,7 @@ describe('users route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ role: 'invalid' }),
@@ -251,7 +251,7 @@ describe('users route', () => {
         {
           method: 'DELETE',
           headers: {
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
           },
         },
         MOCK_ENV
@@ -267,7 +267,7 @@ describe('users route', () => {
         {
           method: 'DELETE',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV
@@ -284,7 +284,7 @@ describe('users route', () => {
         {
           method: 'DELETE',
           headers: {
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
         },
         MOCK_ENV

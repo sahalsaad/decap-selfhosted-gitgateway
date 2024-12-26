@@ -62,7 +62,7 @@ gitGatewayAuthRoute.post('/token', async (ctx) => {
 gitGatewayAuthRoute.use('/user', jwtMiddleware)
 gitGatewayAuthRoute.get('/user', async (ctx) => {
   const payload = ctx.get('jwtPayload')
-  const userdata = {
+  const userdata: UserResponse = {
     email: payload.user.email,
     first_name: payload.user.firstName,
     last_name: payload.user.lastName,

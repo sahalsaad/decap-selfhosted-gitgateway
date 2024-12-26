@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 import { inviteRoute } from '@/src/routes/api/invite'
-import { fakeAdminToken, fakeContributorToken, MOCK_ENV } from '@/vitest/data-helpers'
+import { mockAdminToken, mockContributorToken, MOCK_ENV } from '@/vitest/data-helpers'
 
 describe('invite route', () => {
   describe('createInvite', () => {
@@ -11,7 +11,7 @@ describe('invite route', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
           body: JSON.stringify({ role: 'invalid' }),
         },
@@ -27,7 +27,7 @@ describe('invite route', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${fakeContributorToken}`,
+            Authorization: `Bearer ${mockContributorToken}`,
           },
           body: JSON.stringify({ role: faker.helpers.arrayElement(['admin', 'contributor']) }),
         },
@@ -59,7 +59,7 @@ describe('invite route', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${fakeAdminToken}`,
+            Authorization: `Bearer ${mockAdminToken}`,
           },
           body: JSON.stringify({ role: faker.helpers.arrayElement(['admin', 'contributor']) }),
         },
