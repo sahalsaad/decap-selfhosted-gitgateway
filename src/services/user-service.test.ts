@@ -112,9 +112,8 @@ describe('user service', () => {
   describe('updateUser', () => {
     it('should return false if user does not exist', async () => {
       const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
-      await expect(() => userService.updateUser(faker.string.uuid(), {})).rejects.toThrowError(
-        'User not found'
-      )
+      const result = await userService.updateUser(faker.string.uuid(), {})
+      expect(result).toBe(false)
     })
 
     it('should return true if user updated', async () => {

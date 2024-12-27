@@ -37,13 +37,14 @@ describe('register route', () => {
   })
 
   it('should return register form if valid invite id', async () => {
-    mockInviteService.getInviteById.mockResolvedValue({
-      id: faker.string.uuid(),
-      email: faker.internet.email(),
+    const mockInvite = {
+      id: 'fix-invite-id',
+      email: 'email@email.com',
       role: faker.helpers.arrayElement(['admin', 'contributor']),
-    })
+    }
+    mockInviteService.getInviteById.mockResolvedValue(mockInvite)
     const response = await registerClient.request(
-      '/?invite=' + faker.string.uuid(),
+      '/?invite=' + mockInvite.id,
       {
         method: 'GET',
       },
@@ -53,13 +54,14 @@ describe('register route', () => {
   })
 
   it('should disable email if invite contains email', async () => {
-    mockInviteService.getInviteById.mockResolvedValue({
-      id: faker.string.uuid(),
-      email: faker.internet.email(),
+    const mockInvite = {
+      id: 'fix-invite-id',
+      email: 'email@email.com',
       role: faker.helpers.arrayElement(['admin', 'contributor']),
-    })
+    }
+    mockInviteService.getInviteById.mockResolvedValue(mockInvite)
     const response = await registerClient.request(
-      '/?invite=' + faker.string.uuid(),
+      '/?invite=' + mockInvite.id,
       {
         method: 'GET',
       },
@@ -69,13 +71,13 @@ describe('register route', () => {
   })
 
   it('should enable email if invite does not contain email', async () => {
-    mockInviteService.getInviteById.mockResolvedValue({
-      id: faker.string.uuid(),
+    const mockInvite = {
+      id: 'fix-invite-id',
       email: null,
       role: faker.helpers.arrayElement(['admin', 'contributor']),
-    })
+    }
     const response = await registerClient.request(
-      '/?invite=' + faker.string.uuid(),
+      '/?invite=' + mockInvite.id,
       {
         method: 'GET',
       },
