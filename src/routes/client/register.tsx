@@ -1,5 +1,5 @@
-import { GeneralMessage } from '@client/components/GeneralMessage'
-import { RegisterForm } from '@client/components/registerForm'
+import { GeneralMessage } from '@client/components/general-message'
+import { RegisterForm } from '@client/components/register-form'
 import { renderer } from '@server/middlewares/renderer'
 import { InviteService } from '@services/invite-service'
 import { Hono } from 'hono'
