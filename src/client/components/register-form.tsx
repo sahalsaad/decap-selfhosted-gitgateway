@@ -10,28 +10,29 @@ const RegisterForm = (props: RegisterProps) => (
       hx-indicator='#spinner'
     >
       <span className='text-3xl font-bold text-center'>Register</span>
-      <label for='email'>
-        Email
-        <input
-          type='text'
-          name='email'
-          value={props.email ?? ''}
-          disabled={!props.enableEmail}
-          required
-        />
-      </label>
-      <label for='firstName'>
-        First Name
-        <input type='text' className='form-element' name='firstName' required />
-      </label>
-      <label for='lastName'>
-        Last Name
-        <input type='text' className='form-element' name='lastName' />
-      </label>
-      <label for='password'>
-        Password
-        <input type='password' className='form-element' name='password' required />
-      </label>
+      <input
+        type='email'
+        name='email'
+        placeholder='Email'
+        value={props.email ?? ''}
+        disabled={!props.enableEmail}
+        required
+      />
+      <input
+        type='text'
+        name='firstName'
+        placeholder='First Name'
+        className='form-element'
+        required
+      />
+      <input type='text' name='lastName' placeholder='Last Name' className='form-element' />
+      <input
+        type='password'
+        name='password'
+        placeholder='Password'
+        className='form-element'
+        required
+      />
       <button className='form-element' type='submit'>
         Register
         <svg
