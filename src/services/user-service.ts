@@ -131,5 +131,13 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
       const result = await db.insert(usersToSites).values({ siteId: siteId, userId: userId })
       return result.meta.rows_written > 0
     },
+    setPassword: async (email: string, password: string) => {
+      const hashedPassword = hashPassword(password, authSecretKey)
+      const result = await db
+        .update(users)
+        .set({ password: hashedPassword })
+        .where(eq(users.email, email))
+      return result.meta.rows_written > 0
+    },
   }
 }

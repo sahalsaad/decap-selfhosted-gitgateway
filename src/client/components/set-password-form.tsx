@@ -1,44 +1,38 @@
-const RegisterForm = (props: RegisterProps) => (
-  <div id='register-form' className='p-10 bg-white rounded-lg'>
+const SetPasswordForm = () => (
+  <div id='set-password-form' className='p-10 rounded-lg'>
     <form
       className='flex flex-col gap-2'
-      hx-post='/api/register'
-      hx-vals={JSON.stringify({ inviteId: props.inviteId })}
+      hx-post='/api/accounts/set-password'
       hx-ext='json-enc'
-      hx-swap='outerHTML settle:5s'
+      hx-target='#response-message'
+      hx-swap='innerHTML settle:5s'
       hx-disabled-elt='.form-element'
       hx-indicator='#spinner'
     >
-      <span className='text-3xl font-bold text-center'>Register</span>
-      <label for='email'>
-        Email
-        <input
-          type='text'
-          name='email'
-          value={props.email ?? ''}
-          disabled={!props.enableEmail}
-          required
-        />
-      </label>
-      <label for='firstName'>
-        First Name
-        <input type='text' className='form-element' name='firstName' required />
-      </label>
-      <label for='lastName'>
-        Last Name
-        <input type='text' className='form-element' name='lastName' />
-      </label>
-      <label for='password'>
-        Password
-        <input type='password' className='form-element' name='password' required />
-      </label>
+      <span className='text-3xl font-bold text-center'>Update Password</span>
+      <input type='email' name='email' placeholder='Email' required />
+      <input
+        type='password'
+        className='form-element'
+        name='currentPassword'
+        placeholder='Current Password'
+        required
+      />
+      <input
+        type='password'
+        className='form-element'
+        name='newPassword'
+        placeholder='New Password'
+        required
+      />
+      <span id='response-message' className='text-left'></span>
       <button className='form-element' type='submit'>
-        Register
+        Update Password
         <svg
           id='spinner'
           aria-hidden='true'
           role='status'
-          className='htmx-indicator inline w-4 h-4 ms-3 text-white animate-spin'
+          className='htmx-indicator inline w-4 h-4 ms-3 animate-spin'
           viewBox='0 0 100 101'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'
@@ -57,4 +51,4 @@ const RegisterForm = (props: RegisterProps) => (
   </div>
 )
 
-export { RegisterForm }
+export { SetPasswordForm }

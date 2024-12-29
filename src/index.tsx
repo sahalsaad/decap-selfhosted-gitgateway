@@ -6,6 +6,7 @@ import { registerClient } from './routes/client/register'
 import { gitGatewayAuthRoute } from './routes/gitgateway/auth'
 import { githubRoute } from './routes/gitgateway/github'
 import { settingsRoute } from './routes/gitgateway/settings'
+import { updatePasswordClient } from '@/src/routes/client/set-password'
 
 const app = new Hono<{ Bindings: CloudflareBindings }>()
 
@@ -23,6 +24,7 @@ app.route('/:siteId/github', githubRoute)
 
 // client routes
 app.route('/register', registerClient)
+app.route('/update-password', updatePasswordClient)
 
 // api endpoints
 app.route('/api', apiRoute)
