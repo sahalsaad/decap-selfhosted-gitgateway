@@ -1,5 +1,5 @@
 const RegisterForm = (props: RegisterProps) => (
-  <div id='register-form' className='p-10 bg-white rounded-lg'>
+  <div id='register-form' className='p-10'>
     <form
       className='flex flex-col gap-2'
       hx-post='/api/register'
@@ -39,7 +39,7 @@ const RegisterForm = (props: RegisterProps) => (
           id='spinner'
           aria-hidden='true'
           role='status'
-          className='htmx-indicator inline w-4 h-4 ms-3 text-white animate-spin'
+          className='htmx-indicator inline w-4 h-4 ms-3 animate-spin'
           viewBox='0 0 100 101'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'

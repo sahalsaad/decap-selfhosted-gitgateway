@@ -30,7 +30,9 @@ registerRoute.post('/', zValidator('json', inviteHandleRequestSchema), async (ct
 
   await inviteService.deleteInvite(invite.id)
 
-  const successMessage = [<div>Register successful.</div>]
+  const successMessage = [
+    <div className='text-center text-2xl text-green-700'>Register successful.</div>,
+  ]
 
   if (invite.siteId) {
     await userService.addUserSite(createdUser.id, invite.siteId)
