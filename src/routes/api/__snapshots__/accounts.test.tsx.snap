@@ -1,9 +1,9 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`accounts route > setPassword > should return 400 if email not found 1`] = `"<span class="text-red-700">User not found</span>"`;
-
 exports[`accounts route > setPassword > should return errors if wrong request payload 1`] = `"<span class="text-red-700">email: Required, currentPassword: Required, newPassword: Required</span>"`;
+
+exports[`accounts route > setPassword > should return incorrect password if invalid existing password 1`] = `"<span class="text-red-700">Incorrect password</span>"`;
 
 exports[`accounts route > setPassword > should return success if password updated 1`] = `"<span class="text-green-700 text-2xl">Password updated successfully!</span>"`;
 
-exports[`accounts route > setPassword > should return wrong password if invalid existing password 1`] = `"<span class="text-red-700">Incorrect password</span>"`;
+exports[`accounts route > setPassword > should return user not found if wrong email 1`] = `"<span class="text-red-700">User not found</span>"`;
