@@ -14,7 +14,7 @@ describe('register route', () => {
   afterEach(() => {
     vi.clearAllMocks()
   })
-  it('should return 400 if no invite id', async () => {
+  it('should show invalid invite message if no invite id', async () => {
     const response = await registerClient.request(
       '/?invite=',
       {
@@ -24,7 +24,7 @@ describe('register route', () => {
     )
     expect(await response.text()).toMatchSnapshot()
   })
-  it('should return 400 if invalid invite id', async () => {
+  it('should show invalid invite message if invalid invite id', async () => {
     mockInviteService.getInviteById.mockResolvedValue(undefined)
     const response = await registerClient.request(
       '/?invite=' + faker.string.uuid(),
@@ -76,6 +76,8 @@ describe('register route', () => {
       email: null,
       role: faker.helpers.arrayElement(['admin', 'contributor']),
     }
+
+    mockInviteService.getInviteById.mockResolvedValue(mockInvite)
     const response = await registerClient.request(
       '/?invite=' + mockInvite.id,
       {

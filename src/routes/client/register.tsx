@@ -8,40 +8,35 @@ const registerClient = new Hono<{ Bindings: CloudflareBindings }>()
 
 registerClient.use('*', renderer)
 registerClient.get('/', async (ctx) => {
-  const siteData = {
-    title: 'Register',
-    description: 'Register for a new account',
-  }
+  const pageTitle = 'Register'
   const inviteId = ctx.req.query('invite')
-  if (!inviteId) {
-    return ctx.render(
-      <GeneralMessage
-        title='Invalid invite'
-        message='Please contact the admin to get a new invite.'
-        siteData={siteData}
-      />
-    )
+  let invite
+  const isValidInvite = async (id: string) => {
+    const inviteService = InviteService(ctx.env.DB)
+    invite = await inviteService.getInviteById(id)
+    return !!invite
   }
 
-  const inviteService = InviteService(ctx.env.DB)
-  const invite = await inviteService.getInviteById(inviteId)
-  if (!invite) {
+  if (!inviteId || !(await isValidInvite(inviteId))) {
     return ctx.render(
       <GeneralMessage
         title='Invalid invite'
         message='Please contact the admin to get a new invite.'
-        siteData={siteData}
-      />
+      />,
+      {
+        title: pageTitle + ' - Invalid invite',
+      }
     )
   }
 
   const props = {
-    email: invite.email,
-    enableEmail: !invite.email,
+    email: invite!.email,
+    enableEmail: !invite!.email,
     inviteId,
-    siteData,
   }
-  return ctx.render(<RegisterForm {...props} />)
+  return ctx.render(<RegisterForm {...props} />, {
+    title: pageTitle,
+  })
 })
 
 export { registerClient }

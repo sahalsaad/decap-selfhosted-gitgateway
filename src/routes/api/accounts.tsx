@@ -31,10 +31,12 @@ accountsRoute.post(
 
 accountsRoute.post(
   '/set-password',
-  zValidator('json', setPasswordRequestSchema, (result, c) => {
+  zValidator('json', setPasswordRequestSchema, (result, ctx) => {
     if (!result.success) {
-      const errorMessage = result.error.issues.map((issue) => issue.message).join(', ')
-      return c.render(<span className='text-red-700'>{errorMessage}</span>)
+      const errorMessage = result.error.issues
+        .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+        .join(', ')
+      return ctx.render(<span className='text-red-700'>{errorMessage}</span>)
     }
   }),
   async (ctx) => {
