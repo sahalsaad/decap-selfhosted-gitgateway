@@ -1,8 +1,8 @@
 import { defineWorkersConfig, readD1Migrations } from '@cloudflare/vitest-pool-workers/config'
-import { defineConfig, mergeConfig } from 'vitest/config'
-import viteConfig from './vite.config'
-import { join } from 'node:path'
 import { faker } from '@faker-js/faker'
+import { defineConfig, mergeConfig } from 'vitest/config'
+import { join } from 'node:path'
+import viteConfig from './vite.config'
 
 const migrationsPath = join(__dirname, 'migrations')
 const migrations = await readD1Migrations(migrationsPath)

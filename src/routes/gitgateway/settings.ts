@@ -1,11 +1,8 @@
-import type { Variables } from '@selfTypes/variables'
 import { jwtMiddleware } from '@server/middlewares/jwt'
 import { Hono } from 'hono'
+import type { BaseAppBindings } from '@/types/app-bindings'
 
-const settingsRoute = new Hono<{
-  Bindings: CloudflareBindings
-  Variables: Variables
-}>()
+const settingsRoute = new Hono<BaseAppBindings>()
 
 settingsRoute.use('/', jwtMiddleware)
 settingsRoute.get('/', async (ctx) => {

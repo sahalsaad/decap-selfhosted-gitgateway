@@ -1,12 +1,9 @@
-import type { Variables } from '@selfTypes/variables'
 import { jwtMiddleware } from '@server/middlewares/jwt'
 import { decrypt } from '@services/encryption-service'
 import { Hono } from 'hono'
+import type { BaseAppBindings } from '@/types/app-bindings'
 
-const githubRoute = new Hono<{
-  Bindings: CloudflareBindings
-  Variables: Variables
-}>()
+const githubRoute = new Hono<BaseAppBindings>()
 
 githubRoute.use('/:path{.+}', jwtMiddleware)
 githubRoute.all('/:path{.+}', async (ctx) => {

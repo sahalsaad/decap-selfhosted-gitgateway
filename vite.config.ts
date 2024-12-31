@@ -2,9 +2,9 @@ import build from '@hono/vite-build/cloudflare-workers'
 import devServer from '@hono/vite-dev-server'
 import cloudflareAdapter from '@hono/vite-dev-server/cloudflare'
 import { defineConfig } from 'vite'
-import * as path from 'node:path'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import checker from 'vite-plugin-checker'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import * as path from 'node:path'
 
 export default defineConfig(({ mode }) => {
   if (mode === 'client') {

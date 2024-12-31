@@ -4,12 +4,12 @@ import { hashPassword } from '@services/encryption-service'
 import { UserService } from '@services/user-service'
 import { Hono } from 'hono'
 import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
+import type { JwtVariables } from '@/types/jwt-variables'
 import { resetPasswordRequestSchema, setPasswordRequestSchema } from '@/types/password'
-import type { Variables } from '@/types/variables'
 
 const accountsRoute = new Hono<{
   Bindings: CloudflareBindings
-  Variables: Variables
+  Variables: JwtVariables
 }>()
 
 accountsRoute.post(

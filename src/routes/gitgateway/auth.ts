@@ -1,16 +1,13 @@
 import type { JwtPayload } from '@selfTypes/jwt-payload'
-import type { Variables } from '@selfTypes/variables'
 import { jwtMiddleware } from '@server/middlewares/jwt'
 import { hashPassword } from '@services/encryption-service'
 import { UserService } from '@services/user-service'
 import { Hono } from 'hono'
 import { sign } from 'hono/jwt'
 import { timingSafeEqual } from 'hono/utils/buffer'
+import type { AppBindings } from '@/types/app-bindings'
 
-const gitGatewayAuthRoute = new Hono<{
-  Bindings: CloudflareBindings
-  Variables: Variables
-}>()
+const gitGatewayAuthRoute = new Hono<AppBindings<BasicAuthVariables>>()
 
 gitGatewayAuthRoute.post('/token', async (ctx) => {
   const data = await ctx.req.formData()

@@ -1,16 +1,13 @@
-import type { Variables } from '@selfTypes/variables'
+import { OpenAPIHono } from '@hono/zod-openapi'
 import { registerRoute } from '@server/routes/api/register'
-import { Hono } from 'hono'
 import { adminAuthRoute } from './auth'
 import { sitesRoute } from './sites'
 import { usersRoute } from './users'
 import { accountsRoute } from '@/src/routes/api/accounts'
 import { inviteRoute } from '@/src/routes/api/invite'
+import type { BaseAppBindings } from '@/types/app-bindings'
 
-const apiRoute = new Hono<{
-  Bindings: CloudflareBindings
-  Variables: Variables
-}>()
+const apiRoute = new OpenAPIHono<BaseAppBindings>()
 
 // auth routes
 apiRoute.route('/auth', adminAuthRoute)

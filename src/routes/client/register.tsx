@@ -3,8 +3,9 @@ import { RegisterForm } from '@client/components/register-form'
 import { renderer } from '@server/middlewares/renderer'
 import { InviteService } from '@services/invite-service'
 import { Hono } from 'hono'
+import type { BaseAppBindings } from '@/types/app-bindings'
 
-const registerClient = new Hono<{ Bindings: CloudflareBindings }>()
+const registerClient = new Hono<BaseAppBindings>()
 
 registerClient.use('*', renderer)
 registerClient.get('/', async (ctx) => {

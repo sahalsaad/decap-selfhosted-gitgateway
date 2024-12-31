@@ -3,11 +3,11 @@ import { InviteService } from '@services/invite-service'
 import { Hono } from 'hono'
 import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
 import { inviteCreateRequestSchema } from '@/types/invite'
-import type { Variables } from '@/types/variables'
+import type { JwtVariables } from '@/types/jwt-variables'
 
 const inviteRoute = new Hono<{
   Bindings: CloudflareBindings
-  Variables: Variables
+  Variables: JwtVariables
 }>()
 
 inviteRoute.use('/*', jwtMiddleware, jwtAdminMiddleware)

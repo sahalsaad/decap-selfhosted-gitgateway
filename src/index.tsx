@@ -1,4 +1,5 @@
-import { Hono } from 'hono'
+import { OpenAPIHono } from '@hono/zod-openapi'
+import { apiReference } from '@scalar/hono-api-reference'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { apiRoute } from './routes/api'
@@ -7,12 +8,9 @@ import { gitGatewayAuthRoute } from './routes/gitgateway/auth'
 import { githubRoute } from './routes/gitgateway/github'
 import { settingsRoute } from './routes/gitgateway/settings'
 import { updatePasswordClient } from '@/src/routes/client/set-password'
+import type { BaseAppBindings } from '@/types/app-bindings'
 
-const app = new Hono<{ Bindings: CloudflareBindings }>()
-
-app.get('/', (c) => {
-  return c.text('Hello!')
-})
+const app = new OpenAPIHono<BaseAppBindings>()
 
 app.use('*', cors())
 app.use('*', logger())
@@ -28,5 +26,33 @@ app.route('/update-password', updatePasswordClient)
 
 // api endpoints
 app.route('/api', apiRoute)
+
+// configure OpenAPI
+app.doc('/doc', {
+  openapi: '3.0.0',
+  info: {
+    version: '1.0.0',
+    title: 'Decap Self Hosted Git Gateway',
+  },
+})
+
+app.openAPIRegistry.registerComponent('securitySchemes', 'Basic', {
+  type: 'http',
+  scheme: 'Basic',
+})
+
+app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
+  type: 'http',
+  scheme: 'Bearer',
+})
+
+app.get(
+  '/reference',
+  apiReference({
+    spec: {
+      url: '/doc',
+    },
+  })
+)
 
 export default app
