@@ -2,13 +2,16 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 import { apiReference } from '@scalar/hono-api-reference'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
+
+import type { BaseAppBindings } from '@/types/app-bindings'
+
+import { updatePasswordClient } from '@/src/routes/client/set-password'
+
 import { apiRoute } from './routes/api'
 import { registerClient } from './routes/client/register'
 import { gitGatewayAuthRoute } from './routes/gitgateway/auth'
 import { githubRoute } from './routes/gitgateway/github'
 import { settingsRoute } from './routes/gitgateway/settings'
-import { updatePasswordClient } from '@/src/routes/client/set-password'
-import type { BaseAppBindings } from '@/types/app-bindings'
 
 const app = new OpenAPIHono<BaseAppBindings>()
 
@@ -52,7 +55,7 @@ app.get(
     spec: {
       url: '/doc',
     },
-  })
+  }),
 )
 
 export default app

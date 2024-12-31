@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker'
-import { hashPassword } from '@services/encryption-service'
+
 import { accountsRoute } from '@/src/routes/api/accounts'
 import { MOCK_ENV, mockAdminToken, mockContributorToken } from '@/vitest/data-helpers'
+import { hashPassword } from '@services/encryption-service'
 
 const mockUserService = {
   getUserByEmail: vi.fn(),
@@ -20,12 +21,12 @@ describe('accounts route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: 'Bearer invalid',
+            'Authorization': 'Bearer invalid',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email: faker.internet.email() }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -36,12 +37,12 @@ describe('accounts route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockContributorToken}`,
+            'Authorization': `Bearer ${mockContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email: faker.internet.email() }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -54,12 +55,12 @@ describe('accounts route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email: faker.internet.email() }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(400)
     })
@@ -72,12 +73,12 @@ describe('accounts route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email: faker.internet.email() }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(200)
       expect(await response.json()).toStrictEqual({ temporaryPassword: expect.any(String) })
@@ -93,7 +94,7 @@ describe('accounts route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -102,7 +103,7 @@ describe('accounts route', () => {
             newPassword: faker.internet.password(),
           }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(await response.text()).toMatchSnapshot()
     })
@@ -122,7 +123,7 @@ describe('accounts route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -131,7 +132,7 @@ describe('accounts route', () => {
             newPassword: faker.internet.password(),
           }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(await response.text()).toMatchSnapshot()
     })
@@ -142,12 +143,12 @@ describe('accounts route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({}),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(await response.text()).toMatchSnapshot()
     })
@@ -169,7 +170,7 @@ describe('accounts route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -178,7 +179,7 @@ describe('accounts route', () => {
             newPassword: faker.internet.password(),
           }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(await response.text()).toMatchSnapshot()
     })

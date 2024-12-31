@@ -1,12 +1,13 @@
 import { faker } from '@faker-js/faker'
 import { decode } from 'hono/jwt'
 import { expect } from 'vitest'
+
 import { gitGatewayAuthRoute } from '@/src/routes/gitgateway/auth'
 import {
-  mockUserAndSiteData,
   MOCK_ENV,
   mockAdminPayloadData,
   mockAdminToken,
+  mockUserAndSiteData,
 } from '@/vitest/data-helpers'
 
 const mockedUserService = {
@@ -32,7 +33,7 @@ describe('auth route', () => {
           method: 'POST',
           body: loginInfo,
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -51,7 +52,7 @@ describe('auth route', () => {
           method: 'POST',
           body: loginInfo,
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -70,7 +71,7 @@ describe('auth route', () => {
           method: 'POST',
           body: loginInfo,
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(200)
       const jwtData: JwtResponse = await response.json()
@@ -110,7 +111,7 @@ describe('auth route', () => {
             Authorization: 'Barear invalid',
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -127,7 +128,7 @@ describe('auth route', () => {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(200)
       const userData: UserResponse = await response.json()

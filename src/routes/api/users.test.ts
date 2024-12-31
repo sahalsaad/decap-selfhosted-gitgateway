@@ -1,10 +1,11 @@
 import { faker } from '@faker-js/faker'
+
 import { usersRoute } from '@/src/routes/api/users'
 import {
-  mockAdminToken,
-  mockContributorToken,
   generateUserCreateRequest,
   MOCK_ENV,
+  mockAdminToken,
+  mockContributorToken,
 } from '@/vitest/data-helpers'
 
 const mockUserService = {
@@ -32,7 +33,7 @@ describe('users route', () => {
             Authorization: 'Bearer invalid',
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -46,7 +47,7 @@ describe('users route', () => {
             Authorization: `Bearer ${mockContributorToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -67,7 +68,7 @@ describe('users route', () => {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(200)
       expect(await response.json()).toStrictEqual(userLists)
@@ -84,7 +85,7 @@ describe('users route', () => {
             Authorization: 'Bearer invalid',
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -98,7 +99,7 @@ describe('users route', () => {
             Authorization: `Bearer ${mockContributorToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -107,14 +108,14 @@ describe('users route', () => {
       mockUserService.getUserById.mockResolvedValue(undefined)
 
       const response = await usersRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(404)
     })
@@ -128,14 +129,14 @@ describe('users route', () => {
       mockUserService.getUserById.mockResolvedValue(user)
 
       const response = await usersRoute.request(
-        '/' + userId,
+        `/${userId}`,
         {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(200)
       expect(await response.json()).toStrictEqual(user)
@@ -148,12 +149,12 @@ describe('users route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: 'Bearer invalid',
+            'Authorization': 'Bearer invalid',
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName: faker.person.firstName() }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -164,12 +165,12 @@ describe('users route', () => {
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${mockContributorToken}`,
+            'Authorization': `Bearer ${mockContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName: faker.person.firstName() }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -178,16 +179,16 @@ describe('users route', () => {
       mockUserService.updateUser.mockResolvedValue(false)
 
       const response = await usersRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName: faker.person.firstName() }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(404)
     })
@@ -197,16 +198,16 @@ describe('users route', () => {
       mockUserService.updateUser.mockResolvedValue(true)
 
       const response = await usersRoute.request(
-        '/' + userId,
+        `/${userId}`,
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ firstName: faker.person.firstName() }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(204)
     })
@@ -215,16 +216,16 @@ describe('users route', () => {
       const userId = faker.string.uuid()
 
       const response = await usersRoute.request(
-        '/' + userId,
+        `/${userId}`,
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ role: 'invalid' }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(400)
     })
@@ -240,21 +241,21 @@ describe('users route', () => {
             Authorization: 'Bearer invalid',
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
 
     it('should return 401 if not admin', async () => {
       const response = await usersRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${mockContributorToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -263,14 +264,14 @@ describe('users route', () => {
       mockUserService.deleteUser.mockResolvedValue(false)
 
       const response = await usersRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(404)
     })
@@ -280,14 +281,14 @@ describe('users route', () => {
       mockUserService.deleteUser.mockResolvedValue(true)
 
       const response = await usersRoute.request(
-        '/' + userId,
+        `/${userId}`,
         {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(204)
     })

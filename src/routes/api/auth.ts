@@ -1,10 +1,12 @@
 import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
-import { hashPassword } from '@services/encryption-service'
-import { UserService } from '@services/user-service'
 import { basicAuth } from 'hono/basic-auth'
 import { sign } from 'hono/jwt'
 import { timingSafeEqual } from 'hono/utils/buffer'
+
 import type { AppBindings } from '@/types/app-bindings'
+
+import { hashPassword } from '@services/encryption-service'
+import { UserService } from '@services/user-service'
 
 const adminAuthRoute = new OpenAPIHono<AppBindings<BasicAuthVariables>>()
 
@@ -31,7 +33,7 @@ adminAuthRoute.use(
       return false
     },
     invalidUserMessage: 'Invalid username or password or not admin',
-  })
+  }),
 )
 
 const JwtResponseSchema = z.object({

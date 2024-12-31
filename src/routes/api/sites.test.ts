@@ -1,11 +1,13 @@
 import { faker } from '@faker-js/faker'
-import { sitesRoute } from '@/src/routes/api/sites'
+
 import type { SiteCreatedResponse, SiteGetResponse } from '@/types/sites'
+
+import { sitesRoute } from '@/src/routes/api/sites'
 import {
-  mockAdminToken,
-  mockContributorToken,
   generateSiteRequest,
   MOCK_ENV,
+  mockAdminToken,
+  mockContributorToken,
 } from '@/vitest/data-helpers'
 
 const mockedSiteService = {
@@ -45,21 +47,21 @@ describe('sites route', () => {
             Authorization: 'Bearer invalid',
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
 
     it('should return 401 if not admin', async () => {
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${mockContributorToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -70,7 +72,7 @@ describe('sites route', () => {
           id: faker.string.uuid(),
           cmsUrl: faker.internet.url(),
           gitProvider: faker.helpers.arrayElement(['github', 'gitlab', 'bitbucket']),
-        }))
+        })),
       )
 
       const response = await sitesRoute.request(
@@ -81,7 +83,7 @@ describe('sites route', () => {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(200)
       expect(await response.json()).toHaveLength(10)
@@ -99,7 +101,7 @@ describe('sites route', () => {
           },
           body: JSON.stringify(generateSiteRequest()),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -110,12 +112,12 @@ describe('sites route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockContributorToken}`,
+            'Authorization': `Bearer ${mockContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -126,12 +128,12 @@ describe('sites route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ gitProvider: 'gitea' }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(400)
     })
@@ -149,12 +151,12 @@ describe('sites route', () => {
         {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(201)
       expect((await response.json<SiteCreatedResponse>()).id).toBe(mockedSite.id)
@@ -164,28 +166,28 @@ describe('sites route', () => {
   describe('getSite', () => {
     it('should return 401 if invalid token', async () => {
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'GET',
           headers: {
             Authorization: 'Bearer invalid',
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
 
     it('should return 401 if not admin', async () => {
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${mockContributorToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -193,14 +195,14 @@ describe('sites route', () => {
     it('should return 404 if site does not exist', async () => {
       mockedSiteService.getSiteById.mockResolvedValue(undefined)
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(404)
     })
@@ -213,14 +215,14 @@ describe('sites route', () => {
       mockedSiteService.getSiteById.mockResolvedValue(mockedSite)
 
       const response = await sitesRoute.request(
-        '/' + mockedSite.id,
+        `/${mockedSite.id}`,
         {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(200)
       expect(await response.json<SiteGetResponse>()).toStrictEqual(mockedSite)
@@ -230,30 +232,30 @@ describe('sites route', () => {
   describe('deleteSite', () => {
     it('should return 401 if invalid token', async () => {
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
           headers: {
             Authorization: 'Bearer invalid',
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
 
     it('should return 401 if not admin', async () => {
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${mockContributorToken}`,
+            'Authorization': `Bearer ${mockContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -261,14 +263,14 @@ describe('sites route', () => {
     it('should return 404 if site does not exist', async () => {
       mockedSiteService.deleteSite.mockResolvedValue(false)
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(404)
     })
@@ -276,14 +278,14 @@ describe('sites route', () => {
     it('should return 204 if site deleted', async () => {
       mockedSiteService.deleteSite.mockResolvedValue(true)
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
           headers: {
             Authorization: `Bearer ${mockAdminToken}`,
           },
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(204)
     })
@@ -291,7 +293,7 @@ describe('sites route', () => {
   describe('updateSite', () => {
     it('should return 401 if invalid token', async () => {
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'PUT',
           headers: {
@@ -299,23 +301,23 @@ describe('sites route', () => {
           },
           body: JSON.stringify(generateSiteRequest()),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
 
     it('should return 401 if not admin', async () => {
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${mockContributorToken}`,
+            'Authorization': `Bearer ${mockContributorToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -323,16 +325,16 @@ describe('sites route', () => {
     it('should return 404 if site does not exist', async () => {
       mockedSiteService.updateSite.mockResolvedValue(false)
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(404)
     })
@@ -340,16 +342,16 @@ describe('sites route', () => {
     it('should return 204 if site updated', async () => {
       mockedSiteService.updateSite.mockResolvedValue(true)
       const response = await sitesRoute.request(
-        '/' + faker.string.uuid(),
+        `/${faker.string.uuid()}`,
         {
           method: 'PUT',
           headers: {
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(generateSiteRequest()),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(204)
     })

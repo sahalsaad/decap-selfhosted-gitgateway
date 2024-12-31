@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
-import { InviteService } from '@services/invite-service'
 import { env } from 'cloudflare:test'
+
+import { InviteService } from '@services/invite-service'
 
 describe('invite service', () => {
   describe('createInvite', () => {

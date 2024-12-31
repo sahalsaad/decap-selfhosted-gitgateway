@@ -1,9 +1,11 @@
 import { zValidator } from '@hono/zod-validator'
-import { InviteService } from '@services/invite-service'
 import { Hono } from 'hono'
+
+import type { JwtVariables } from '@/types/jwt-variables'
+
 import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
 import { inviteCreateRequestSchema } from '@/types/invite'
-import type { JwtVariables } from '@/types/jwt-variables'
+import { InviteService } from '@services/invite-service'
 
 const inviteRoute = new Hono<{
   Bindings: CloudflareBindings
@@ -21,9 +23,9 @@ inviteRoute.post('/', zValidator('json', inviteCreateRequestSchema), async (ctx)
 
   return ctx.json(
     {
-      inviteUrl: url.origin + '/register?invite=' + result.id,
+      inviteUrl: `${url.origin}/register?invite=${result.id}`,
     },
-    201
+    201,
   )
 })
 

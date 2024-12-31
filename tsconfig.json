@@ -1,11 +1,19 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "lib": ["ESNext"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "strict": true,
-    "skipLibCheck": true,
-    "lib": ["ESNext"],
+    "paths": {
+      "@/*": ["./*"],
+      "@server/*": ["./src/*"],
+      "@db/*": ["./src/db/*"],
+      "@selfTypes/*": ["./types/*"],
+      "@services/*": ["./src/services/*"],
+      "@client/*": ["./src/client/*"]
+    },
     "types": [
       "@cloudflare/workers-types/2023-07-01",
       "@types/node",
@@ -15,15 +23,7 @@
       "@cloudflare/workers-types/experimental",
       "@cloudflare/vitest-pool-workers"
     ],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-    "paths": {
-      "@/*": ["./*"],
-      "@server/*": ["./src/*"],
-      "@db/*": ["./src/db/*"],
-      "@selfTypes/*": ["./types/*"],
-      "@services/*": ["./src/services/*"],
-      "@client/*": ["./src/client/*"]
-    }
+    "strict": true,
+    "skipLibCheck": true
   }
 }

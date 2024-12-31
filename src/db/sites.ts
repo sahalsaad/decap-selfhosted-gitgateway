@@ -21,10 +21,10 @@ const sites = sqliteTable(
       .notNull()
       .default(sql`(current_timestamp)`),
   },
-  (table) => [unique().on(table.cmsUrl), index('site_id_index').on(table.id)]
+  table => [unique().on(table.cmsUrl), index('site_id_index').on(table.id)],
 )
 
 const insertSitesSchema = createInsertSchema(sites)
 const selectSitesSchema = createSelectSchema(sites)
 
-export { sites, insertSitesSchema, selectSitesSchema }
+export { insertSitesSchema, selectSitesSchema, sites }

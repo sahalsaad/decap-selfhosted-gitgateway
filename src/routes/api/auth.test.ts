@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker'
-import { hashPassword } from '@services/encryption-service'
+
 import { adminAuthRoute } from '@/src/routes/api/auth'
 import { MOCK_ENV } from '@/vitest/data-helpers'
+import { hashPassword } from '@services/encryption-service'
 
 const mockedUserService = {
   getUserByEmail: vi.fn(),
@@ -22,10 +23,10 @@ describe('auth route', () => {
       {
         method: 'GET',
         headers: {
-          Authorization: 'Basic ' + btoa('admin@admin.com:password'),
+          Authorization: `Basic ${btoa('admin@admin.com:password')}`,
         },
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(response.status).toBe(401)
   })
@@ -45,10 +46,10 @@ describe('auth route', () => {
       {
         method: 'GET',
         headers: {
-          Authorization: 'Basic ' + btoa(`${fakeUser.email}:${password}`),
+          Authorization: `Basic ${btoa(`${fakeUser.email}:${password}`)}`,
         },
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(response.status).toBe(401)
   })
@@ -67,10 +68,10 @@ describe('auth route', () => {
       {
         method: 'GET',
         headers: {
-          Authorization: 'Basic ' + btoa(`${fakeUser.email}:${password}`),
+          Authorization: `Basic ${btoa(`${fakeUser.email}:${password}`)}`,
         },
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(response.status).toBe(200)
   })

@@ -1,11 +1,12 @@
-import { users } from '@db/users'
 import { faker } from '@faker-js/faker'
-import { SiteService } from '@services/site-service'
-import { UserService } from '@services/user-service'
 import { env } from 'cloudflare:test'
 import { drizzle } from 'drizzle-orm/d1'
 import { seed } from 'drizzle-seed'
+
 import { generateSiteRequest, generateUserCreateRequest } from '@/vitest/data-helpers'
+import { users } from '@db/users'
+import { SiteService } from '@services/site-service'
+import { UserService } from '@services/user-service'
 
 describe('user service', () => {
   describe('createUser', () => {
@@ -21,7 +22,7 @@ describe('user service', () => {
       const createUserRequest = generateUserCreateRequest()
       await userService.createUser(createUserRequest)
       await expect(userService.createUser(createUserRequest)).rejects.toThrow(
-        'UNIQUE constraint failed: users.email'
+        'UNIQUE constraint failed: users.email',
       )
     })
   })
@@ -71,7 +72,7 @@ describe('user service', () => {
       const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
       const user = await userService.getUserByEmailAndSite(
         faker.internet.email(),
-        faker.string.uuid()
+        faker.string.uuid(),
       )
       expect(user).toBeUndefined()
     })
@@ -153,7 +154,7 @@ describe('user service', () => {
     it('should return false if user does not exist', async () => {
       const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
       await expect(() =>
-        userService.addUserSite(faker.string.uuid(), faker.string.uuid())
+        userService.addUserSite(faker.string.uuid(), faker.string.uuid()),
       ).rejects.toThrowError('FOREIGN KEY')
     })
 
@@ -161,7 +162,7 @@ describe('user service', () => {
       const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
       const user = await userService.createUser(generateUserCreateRequest())
       await expect(() =>
-        userService.addUserSite(user.id, faker.string.uuid())
+        userService.addUserSite(user.id, faker.string.uuid()),
       ).rejects.toThrowError('FOREIGN KEY')
     })
 

@@ -1,11 +1,13 @@
 import { faker } from '@faker-js/faker'
 import { zValidator } from '@hono/zod-validator'
+import { Hono } from 'hono'
+
+import type { JwtVariables } from '@/types/jwt-variables'
+
+import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
+import { resetPasswordRequestSchema, setPasswordRequestSchema } from '@/types/password'
 import { hashPassword } from '@services/encryption-service'
 import { UserService } from '@services/user-service'
-import { Hono } from 'hono'
-import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
-import type { JwtVariables } from '@/types/jwt-variables'
-import { resetPasswordRequestSchema, setPasswordRequestSchema } from '@/types/password'
 
 const accountsRoute = new Hono<{
   Bindings: CloudflareBindings
@@ -26,7 +28,7 @@ accountsRoute.post(
       return ctx.json(null, 400)
     }
     return ctx.json({ temporaryPassword: randomPassword })
-  }
+  },
 )
 
 accountsRoute.post(
@@ -34,9 +36,9 @@ accountsRoute.post(
   zValidator('json', setPasswordRequestSchema, (result, ctx) => {
     if (!result.success) {
       const errorMessage = result.error.issues
-        .map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+        .map(issue => `${issue.path.join('.')}: ${issue.message}`)
         .join(', ')
-      return ctx.render(<span className='text-red-700'>{errorMessage}</span>)
+      return ctx.render(<span className="text-red-700">{errorMessage}</span>)
     }
   }),
   async (ctx) => {
@@ -44,22 +46,22 @@ accountsRoute.post(
     const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
     const user = await userService.getUserByEmail(request.email)
     if (!user) {
-      return ctx.render(<span className='text-red-700'>User not found</span>)
+      return ctx.render(<span className="text-red-700">User not found</span>)
     }
 
     const existingPassword = request.currentPassword
     const hashedPassword = hashPassword(existingPassword, ctx.env.AUTH_SECRET_KEY!)
 
     if (user.password !== hashedPassword) {
-      return ctx.render(<span className='text-red-700'>Incorrect password</span>)
+      return ctx.render(<span className="text-red-700">Incorrect password</span>)
     }
 
     await userService.setPassword(user.email, request.newPassword)
     ctx.res.headers.set('HX-Retarget', 'this')
     return ctx.render(
-      <span className='text-green-700 text-2xl'>Password updated successfully!</span>
+      <span className="text-green-700 text-2xl">Password updated successfully!</span>,
     )
-  }
+  },
 )
 
 export { accountsRoute }

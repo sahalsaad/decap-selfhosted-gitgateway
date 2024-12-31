@@ -19,14 +19,14 @@ const users = sqliteTable(
       .notNull()
       .default(sql`(current_timestamp)`),
   },
-  (table) => [
+  table => [
     index('users_id_index').on(table.id),
     index('users_email_index').on(table.email),
     unique().on(table.email),
-  ]
+  ],
 )
 
 const insertUsersSchema = createInsertSchema(users)
 const selectUsersSchema = createSelectSchema(users)
 
-export { users, insertUsersSchema, selectUsersSchema }
+export { insertUsersSchema, selectUsersSchema, users }

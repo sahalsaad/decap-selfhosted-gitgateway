@@ -1,11 +1,13 @@
-import { sites } from '@db/sites'
 import { faker } from '@faker-js/faker'
 import { env } from 'cloudflare:test'
 import { eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
 import { seed } from 'drizzle-seed'
-import { SiteService } from './site-service'
+
 import { generateSiteRequest } from '@/vitest/data-helpers'
+import { sites } from '@db/sites'
+
+import { SiteService } from './site-service'
 
 describe('site service', () => {
   describe('getSiteById', () => {
@@ -50,7 +52,7 @@ describe('site service', () => {
       const createSiteRequest = generateSiteRequest()
       await siteService.createSite(createSiteRequest)
       await expect(() => siteService.createSite(createSiteRequest)).rejects.toThrowError(
-        'UNIQUE constraint failed: sites.cms_url'
+        'UNIQUE constraint failed: sites.cms_url',
       )
     })
 

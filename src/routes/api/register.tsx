@@ -1,9 +1,10 @@
 import { zValidator } from '@hono/zod-validator'
+import { Hono } from 'hono'
+
 import { inviteHandleRequestSchema } from '@selfTypes/invite'
 import { InviteService } from '@services/invite-service'
 import { SiteService } from '@services/site-service'
 import { UserService } from '@services/user-service'
-import { Hono } from 'hono'
 
 const registerRoute = new Hono<{ Bindings: CloudflareBindings }>()
 
@@ -31,7 +32,7 @@ registerRoute.post('/', zValidator('json', inviteHandleRequestSchema), async (ct
   await inviteService.deleteInvite(invite.id)
 
   const successMessage = [
-    <div className='text-center text-2xl text-green-700'>Register successful.</div>,
+    <div className="text-center text-2xl text-green-700">Register successful.</div>,
   ]
 
   if (invite.siteId) {
@@ -39,13 +40,13 @@ registerRoute.post('/', zValidator('json', inviteHandleRequestSchema), async (ct
     const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
     const site = await siteService.getSiteById(invite.siteId)
     successMessage.push(
-      <a className='text-blue-500' href={site!.cmsUrl}>
+      <a className="text-blue-500" href={site!.cmsUrl}>
         Go to CMS
-      </a>
+      </a>,
     )
   }
 
-  return ctx.render(<div className='text-center'>{successMessage}</div>)
+  return ctx.render(<div className="text-center">{successMessage}</div>)
 })
 
 export { registerRoute }

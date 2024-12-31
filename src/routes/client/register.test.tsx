@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker'
+
 import { registerClient } from '@/src/routes/client/register'
 import { MOCK_ENV } from '@/vitest/data-helpers'
 
@@ -20,18 +21,18 @@ describe('register route', () => {
       {
         method: 'GET',
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(await response.text()).toMatchSnapshot()
   })
   it('should show invalid invite message if invalid invite id', async () => {
     mockInviteService.getInviteById.mockResolvedValue(undefined)
     const response = await registerClient.request(
-      '/?invite=' + faker.string.uuid(),
+      `/?invite=${faker.string.uuid()}`,
       {
         method: 'GET',
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(await response.text()).toMatchSnapshot()
   })
@@ -44,11 +45,11 @@ describe('register route', () => {
     }
     mockInviteService.getInviteById.mockResolvedValue(mockInvite)
     const response = await registerClient.request(
-      '/?invite=' + mockInvite.id,
+      `/?invite=${mockInvite.id}`,
       {
         method: 'GET',
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(await response.text()).toMatchSnapshot()
   })
@@ -61,11 +62,11 @@ describe('register route', () => {
     }
     mockInviteService.getInviteById.mockResolvedValue(mockInvite)
     const response = await registerClient.request(
-      '/?invite=' + mockInvite.id,
+      `/?invite=${mockInvite.id}`,
       {
         method: 'GET',
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(await response.text()).toMatchSnapshot()
   })
@@ -79,11 +80,11 @@ describe('register route', () => {
 
     mockInviteService.getInviteById.mockResolvedValue(mockInvite)
     const response = await registerClient.request(
-      '/?invite=' + mockInvite.id,
+      `/?invite=${mockInvite.id}`,
       {
         method: 'GET',
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(await response.text()).toMatchSnapshot()
   })

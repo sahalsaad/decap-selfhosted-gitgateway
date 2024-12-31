@@ -1,11 +1,13 @@
 import { zValidator } from '@hono/zod-validator'
+import { Hono } from 'hono'
+
+import type { AppBindings } from '@/types/app-bindings'
+import type { JwtVariables } from '@/types/jwt-variables'
+
 import { siteCreateRequestSchema, siteUpdateRequestSchema } from '@selfTypes/sites'
 import { jwtAdminMiddleware, jwtMiddleware } from '@server/middlewares/jwt'
 import { SiteService } from '@services/site-service'
 import { UserService } from '@services/user-service'
-import { Hono } from 'hono'
-import type { AppBindings } from '@/types/app-bindings'
-import type { JwtVariables } from '@/types/jwt-variables'
 
 const sitesRoute = new Hono<AppBindings<JwtVariables>>()
 

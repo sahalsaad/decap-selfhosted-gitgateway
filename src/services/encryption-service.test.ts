@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker'
+
 import { decrypt, encrypt, hashPassword } from '@services/encryption-service'
 
 describe('encryption service', () => {

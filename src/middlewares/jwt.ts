@@ -1,8 +1,9 @@
 import type { Context, Next } from 'hono'
+
 import { createMiddleware } from 'hono/factory'
 import { jwt } from 'hono/jwt'
 
-const jwtMiddleware = (ctx: Context<{ Bindings: CloudflareBindings }>, next: Next) => {
+function jwtMiddleware(ctx: Context<{ Bindings: CloudflareBindings }>, next: Next) {
   const jwtMiddleware = jwt({
     secret: ctx.env.AUTH_SECRET_KEY,
   })
@@ -17,7 +18,7 @@ const jwtAdminMiddleware = createMiddleware(
     }
 
     await next()
-  }
+  },
 )
 
-export { jwtMiddleware, jwtAdminMiddleware }
+export { jwtAdminMiddleware, jwtMiddleware }

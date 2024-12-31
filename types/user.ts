@@ -1,12 +1,13 @@
 import { z } from 'zod'
-import { insertUsersSchema, selectUsersSchema } from '../src/db/users'
-import { siteGetResponseSchema } from './sites'
+
+import { siteGetResponseSchema } from '@/types/sites'
+import { insertUsersSchema, selectUsersSchema } from '@db/users'
 
 const userCreateRequestSchema = insertUsersSchema.omit({ id: true })
 const userUpdateRequestSchema = userCreateRequestSchema
   .omit({ password: true, email: true })
   .partial()
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// eslint-disable-next-line unused-imports/no-unused-vars
 const userGetResponseSchema = selectUsersSchema
   .omit({ password: true })
   .extend({ sites: z.array(siteGetResponseSchema) })
@@ -16,9 +17,9 @@ type UserUpdateRequest = z.infer<typeof userUpdateRequestSchema>
 type UserGetResponse = z.infer<typeof userGetResponseSchema>
 
 export {
-  userCreateRequestSchema,
-  userUpdateRequestSchema,
   UserCreateRequest,
-  UserUpdateRequest,
+  userCreateRequestSchema,
   UserGetResponse,
+  UserUpdateRequest,
+  userUpdateRequestSchema,
 }

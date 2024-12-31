@@ -11,7 +11,7 @@ describe('settings route', () => {
           Authorization: 'Bearer invalid',
         },
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(result.status).toBe(401)
   })
@@ -25,7 +25,7 @@ describe('settings route', () => {
           Authorization: `Bearer ${mockAdminToken}`,
         },
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(result.status).toBe(200)
     expect(await result.json()).toStrictEqual({

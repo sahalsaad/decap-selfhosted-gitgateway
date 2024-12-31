@@ -1,6 +1,8 @@
-import { jwtMiddleware } from '@server/middlewares/jwt'
 import { Hono } from 'hono'
+
 import type { BaseAppBindings } from '@/types/app-bindings'
+
+import { jwtMiddleware } from '@server/middlewares/jwt'
 
 const settingsRoute = new Hono<BaseAppBindings>()
 

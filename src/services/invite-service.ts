@@ -1,13 +1,16 @@
-import { invite } from '@db/invite'
-import type { InviteCreateRequest } from '@selfTypes/invite'
 import { eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
 
-export const InviteService = (d1Database: D1Database) => {
+import type { InviteCreateRequest } from '@selfTypes/invite'
+
+import { invite } from '@db/invite'
+
+export function InviteService(d1Database: D1Database) {
   const db = drizzle(d1Database)
 
   return {
     createInvite: async (inviteRequest: InviteCreateRequest) => {
+      // eslint-disable-next-line no-labels
       haveExistingInvite: if (inviteRequest.email) {
         const existingInvite = await db
           .select({
@@ -19,6 +22,7 @@ export const InviteService = (d1Database: D1Database) => {
           .get()
 
         if (!existingInvite) {
+          // eslint-disable-next-line no-labels
           break haveExistingInvite
         }
 
@@ -50,7 +54,10 @@ export const InviteService = (d1Database: D1Database) => {
       return db.select().from(invite).where(eq(invite.id, inviteId)).get()
     },
     deleteInvite: async (inviteId: string) => {
-      const result = await db.delete(invite).where(eq(invite.id, inviteId)).execute()
+      const result = await db
+        .delete(invite)
+        .where(eq(invite.id, inviteId))
+        .execute()
       return result.meta.rows_written === 1
     },
   }

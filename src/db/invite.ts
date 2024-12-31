@@ -18,9 +18,9 @@ const invite = sqliteTable(
       .notNull()
       .default(sql`(current_timestamp)`),
   },
-  (table) => [unique().on(table.email)]
+  table => [unique().on(table.email)],
 )
 
 const insertInviteSchema = createInsertSchema(invite)
 
-export { invite, insertInviteSchema }
+export { insertInviteSchema, invite }

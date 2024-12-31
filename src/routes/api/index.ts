@@ -1,11 +1,14 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
+
+import type { BaseAppBindings } from '@/types/app-bindings'
+
+import { accountsRoute } from '@/src/routes/api/accounts'
+import { inviteRoute } from '@/src/routes/api/invite'
 import { registerRoute } from '@server/routes/api/register'
+
 import { adminAuthRoute } from './auth'
 import { sitesRoute } from './sites'
 import { usersRoute } from './users'
-import { accountsRoute } from '@/src/routes/api/accounts'
-import { inviteRoute } from '@/src/routes/api/invite'
-import type { BaseAppBindings } from '@/types/app-bindings'
 
 const apiRoute = new OpenAPIHono<BaseAppBindings>()
 

@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker'
+
 import { registerRoute } from '@/src/routes/api/register'
 import { generateSiteRequest, MOCK_ENV } from '@/vitest/data-helpers'
 
@@ -49,7 +50,7 @@ describe('register route', () => {
           lastName: faker.person.lastName(),
         }),
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(response.status).toBe(400)
   })
@@ -78,7 +79,7 @@ describe('register route', () => {
           lastName: faker.person.lastName(),
         }),
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(response.status).toBe(200)
     expect(await response.text()).toMatchSnapshot()
@@ -121,7 +122,7 @@ describe('register route', () => {
           siteId: faker.string.uuid(),
         }),
       },
-      MOCK_ENV
+      MOCK_ENV,
     )
     expect(response.status).toBe(200)
     expect(await response.text()).toMatchSnapshot()

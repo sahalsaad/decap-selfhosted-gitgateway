@@ -1,9 +1,11 @@
+import { Hono } from 'hono'
+
+import type { BaseAppBindings } from '@/types/app-bindings'
+
 import { GeneralMessage } from '@client/components/general-message'
 import { RegisterForm } from '@client/components/register-form'
 import { renderer } from '@server/middlewares/renderer'
 import { InviteService } from '@services/invite-service'
-import { Hono } from 'hono'
-import type { BaseAppBindings } from '@/types/app-bindings'
 
 const registerClient = new Hono<BaseAppBindings>()
 
@@ -21,12 +23,12 @@ registerClient.get('/', async (ctx) => {
   if (!inviteId || !(await isValidInvite(inviteId))) {
     return ctx.render(
       <GeneralMessage
-        title='Invalid invite'
-        message='Please contact the admin to get a new invite.'
+        title="Invalid invite"
+        message="Please contact the admin to get a new invite."
       />,
       {
-        title: pageTitle + ' - Invalid invite',
-      }
+        title: `${pageTitle} - Invalid invite`,
+      },
     )
   }
 

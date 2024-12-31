@@ -1,4 +1,4 @@
-#:schema node_modules/wrangler/config-schema.json
+# :schema node_modules/wrangler/config-schema.json
 name = "decap-selfhosted-gitgateway"
 main = "dist/index.js"
 assets = { directory = "./assets/" }
@@ -29,5 +29,5 @@ migrations_dir = "migrations"
 # - https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 # Note: Use secrets to store sensitive data.
 # - https://developers.cloudflare.com/workers/configuration/secrets/
- [vars]
- AUTH_SECRET_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+[vars]
+AUTH_SECRET_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

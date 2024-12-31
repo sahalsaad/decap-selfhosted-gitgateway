@@ -1,19 +1,17 @@
 import build from '@hono/vite-build/cloudflare-workers'
 import devServer from '@hono/vite-dev-server'
 import cloudflareAdapter from '@hono/vite-dev-server/cloudflare'
+import * as path from 'node:path'
 import { defineConfig } from 'vite'
 import checker from 'vite-plugin-checker'
 import tsconfigPaths from 'vite-tsconfig-paths'
-import * as path from 'node:path'
 
 export default defineConfig(({ mode }) => {
   if (mode === 'client') {
     return {
       alias: {
-        '@/components': path.resolve(__dirname, '../'),
         '@server': path.resolve(__dirname, '../src'),
         '@db': path.resolve(__dirname, '../src/db'),
-        '@assets': path.resolve(__dirname, '../assets'),
         '@selfTypes': path.resolve(__dirname, '../types'),
         '@services': path.resolve(__dirname, '../src/services'),
         '@client': path.resolve(__dirname, '../src/client'),
@@ -40,7 +38,7 @@ export default defineConfig(({ mode }) => {
         typescript: true,
         eslint: {
           // for example, lint .ts and .tsx
-          lintCommand: 'eslint src types vitest',
+          lintCommand: 'eslint .',
           useFlatConfig: true,
         },
       }),

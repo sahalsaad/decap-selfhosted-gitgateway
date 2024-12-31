@@ -1,10 +1,13 @@
-import { sites } from '@db/sites'
-import type { SiteCreateRequest, SiteUpdateRequest } from '@selfTypes/sites'
 import { eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
+
+import type { SiteCreateRequest, SiteUpdateRequest } from '@selfTypes/sites'
+
+import { sites } from '@db/sites'
+
 import { encrypt } from './encryption-service'
 
-export const SiteService = (d1Database: D1Database, authSecretKey: string) => {
+export function SiteService(d1Database: D1Database, authSecretKey: string) {
   const db = drizzle(d1Database)
 
   return {

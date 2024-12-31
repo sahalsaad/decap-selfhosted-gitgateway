@@ -1,7 +1,9 @@
+import { Hono } from 'hono'
+
+import type { BaseAppBindings } from '@/types/app-bindings'
+
 import { jwtMiddleware } from '@server/middlewares/jwt'
 import { decrypt } from '@services/encryption-service'
-import { Hono } from 'hono'
-import type { BaseAppBindings } from '@/types/app-bindings'
 
 const githubRoute = new Hono<BaseAppBindings>()
 
@@ -20,7 +22,7 @@ githubRoute.all('/:path{.+}', async (ctx) => {
       method: ctx.req.method,
       headers: ctx.req.raw.headers,
       body: ctx.req.raw.body,
-    }
+    },
   )
 })
 

@@ -1,6 +1,7 @@
-import { insertInviteSchema } from '@db/invite'
 import { z } from 'zod'
+
 import { userCreateRequestSchema } from '@/types/user'
+import { insertInviteSchema } from '@db/invite'
 
 const inviteCreateRequestSchema = insertInviteSchema
 const inviteHandleRequestSchema = userCreateRequestSchema
@@ -9,4 +10,4 @@ const inviteHandleRequestSchema = userCreateRequestSchema
 
 type InviteCreateRequest = z.infer<typeof inviteCreateRequestSchema>
 
-export { inviteCreateRequestSchema, inviteHandleRequestSchema, InviteCreateRequest }
+export { InviteCreateRequest, inviteCreateRequestSchema, inviteHandleRequestSchema }

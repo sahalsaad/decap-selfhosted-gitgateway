@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
+
 import { inviteRoute } from '@/src/routes/api/invite'
-import { mockAdminToken, mockContributorToken, MOCK_ENV } from '@/vitest/data-helpers'
+import { MOCK_ENV, mockAdminToken, mockContributorToken } from '@/vitest/data-helpers'
 
 describe('invite route', () => {
   describe('createInvite', () => {
@@ -11,11 +12,11 @@ describe('invite route', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
           },
           body: JSON.stringify({ role: 'invalid' }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(400)
     })
@@ -27,11 +28,11 @@ describe('invite route', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${mockContributorToken}`,
+            'Authorization': `Bearer ${mockContributorToken}`,
           },
           body: JSON.stringify({ role: faker.helpers.arrayElement(['admin', 'contributor']) }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -43,11 +44,11 @@ describe('invite route', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer invalid',
+            'Authorization': 'Bearer invalid',
           },
           body: JSON.stringify({ role: 'invalid' }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(401)
     })
@@ -59,11 +60,11 @@ describe('invite route', () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${mockAdminToken}`,
+            'Authorization': `Bearer ${mockAdminToken}`,
           },
           body: JSON.stringify({ role: faker.helpers.arrayElement(['admin', 'contributor']) }),
         },
-        MOCK_ENV
+        MOCK_ENV,
       )
       expect(response.status).toBe(201)
     })

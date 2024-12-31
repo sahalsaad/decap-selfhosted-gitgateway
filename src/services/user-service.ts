@@ -1,12 +1,15 @@
+import { and, eq } from 'drizzle-orm'
+import { drizzle } from 'drizzle-orm/d1'
+
+import type { UserCreateRequest, UserGetResponse, UserUpdateRequest } from '@/types/user'
+
 import { sites } from '@db/sites'
 import { users } from '@db/users'
 import { usersToSites } from '@db/users-sites'
-import { and, eq } from 'drizzle-orm'
-import { drizzle } from 'drizzle-orm/d1'
-import { hashPassword } from './encryption-service'
-import type { UserCreateRequest, UserGetResponse, UserUpdateRequest } from '@/types/user'
 
-export const UserService = (d1Database: D1Database, authSecretKey: string) => {
+import { hashPassword } from './encryption-service'
+
+export function UserService(d1Database: D1Database, authSecretKey: string) {
   const db = drizzle(d1Database)
 
   return {
@@ -128,7 +131,7 @@ export const UserService = (d1Database: D1Database, authSecretKey: string) => {
       return result.meta.rows_written > 0
     },
     addUserSite: async (userId: string, siteId: string) => {
-      const result = await db.insert(usersToSites).values({ siteId: siteId, userId: userId })
+      const result = await db.insert(usersToSites).values({ siteId, userId })
       return result.meta.rows_written > 0
     },
     setPassword: async (email: string, password: string) => {
