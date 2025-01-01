@@ -1,6 +1,6 @@
 import { jsxRenderer } from 'hono/jsx-renderer'
 
-export const renderer = jsxRenderer(({ children, title }) => {
+const renderer = jsxRenderer(({ children, title }) => {
   return (
     <html>
       <head>
@@ -35,3 +35,5 @@ export const renderer = jsxRenderer(({ children, title }) => {
     </html>
   )
 })
+
+export { renderer }

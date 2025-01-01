@@ -21,7 +21,10 @@ adminAuthRoute.use(
       }
 
       const hashedPassword = hashPassword(password, ctx.env.AUTH_SECRET_KEY)
-      if ((await timingSafeEqual(user.password, hashedPassword)) && user.role === 'admin') {
+      if (
+        (await timingSafeEqual(user.password, hashedPassword))
+        && user.role === 'admin'
+      ) {
         ctx.set('user', {
           id: user.id,
           email: user.email,
@@ -82,7 +85,7 @@ adminAuthRoute.openapi(authRoute, async (ctx) => {
     expires_in: duration * 1000,
   }
 
-  return ctx.json(jwt, 201)
+  return ctx.json(jwt, 200)
 })
 
 export { adminAuthRoute }

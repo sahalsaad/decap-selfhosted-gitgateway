@@ -15,6 +15,7 @@ export default antfu(
     rules: {
       'no-console': ['warn'],
       'antfu/no-top-level-await': ['off'],
+      'node/prefer-global/process': ['off'],
       'perfectionist/sort-imports': [
         'error',
         {
