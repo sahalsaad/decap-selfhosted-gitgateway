@@ -19,6 +19,7 @@
     "drizzle-orm": "^0.38.3",
     "drizzle-zod": "^0.6.1",
     "hono": "^4.6.15",
+    "stoker": "^1.4.2",
     "typed-htmx": "^0.3.1",
     "zod": "^3.24.1"
   },

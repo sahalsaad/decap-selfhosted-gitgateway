@@ -9,7 +9,7 @@ export default antfu(
       indent: 2,
       quotes: 'single',
     },
-    ignores: ['**/migrations/*'],
+    ignores: ['migrations/*', 'dist/*', '.wrangler/*'],
   },
   {
     rules: {

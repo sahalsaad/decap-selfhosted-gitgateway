@@ -26,6 +26,9 @@ importers:
       hono:
         specifier: ^4.6.15
         version: 4.6.15
+      stoker:
+        specifier: ^1.4.2
+        version: 1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.1))(@hono/zod-openapi@0.18.3(hono@4.6.15)(zod@3.24.1))(hono@4.6.15)(openapi3-ts@4.4.0)
       typed-htmx:
         specifier: ^0.3.1
         version: 0.3.1
@@ -3132,6 +3135,17 @@ packages:
 
   std-env@3.8.0:
     resolution: {integrity: sha512-Bc3YwwCB+OzldMxOXJIIvC6cPRWr/LxOp48CdQTOkPyk/t4JWWJbrilwBd7RJzKV8QW7tJkcgAmeuLLJugl5/w==}
+
+  stoker@1.4.2:
+    resolution: {integrity: sha512-zna86ZzC3fnMOIkuO+1vRMfcRw7SpC/7yafRb0u8DwDVig2pPh6POVnGB7t2A5t/rMvyr7hE7tjXTPvW8bhJKg==}
+    peerDependencies:
+      '@asteasolutions/zod-to-openapi': ^7.0.0
+      '@hono/zod-openapi': '>=0.16.0'
+      hono: ^4.0.0
+      openapi3-ts: ^4.4.0
+    peerDependenciesMeta:
+      '@hono/zod-openapi':
+        optional: true
 
   stoppable@1.1.0:
     resolution: {integrity: sha512-KXDYZ9dszj6bzvnEMRYvxgeTHU74QBFL54XKtP3nyMuJ81CFYtABZ3bAzL2EdFUaEwJOBOgENyFj3R7oTzDyyw==}
@@ -6460,6 +6474,14 @@ snapshots:
       get-source: 2.0.12
 
   std-env@3.8.0: {}
+
+  stoker@1.4.2(@asteasolutions/zod-to-openapi@7.3.0(zod@3.24.1))(@hono/zod-openapi@0.18.3(hono@4.6.15)(zod@3.24.1))(hono@4.6.15)(openapi3-ts@4.4.0):
+    dependencies:
+      '@asteasolutions/zod-to-openapi': 7.3.0(zod@3.24.1)
+      hono: 4.6.15
+      openapi3-ts: 4.4.0
+    optionalDependencies:
+      '@hono/zod-openapi': 0.18.3(hono@4.6.15)(zod@3.24.1)
 
   stoppable@1.1.0: {}
 

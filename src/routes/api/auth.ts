@@ -2,6 +2,10 @@ import { createRoute, OpenAPIHono, z } from '@hono/zod-openapi'
 import { basicAuth } from 'hono/basic-auth'
 import { sign } from 'hono/jwt'
 import { timingSafeEqual } from 'hono/utils/buffer'
+import * as HttpStatusCodes from 'stoker/http-status-codes'
+import * as HttpStatusPhrases from 'stoker/http-status-phrases'
+import { jsonContent } from 'stoker/openapi/helpers'
+import { createMessageObjectSchema } from 'stoker/openapi/schemas'
 
 import type { AppBindings } from '@/types/app-bindings'
 
@@ -35,14 +39,14 @@ adminAuthRoute.use(
 
       return false
     },
-    invalidUserMessage: 'Invalid username or password or not admin',
+    invalidUserMessage: 'Invalid username, password or not an admin',
   }),
 )
 
 const JwtResponseSchema = z.object({
   token_type: z.literal('bearer'),
   access_token: z.string(),
-  expires_in: z.number(),
+  expires_in: z.number().default(60 * 60 * 12 * 1000),
 })
 
 type JwtResponse = z.infer<typeof JwtResponseSchema>
@@ -52,17 +56,14 @@ const authRoute = createRoute({
   method: 'get',
   path: '/',
   responses: {
-    401: {
-      description: 'Invalid credentials',
-    },
-    200: {
-      content: {
-        'application/json': {
-          schema: JwtResponseSchema,
-        },
-      },
-      description: 'Retrieve the auth token',
-    },
+    [HttpStatusCodes.UNAUTHORIZED]: jsonContent(
+      createMessageObjectSchema('Invalid username, password or not an admin'),
+      HttpStatusPhrases.UNAUTHORIZED,
+    ),
+    [HttpStatusCodes.OK]: jsonContent(
+      JwtResponseSchema,
+      'Retrieve the auth token',
+    ),
   },
   security: [{ basicAuth: [] }],
 })
@@ -85,7 +86,7 @@ adminAuthRoute.openapi(authRoute, async (ctx) => {
     expires_in: duration * 1000,
   }
 
-  return ctx.json(jwt, 200)
+  return ctx.json(jwt, HttpStatusCodes.OK)
 })
 
 export { adminAuthRoute }
