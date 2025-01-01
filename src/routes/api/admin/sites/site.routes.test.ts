@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 
 import type { SiteCreatedResponse, SiteGetResponse } from '@/types/sites'
 
-import { sitesRoute } from '@/src/routes/api/sites'
+import siteRoutes from '@/src/routes/api/admin/sites/site.routes'
 import {
   generateSiteRequest,
   MOCK_ENV,
@@ -39,7 +39,7 @@ describe('sites route', () => {
 
   describe('getSites', () => {
     it('should return 401 if invalid token', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         '/',
         {
           method: 'GET',
@@ -53,7 +53,7 @@ describe('sites route', () => {
     })
 
     it('should return 401 if not admin', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'GET',
@@ -70,12 +70,12 @@ describe('sites route', () => {
       mockedSiteService.getAllSite.mockResolvedValue(
         Array.from({ length: 10 }, () => ({
           id: faker.string.uuid(),
-          cmsUrl: faker.internet.url(),
-          gitProvider: faker.helpers.arrayElement(['github', 'gitlab', 'bitbucket']),
+          createdAt: faker.date.recent().toISOString(),
+          ...generateSiteRequest(),
         })),
       )
 
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         '/',
         {
           method: 'GET',
@@ -92,7 +92,7 @@ describe('sites route', () => {
 
   describe('createSite', () => {
     it('should return 401 if invalid token', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         '/',
         {
           method: 'POST',
@@ -107,7 +107,7 @@ describe('sites route', () => {
     })
 
     it('should return 401 if not admin', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         '/',
         {
           method: 'POST',
@@ -123,7 +123,7 @@ describe('sites route', () => {
     })
 
     it('should return 400 if invalid request', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         '/',
         {
           method: 'POST',
@@ -146,7 +146,7 @@ describe('sites route', () => {
       mockedSiteService.createSite.mockResolvedValue(mockedSite)
       mockedUserService.addUserSite.mockResolvedValue(true)
 
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         '/',
         {
           method: 'POST',
@@ -159,13 +159,15 @@ describe('sites route', () => {
         MOCK_ENV,
       )
       expect(response.status).toBe(201)
-      expect((await response.json<SiteCreatedResponse>()).id).toBe(mockedSite.id)
+      expect((await response.json<SiteCreatedResponse>()).id).toBe(
+        mockedSite.id,
+      )
     })
   })
 
   describe('getSite', () => {
     it('should return 401 if invalid token', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'GET',
@@ -179,7 +181,7 @@ describe('sites route', () => {
     })
 
     it('should return 401 if not admin', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
@@ -194,7 +196,7 @@ describe('sites route', () => {
 
     it('should return 404 if site does not exist', async () => {
       mockedSiteService.getSiteById.mockResolvedValue(undefined)
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'GET',
@@ -210,11 +212,12 @@ describe('sites route', () => {
     it('should return 200 if site exists', async () => {
       const mockedSite = {
         id: faker.string.uuid(),
+        createdAt: faker.date.recent().toISOString(),
         ...generateSiteRequest(),
       }
       mockedSiteService.getSiteById.mockResolvedValue(mockedSite)
 
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${mockedSite.id}`,
         {
           method: 'GET',
@@ -225,13 +228,14 @@ describe('sites route', () => {
         MOCK_ENV,
       )
       expect(response.status).toBe(200)
-      expect(await response.json<SiteGetResponse>()).toStrictEqual(mockedSite)
+      const { gitToken, ...site } = mockedSite
+      expect(await response.json<SiteGetResponse>()).toStrictEqual(site)
     })
   })
 
   describe('deleteSite', () => {
     it('should return 401 if invalid token', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
@@ -245,7 +249,7 @@ describe('sites route', () => {
     })
 
     it('should return 401 if not admin', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'PUT',
@@ -262,7 +266,7 @@ describe('sites route', () => {
 
     it('should return 404 if site does not exist', async () => {
       mockedSiteService.deleteSite.mockResolvedValue(false)
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
@@ -277,7 +281,7 @@ describe('sites route', () => {
 
     it('should return 204 if site deleted', async () => {
       mockedSiteService.deleteSite.mockResolvedValue(true)
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'DELETE',
@@ -292,7 +296,7 @@ describe('sites route', () => {
   })
   describe('updateSite', () => {
     it('should return 401 if invalid token', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'PUT',
@@ -307,7 +311,7 @@ describe('sites route', () => {
     })
 
     it('should return 401 if not admin', async () => {
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'PUT',
@@ -324,7 +328,7 @@ describe('sites route', () => {
 
     it('should return 404 if site does not exist', async () => {
       mockedSiteService.updateSite.mockResolvedValue(false)
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'PUT',
@@ -341,7 +345,7 @@ describe('sites route', () => {
 
     it('should return 204 if site updated', async () => {
       mockedSiteService.updateSite.mockResolvedValue(true)
-      const response = await sitesRoute.request(
+      const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
           method: 'PUT',

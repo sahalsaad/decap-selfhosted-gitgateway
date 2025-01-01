@@ -6,15 +6,15 @@ import { accountsRoute } from '@/src/routes/api/accounts'
 import { inviteRoute } from '@/src/routes/api/invite'
 import { registerRoute } from '@server/routes/api/register'
 
-import { adminAuthRoute } from './auth'
-import { sitesRoute } from './sites'
+import auth from './admin/auth/auth.routes'
+import sitesRoute from './admin/sites/site.routes'
 import { usersRoute } from './users'
 
 const apiRoute = new OpenAPIHono<BaseAppBindings>()
 
 // auth routes
-apiRoute.route('/auth', adminAuthRoute)
-apiRoute.route('/sites', sitesRoute)
+apiRoute.route('/admin/auth', auth)
+apiRoute.route('/admin/sites', sitesRoute)
 apiRoute.route('/users', usersRoute)
 apiRoute.route('/invite', inviteRoute)
 apiRoute.route('/accounts', accountsRoute)

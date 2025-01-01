@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import { adminAuthRoute } from '@/src/routes/api/auth'
+import adminAuthRoute from '@/src/routes/api/admin/auth/auth.routes'
 import { MOCK_ENV } from '@/vitest/data-helpers'
 import { hashPassword } from '@services/encryption-service'
 

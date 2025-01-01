@@ -12,28 +12,10 @@ export function SiteService(d1Database: D1Database, authSecretKey: string) {
 
   return {
     getSiteById: (siteId: string) => {
-      return db
-        .select({
-          id: sites.id,
-          cmsUrl: sites.cmsUrl,
-          gitRepo: sites.gitRepo,
-          gitProvider: sites.gitProvider,
-          gitHost: sites.gitHost,
-        })
-        .from(sites)
-        .where(eq(sites.id, siteId))
-        .get()
+      return db.select().from(sites).where(eq(sites.id, siteId)).get()
     },
     getAllSite: () => {
-      return db
-        .select({
-          id: sites.id,
-          cmsUrl: sites.cmsUrl,
-          gitRepo: sites.gitRepo,
-          gitHost: sites.gitHost,
-        })
-        .from(sites)
-        .all()
+      return db.select().from(sites).all()
     },
     createSite: async (siteRequest: SiteCreateRequest) => {
       const encryptedToken = await encrypt(siteRequest.gitToken, authSecretKey)
@@ -52,14 +34,21 @@ export function SiteService(d1Database: D1Database, authSecretKey: string) {
         .get()
     },
     updateSite: async (siteId: string, siteRequest: SiteUpdateRequest) => {
-      const existingSite = await db.select().from(sites).where(eq(sites.id, siteId)).get()
+      const existingSite = await db
+        .select()
+        .from(sites)
+        .where(eq(sites.id, siteId))
+        .get()
       if (!existingSite) {
         return false
       }
 
       let updateSite = {}
       if (siteRequest.gitToken) {
-        const encryptedToken = await encrypt(siteRequest.gitToken, authSecretKey)
+        const encryptedToken = await encrypt(
+          siteRequest.gitToken,
+          authSecretKey,
+        )
         updateSite = { gitToken: encryptedToken }
       }
 
@@ -79,7 +68,10 @@ export function SiteService(d1Database: D1Database, authSecretKey: string) {
         updateSite = { ...updateSite, gitHost: siteRequest.gitHost }
       }
 
-      const result = await db.update(sites).set(updateSite).where(eq(sites.id, siteId))
+      const result = await db
+        .update(sites)
+        .set(updateSite)
+        .where(eq(sites.id, siteId))
       return result.meta.rows_written === 1
     },
     deleteSite: async (siteId: string) => {

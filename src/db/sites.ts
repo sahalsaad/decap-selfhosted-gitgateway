@@ -13,7 +13,9 @@ const sites = sqliteTable(
     cmsUrl: text('cms_url').notNull(),
     gitToken: text('git_token').notNull(),
     gitRepo: text('git_repo').notNull(),
-    gitProvider: text('git_provider', { enum: ['github', 'gitlab', 'bitbucket'] })
+    gitProvider: text('git_provider', {
+      enum: ['github', 'gitlab', 'bitbucket'],
+    })
       .notNull()
       .default('github'),
     gitHost: text('git_host'),
