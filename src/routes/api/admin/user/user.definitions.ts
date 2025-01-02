@@ -4,7 +4,11 @@ import { IdUUIDParamsSchema } from 'stoker/openapi/schemas'
 
 import { notFoundContent, unauthorizedContent } from '@/src/common/openapi'
 import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
-import { userCreateRequestSchema, userGetResponseSchema, userListResponseSchema } from '@/types/user'
+import {
+  userGetResponseSchema,
+  userListResponseSchema,
+  userUpdateRequestSchema,
+} from '@/types/user'
 
 const tags = ['User']
 
@@ -19,7 +23,7 @@ export const updateUser = createRoute({
     body: {
       content: {
         'application/json': {
-          schema: userCreateRequestSchema,
+          schema: userUpdateRequestSchema,
         },
       },
     },

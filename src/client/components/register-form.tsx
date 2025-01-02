@@ -3,9 +3,10 @@ function RegisterForm(props: RegisterProps) {
     <div id="register-form" className="p-10">
       <form
         className="flex flex-col gap-2"
-        hx-post="/api/account/register"
+        hx-post="/api/register"
         hx-vals={JSON.stringify({ inviteId: props.inviteId })}
         hx-ext="json-enc"
+        hx-target="#response-message"
         hx-swap="outerHTML settle:5s"
         hx-disabled-elt=".form-element"
         hx-indicator="#spinner"
@@ -34,6 +35,7 @@ function RegisterForm(props: RegisterProps) {
           className="form-element"
           required
         />
+        <span id="response-message" className="text-left"></span>
         <button className="form-element" type="submit">
           Register
           <svg

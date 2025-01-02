@@ -2,7 +2,7 @@
 name = "decap-selfhosted-gitgateway"
 main = "dist/index.js"
 assets = { directory = "./assets/" }
-compatibility_date = "2024-12-30"
+compatibility_date = "2024-12-18"
 compatibility_flags = [ "nodejs_compat" ]
 
 # Workers Logs

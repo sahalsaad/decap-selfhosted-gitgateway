@@ -32,11 +32,16 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
     const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
     const isSuccess = await userService.deleteUser(id)
 
-    if (isSuccess) {
-      return ctx.body(null, 204)
+    if (!isSuccess) {
+      return ctx.json(
+        {
+          message: HttpStatusPhrases.NOT_FOUND,
+        },
+        HttpStatusCodes.NOT_FOUND,
+      )
     }
 
-    return ctx.notFound()
+    return ctx.body(null, HttpStatusCodes.NO_CONTENT)
   })
 
   .openapi(getUser, async (ctx) => {
@@ -53,7 +58,7 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
       )
     }
 
-    return ctx.json(user, 200)
+    return ctx.json(user, HttpStatusCodes.OK)
   })
 
   .openapi(getUsers, async (ctx) => {

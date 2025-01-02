@@ -33,7 +33,7 @@ describe('register route', () => {
   afterEach(() => {
     vi.clearAllMocks()
   })
-  it('should return 400 if invalid invite id', async () => {
+  it('should return invalid invite message if invalid invite id', async () => {
     mockInviteService.getInviteById.mockResolvedValue(undefined)
     const response = await registerRoute.request(
       '/',
@@ -52,10 +52,10 @@ describe('register route', () => {
       },
       MOCK_ENV,
     )
-    expect(response.status).toBe(400)
+    expect(await response.text()).toMatchSnapshot()
   })
 
-  it('should return 200 if valid request', async () => {
+  it('should return success message if valid request', async () => {
     mockInviteService.getInviteById.mockResolvedValue({
       id: faker.string.uuid(),
       email: faker.internet.email(),
@@ -81,7 +81,6 @@ describe('register route', () => {
       },
       MOCK_ENV,
     )
-    expect(response.status).toBe(200)
     expect(await response.text()).toMatchSnapshot()
   })
 
@@ -124,7 +123,6 @@ describe('register route', () => {
       },
       MOCK_ENV,
     )
-    expect(response.status).toBe(200)
     expect(await response.text()).toMatchSnapshot()
   })
 })

@@ -56,6 +56,7 @@ describe('users route', () => {
       const numberOfUsers = faker.number.int({ min: 1, max: 10 })
       const userLists = Array.from({ length: numberOfUsers }, () => ({
         id: faker.string.uuid(),
+        createdAt: faker.date.recent().toISOString(),
         ...generateUserCreateRequest(),
       }))
       mockUserService.getAllUser.mockResolvedValue(userLists)
@@ -71,7 +72,8 @@ describe('users route', () => {
         MOCK_ENV,
       )
       expect(response.status).toBe(200)
-      expect(await response.json()).toStrictEqual(userLists)
+      const userListWithoutPassword = userLists.map(({ password, ...user }) => user)
+      expect(await response.json()).toStrictEqual(userListWithoutPassword)
     })
   })
 

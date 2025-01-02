@@ -9,19 +9,26 @@ import { SiteService } from '@services/site-service'
 import { UserService } from '@services/user-service'
 
 export default new Hono<BaseAppBindings>()
-  .post('/', zValidator('json', inviteHandleRequestSchema), async (ctx) => {
+  .post('/', zValidator('json', inviteHandleRequestSchema, (result, ctx) => {
+    if (!result.success) {
+      const errorMessage = result.error.issues
+        .map(issue => `${issue.path.join('.')}: ${issue.message}`)
+        .join(', ')
+      return ctx.render(<span className="text-red-700">{errorMessage}</span>)
+    }
+  }), async (ctx) => {
     const createUserRequest = ctx.req.valid('json')
 
     const inviteService = InviteService(ctx.env.DB)
     const invite = await inviteService.getInviteById(createUserRequest.inviteId)
 
     if (!invite) {
-      return ctx.render(<>Invalid invite id</>)
+      return ctx.render(<span className="text-red-700">Invalid invite id</span>)
     }
 
     const deleteSuccess = await inviteService.deleteInvite(invite.id)
     if (!deleteSuccess) {
-      return ctx.render(<>Invalid invite id</>)
+      return ctx.render(<span className="text-red-700">Invalid invite id</span>)
     }
 
     const email = invite.email ? invite.email : createUserRequest.email

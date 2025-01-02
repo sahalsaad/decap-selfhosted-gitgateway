@@ -8,7 +8,7 @@ import { decrypt } from '@services/encryption-service'
 const githubRoute = new Hono<BaseAppBindings>()
 
 githubRoute.use('/:path{.+}', jwtMiddleware)
-githubRoute.all('/:path{.+}', async (ctx) => {
+githubRoute.all('/:path{.+}', (ctx) => {
   const jwtPayload = ctx.get('jwtPayload')
 
   const gitToken = decrypt(jwtPayload.git.token, ctx.env.AUTH_SECRET_KEY)
@@ -16,7 +16,7 @@ githubRoute.all('/:path{.+}', async (ctx) => {
   req.headers.set('authorization', `Bearer ${gitToken}`)
   ctx.req.raw = req
 
-  return await fetch(
+  return fetch(
     `https://api.${jwtPayload.git.host ?? 'github.com'}/repos/${jwtPayload.git.repo}/${ctx.req.param('path')}`,
     {
       method: ctx.req.method,

@@ -1,4 +1,5 @@
 import { OpenAPIHono } from '@hono/zod-openapi'
+import { defaultHook } from 'stoker/openapi'
 
 import type { BaseAppBindings } from '@/types/app-bindings'
 
@@ -9,7 +10,7 @@ import userRoutes from '@/src/routes/api/admin/user/user.routes'
 import registerRoute from '@/src/routes/api/client/register'
 import setPasswordRoute from '@/src/routes/api/client/update-password'
 
-const apiRoute = new OpenAPIHono<BaseAppBindings>()
+const apiRoute = new OpenAPIHono<BaseAppBindings>({ defaultHook })
 
 // admin routes
 apiRoute.route('/admin/auth', authRoutes)
