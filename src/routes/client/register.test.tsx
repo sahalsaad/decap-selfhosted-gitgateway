@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker'
 
-import { registerClient } from '@/src/routes/client/register'
+import registerClient from '@/src/routes/client/register'
 import { MOCK_ENV } from '@/vitest/data-helpers'
 
 const mockInviteService = {

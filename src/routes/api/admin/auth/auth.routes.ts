@@ -4,7 +4,7 @@ import * as HttpStatusCodes from 'stoker/http-status-codes'
 
 import type { AppBindings } from '@/types/app-bindings'
 
-import { getToken } from '@/src/routes/api/admin/auth/auth.definations'
+import { getToken } from '@/src/routes/api/admin/auth/auth.definitions'
 
 export default new OpenAPIHono<AppBindings<BasicAuthVariables>>().openapi(
   getToken,

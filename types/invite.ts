@@ -3,11 +3,13 @@ import { z } from 'zod'
 import { userCreateRequestSchema } from '@/types/user'
 import { insertInviteSchema } from '@db/invite'
 
-const inviteCreateRequestSchema = insertInviteSchema
-const inviteHandleRequestSchema = userCreateRequestSchema
+export const inviteRequestSchema = insertInviteSchema.omit({ id: true, createdAt: true })
+export const inviteHandleRequestSchema = userCreateRequestSchema
   .omit({ role: true })
   .extend({ inviteId: z.string() })
 
-type InviteCreateRequest = z.infer<typeof inviteCreateRequestSchema>
+export const inviteResponseSchema = z.object({
+  inviteUrl: z.string().url(),
+})
 
-export { InviteCreateRequest, inviteCreateRequestSchema, inviteHandleRequestSchema }
+export type InviteCreateRequest = z.infer<typeof inviteRequestSchema>

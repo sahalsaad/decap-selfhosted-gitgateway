@@ -1,12 +1,11 @@
 import { createRoute, z } from '@hono/zod-openapi'
 import * as HttpStatusCodes from 'stoker/http-status-codes'
-import * as HttpStatusPhrases from 'stoker/http-status-phrases'
 import { jsonContent } from 'stoker/openapi/helpers'
 import {
-  createMessageObjectSchema,
   IdUUIDParamsSchema,
 } from 'stoker/openapi/schemas'
 
+import { notFoundContent, unauthorizedContent } from '@/src/common/openapi'
 import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
 import {
   siteCreateRequestSchema,
@@ -16,14 +15,6 @@ import {
 } from '@/types/sites'
 
 const tags = ['Site']
-const unauthorizedContent = {
-  description: HttpStatusPhrases.UNAUTHORIZED,
-  content: {
-    'text/plain': {
-      schema: z.string().openapi({ example: HttpStatusPhrases.UNAUTHORIZED }),
-    },
-  },
-}
 
 export const createSite = createRoute({
   tags,
@@ -64,10 +55,7 @@ export const getSite = createRoute({
       siteGetResponseSchema,
       'Retrieved site successfully',
     ),
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      createMessageObjectSchema(HttpStatusPhrases.NOT_FOUND),
-      HttpStatusPhrases.NOT_FOUND,
-    ),
+    [HttpStatusCodes.NOT_FOUND]: notFoundContent,
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],
@@ -93,10 +81,7 @@ export const updateSite = createRoute({
     [HttpStatusCodes.NO_CONTENT]: {
       description: 'Site updated successfully',
     },
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      createMessageObjectSchema(HttpStatusPhrases.NOT_FOUND),
-      HttpStatusPhrases.NOT_FOUND,
-    ),
+    [HttpStatusCodes.NOT_FOUND]: notFoundContent,
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],
@@ -115,10 +100,7 @@ export const deleteSite = createRoute({
     [HttpStatusCodes.NO_CONTENT]: {
       description: 'Site deleted successfully',
     },
-    [HttpStatusCodes.NOT_FOUND]: jsonContent(
-      createMessageObjectSchema(HttpStatusPhrases.NOT_FOUND),
-      HttpStatusPhrases.NOT_FOUND,
-    ),
+    [HttpStatusCodes.NOT_FOUND]: notFoundContent,
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],

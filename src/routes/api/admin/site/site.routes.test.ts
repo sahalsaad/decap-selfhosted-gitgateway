@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 
 import type { SiteCreatedResponse, SiteGetResponse } from '@/types/sites'
 
-import siteRoutes from '@/src/routes/api/admin/sites/site.routes'
+import siteRoutes from '@/src/routes/api/admin/site/site.routes'
 import {
   generateSiteRequest,
   MOCK_ENV,

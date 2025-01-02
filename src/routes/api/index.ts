@@ -2,24 +2,23 @@ import { OpenAPIHono } from '@hono/zod-openapi'
 
 import type { BaseAppBindings } from '@/types/app-bindings'
 
-import { accountsRoute } from '@/src/routes/api/accounts'
-import { inviteRoute } from '@/src/routes/api/invite'
-import { registerRoute } from '@server/routes/api/register'
-
-import auth from './admin/auth/auth.routes'
-import sitesRoute from './admin/sites/site.routes'
-import { usersRoute } from './users'
+import accountRoutes from '@/src/routes/api/admin/account/account.routes'
+import authRoutes from '@/src/routes/api/admin/auth/auth.routes'
+import sitesRoute from '@/src/routes/api/admin/site/site.routes'
+import userRoutes from '@/src/routes/api/admin/user/user.routes'
+import registerRoute from '@/src/routes/api/client/register'
+import setPasswordRoute from '@/src/routes/api/client/update-password'
 
 const apiRoute = new OpenAPIHono<BaseAppBindings>()
 
-// auth routes
-apiRoute.route('/admin/auth', auth)
-apiRoute.route('/admin/sites', sitesRoute)
-apiRoute.route('/users', usersRoute)
-apiRoute.route('/invite', inviteRoute)
-apiRoute.route('/accounts', accountsRoute)
+// admin routes
+apiRoute.route('/admin/auth', authRoutes)
+apiRoute.route('/admin/site', sitesRoute)
+apiRoute.route('/admin/account', accountRoutes)
+apiRoute.route('/admin/user', userRoutes)
 
-// public routes
+// client routes
 apiRoute.route('/register', registerRoute)
+apiRoute.route('/update-password', setPasswordRoute)
 
 export { apiRoute }

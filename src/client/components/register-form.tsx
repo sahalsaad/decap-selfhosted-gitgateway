@@ -3,7 +3,7 @@ function RegisterForm(props: RegisterProps) {
     <div id="register-form" className="p-10">
       <form
         className="flex flex-col gap-2"
-        hx-post="/api/register"
+        hx-post="/api/account/register"
         hx-vals={JSON.stringify({ inviteId: props.inviteId })}
         hx-ext="json-enc"
         hx-swap="outerHTML settle:5s"

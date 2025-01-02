@@ -6,10 +6,9 @@ import { notFound } from 'stoker/middlewares'
 
 import type { BaseAppBindings } from '@/types/app-bindings'
 
-import { updatePasswordClient } from '@/src/routes/client/set-password'
-
 import { apiRoute } from './routes/api'
-import { registerClient } from './routes/client/register'
+import registerClient from './routes/client/register'
+import updatePasswordClient from './routes/client/update-password'
 import { gitGatewayAuthRoute } from './routes/gitgateway/auth'
 import { githubRoute } from './routes/gitgateway/github'
 import { settingsRoute } from './routes/gitgateway/settings'
