@@ -37,7 +37,7 @@ export const resetPassword = createRoute({
 
 export const createInvite = createRoute({
   tags,
-  description: 'Create an invite',
+  description: 'Create an invite. If user already registered, please use `site/{id}/user` to add user to a site.',
   method: 'post',
   path: '/invite',
   middleware: [jwtMiddleware, jwtAdminMiddleware] as const,

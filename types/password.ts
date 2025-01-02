@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const resetPasswordRequestSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email().openapi({ description: 'The email of the user.' }),
 })
 
 export const setPasswordRequestSchema = z.object({

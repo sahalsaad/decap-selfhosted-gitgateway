@@ -26,7 +26,13 @@ const sites = sqliteTable(
   table => [unique().on(table.cmsUrl), index('site_id_index').on(table.id)],
 )
 
-const insertSitesSchema = createInsertSchema(sites)
+const insertSitesSchema = createInsertSchema(sites, {
+  cmsUrl: schema => schema.openapi({ description: 'The URL of the CMS', example: 'https://example.com/admin' }),
+  gitToken: schema => schema.openapi({ description: 'The Git PAT token' }),
+  gitRepo: schema => schema.openapi({ description: 'The Git repository URL' }),
+  gitProvider: schema => schema.openapi({ description: 'The Git provider. If not specified, it will default to GitHub' }),
+  gitHost: schema => schema.openapi({ description: 'The Git host. If not specified, it will be default to Git host based on the provider(e.g. github.com)' }),
+})
 const selectSitesSchema = createSelectSchema(sites)
 
 export { insertSitesSchema, selectSitesSchema, sites }

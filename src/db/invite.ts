@@ -21,6 +21,10 @@ const invite = sqliteTable(
   table => [unique().on(table.email)],
 )
 
-const insertInviteSchema = createInsertSchema(invite)
+const insertInviteSchema = createInsertSchema(invite, {
+  email: schema => schema.openapi({ description: 'The email of the user. If not specified, user can set their own email during registration.' }),
+  siteId: schema => schema.openapi({ description: 'The site ID. If not specified, user will not be added to any site. Its an option to create admin user.' }),
+  role: schema => schema.openapi({ description: 'The user role. If not specified, it will default to contributor.' }),
+})
 
 export { insertInviteSchema, invite }
