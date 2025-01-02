@@ -4,6 +4,8 @@ import { Hono } from 'hono'
 import type { BaseAppBindings } from '@/types/app-bindings'
 
 import { setPasswordRequestSchema } from '@/types/password'
+import { ErrorMessage } from '@client/components/error-message'
+import { SuccessMessage } from '@client/components/success-message'
 import { hashPassword } from '@services/encryption-service'
 import { UserService } from '@services/user-service'
 
@@ -15,7 +17,7 @@ export default new Hono<BaseAppBindings>()
         const errorMessage = result.error.issues
           .map(issue => `${issue.path.join('.')}: ${issue.message}`)
           .join(', ')
-        return ctx.render(<span className="text-red-700">{errorMessage}</span>)
+        return ctx.render(<ErrorMessage>{errorMessage}</ErrorMessage>)
       }
     }),
     async (ctx) => {
@@ -23,20 +25,20 @@ export default new Hono<BaseAppBindings>()
       const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
       const user = await userService.getUserByEmail(request.email)
       if (!user) {
-        return ctx.render(<span className="text-red-700">User not found</span>)
+        return ctx.render(<ErrorMessage>User not found</ErrorMessage>)
       }
 
       const existingPassword = request.currentPassword
       const hashedPassword = hashPassword(existingPassword, ctx.env.AUTH_SECRET_KEY!)
 
       if (user.password !== hashedPassword) {
-        return ctx.render(<span className="text-red-700">Incorrect password</span>)
+        return ctx.render(<ErrorMessage>Incorrect password</ErrorMessage>)
       }
 
       await userService.setPassword(user.email, request.newPassword)
       ctx.res.headers.set('HX-Retarget', 'this')
       return ctx.render(
-        <span className="text-green-700 text-2xl">Password updated successfully!</span>,
+        <SuccessMessage>Password updated successfully!</SuccessMessage>,
       )
     },
   )

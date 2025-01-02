@@ -3,6 +3,8 @@ import { Hono } from 'hono'
 
 import type { BaseAppBindings } from '@/types/app-bindings'
 
+import { ErrorMessage } from '@client/components/error-message'
+import { SuccessMessage } from '@client/components/success-message'
 import { inviteHandleRequestSchema } from '@selfTypes/invite'
 import { InviteService } from '@services/invite-service'
 import { SiteService } from '@services/site-service'
@@ -14,7 +16,7 @@ export default new Hono<BaseAppBindings>()
       const errorMessage = result.error.issues
         .map(issue => `${issue.path.join('.')}: ${issue.message}`)
         .join(', ')
-      return ctx.render(<span className="text-red-700">{errorMessage}</span>)
+      return ctx.render(<ErrorMessage>{errorMessage}</ErrorMessage>)
     }
   }), async (ctx) => {
     const createUserRequest = ctx.req.valid('json')
@@ -23,12 +25,12 @@ export default new Hono<BaseAppBindings>()
     const invite = await inviteService.getInviteById(createUserRequest.inviteId)
 
     if (!invite) {
-      return ctx.render(<span className="text-red-700">Invalid invite id</span>)
+      return ctx.render(<ErrorMessage>Invalid invite id</ErrorMessage>)
     }
 
     const deleteSuccess = await inviteService.deleteInvite(invite.id)
     if (!deleteSuccess) {
-      return ctx.render(<span className="text-red-700">Invalid invite id</span>)
+      return ctx.render(<ErrorMessage>Invalid invite id</ErrorMessage>)
     }
 
     const email = invite.email ? invite.email : createUserRequest.email
@@ -43,7 +45,7 @@ export default new Hono<BaseAppBindings>()
     })
 
     const successMessage = [
-      <div className="text-center text-2xl text-green-700">Register successful.</div>,
+      <SuccessMessage>Register successful.</SuccessMessage>,
     ]
 
     if (invite.siteId) {
