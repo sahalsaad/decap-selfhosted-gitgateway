@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from '@hono/zod-openapi'
 
 import { userCreateRequestSchema } from '@/types/user'
 import { insertInviteSchema } from '@db/invite'

@@ -1,8 +1,9 @@
 import { and, eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
 
-import type { UserCreateRequest, UserGetResponse, UserUpdateRequest } from '@/types/user'
+import type { UserCreateRequest, UserUpdateRequest } from '@/types/user'
 
+import { siteListResponseSchema } from '@/types/sites'
 import { userListResponseSchema } from '@/types/user'
 import { sites } from '@db/sites'
 import { users } from '@db/users'
@@ -15,50 +16,11 @@ export function UserService(d1Database: D1Database, authSecretKey: string) {
 
   return {
     getUserById: async (userId: string) => {
-      const rows = await db
-        .select({
-          users: {
-            id: users.id,
-            firstName: users.firstName,
-            lastName: users.lastName,
-            email: users.email,
-            role: users.role,
-            createdAt: users.createdAt,
-          },
-          sites: {
-            id: sites.id,
-            cmsUrl: sites.cmsUrl,
-            gitRepo: sites.gitRepo,
-            gitHost: sites.gitHost,
-            gitProvider: sites.gitProvider,
-            createdAt: sites.createdAt,
-          },
-        })
+      return db
+        .select()
         .from(users)
-        .leftJoin(usersToSites, eq(usersToSites.userId, users.id))
-        .leftJoin(sites, eq(usersToSites.siteId, sites.id))
         .where(eq(users.id, userId))
-        .all()
-
-      const result = rows.reduce<Record<string, UserGetResponse>>((acc, row) => {
-        const user = row.users!
-        const site = row.sites
-        if (!acc[user.id]) {
-          acc[user.id] = { ...user, sites: [] }
-        }
-        if (site) {
-          acc[user.id].sites.push(site)
-        }
-        return acc
-      }, {})
-
-      const firstResult = result[userId]
-
-      if (!firstResult) {
-        return undefined
-      }
-
-      return firstResult
+        .get()
     },
     getUserByEmailAndSite: async (email: string, siteId: string) => {
       const result = await db
@@ -110,14 +72,14 @@ export function UserService(d1Database: D1Database, authSecretKey: string) {
     updateUser: async (userId: string, userRequest: UserUpdateRequest) => {
       const existingUser = await db.select().from(users).where(eq(users.id, userId)).get()
       if (!existingUser) {
-        return false
+        return null
       }
 
       const firstName = userRequest.firstName || existingUser.firstName
       const lastName = userRequest.lastName || existingUser.lastName
       const role = userRequest.role || existingUser.role
 
-      const result = await db
+      return db
         .update(users)
         .set({
           firstName,
@@ -125,7 +87,8 @@ export function UserService(d1Database: D1Database, authSecretKey: string) {
           role,
         })
         .where(eq(users.id, userId))
-      return result.meta.rows_written > 0
+        .returning()
+        .get()
     },
     deleteUser: async (userId: string) => {
       const result = await db.delete(users).where(eq(users.id, userId))
@@ -150,6 +113,10 @@ export function UserService(d1Database: D1Database, authSecretKey: string) {
         .set({ password: hashedPassword })
         .where(eq(users.email, email))
       return result.meta.rows_written > 0
+    },
+    getUserSites: async (userId: string) => {
+      const result = await db.select().from(usersToSites).innerJoin(sites, eq(sites.id, usersToSites.siteId)).where(eq(usersToSites.userId, userId)).all()
+      return siteListResponseSchema.parse(result.map(row => row.sites))
     },
   }
 }

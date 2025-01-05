@@ -1,9 +1,11 @@
 import { createRoute } from '@hono/zod-openapi'
 import * as HttpStatusCodes from 'stoker/http-status-codes'
+import { jsonContent } from 'stoker/openapi/helpers'
 import { IdUUIDParamsSchema } from 'stoker/openapi/schemas'
 
 import { notFoundContent, unauthorizedContent } from '@/src/common/openapi'
 import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
+import { siteListResponseSchema } from '@/types/sites'
 import {
   userGetResponseSchema,
   userListResponseSchema,
@@ -14,24 +16,17 @@ const tags = ['User']
 
 export const updateUser = createRoute({
   tags,
+  summary: 'Update user',
   description: 'Update a user',
   method: 'put',
   path: '/{id}',
   middleware: [jwtMiddleware, jwtAdminMiddleware] as const,
   request: {
     params: IdUUIDParamsSchema,
-    body: {
-      content: {
-        'application/json': {
-          schema: userUpdateRequestSchema,
-        },
-      },
-    },
+    body: jsonContent(userUpdateRequestSchema, 'Update user request'),
   },
   responses: {
-    [HttpStatusCodes.NO_CONTENT]: {
-      description: 'User updated successfully',
-    },
+    [HttpStatusCodes.ACCEPTED]: jsonContent(userGetResponseSchema, 'User updated successfully'),
     [HttpStatusCodes.NOT_FOUND]: notFoundContent(),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
@@ -40,6 +35,7 @@ export const updateUser = createRoute({
 
 export const deleteUser = createRoute({
   tags,
+  summary: 'Delete user',
   description: 'Delete a user',
   method: 'delete',
   path: '/{id}',
@@ -59,6 +55,7 @@ export const deleteUser = createRoute({
 
 export const getUser = createRoute({
   tags,
+  summary: 'Get user',
   description: 'Retrieve a user',
   method: 'get',
   path: '/{id}',
@@ -83,6 +80,7 @@ export const getUser = createRoute({
 
 export const getUsers = createRoute({
   tags,
+  summary: 'Get users',
   description: 'Retrieve all users',
   method: 'get',
   path: '/',
@@ -96,6 +94,24 @@ export const getUsers = createRoute({
         },
       },
     },
+    [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
+  },
+  security: [{ Bearer: [] }],
+})
+
+export const getUserSites = createRoute({
+  tags,
+  summary: 'Get user sites',
+  description: 'Get user sites',
+  method: 'get',
+  path: '/{id}/sites',
+  middleware: [jwtMiddleware, jwtAdminMiddleware] as const,
+  request: {
+    params: IdUUIDParamsSchema,
+  },
+  responses: {
+    [HttpStatusCodes.OK]: jsonContent(siteListResponseSchema, 'Retrieved user sites successfully'),
+    [HttpStatusCodes.NOT_FOUND]: notFoundContent(),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],

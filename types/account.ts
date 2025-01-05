@@ -1,6 +1,6 @@
-import { z } from 'zod'
+import { z } from '@hono/zod-openapi'
 
-export const resetPasswordRequestSchema = z.object({
+export const userEmailSchema = z.object({
   email: z.string().email().openapi({ description: 'The email of the user.' }),
 })
 

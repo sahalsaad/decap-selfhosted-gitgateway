@@ -142,6 +142,7 @@ describe('sites route', () => {
       const mockedSite = {
         id: faker.string.uuid(),
         ...generateSiteRequest(),
+        createdAt: faker.date.recent().toISOString(),
       }
       mockedSiteService.createSite.mockResolvedValue(mockedSite)
       mockedUserService.addUserSite.mockResolvedValue(true)
@@ -327,7 +328,7 @@ describe('sites route', () => {
     })
 
     it('should return 404 if site does not exist', async () => {
-      mockedSiteService.updateSite.mockResolvedValue(false)
+      mockedSiteService.updateSite.mockResolvedValue(null)
       const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
@@ -344,7 +345,12 @@ describe('sites route', () => {
     })
 
     it('should return 204 if site updated', async () => {
-      mockedSiteService.updateSite.mockResolvedValue(true)
+      const mockedSite = {
+        id: faker.string.uuid(),
+        ...generateSiteRequest(),
+        createdAt: faker.date.recent().toISOString(),
+      }
+      mockedSiteService.updateSite.mockResolvedValue(mockedSite)
       const response = await siteRoutes.request(
         `/${faker.string.uuid()}`,
         {
@@ -357,7 +363,9 @@ describe('sites route', () => {
         },
         MOCK_ENV,
       )
-      expect(response.status).toBe(204)
+      expect(response.status).toBe(200)
+      const { gitToken, ...siteWithoutGitToken } = mockedSite
+      expect(await response.json()).toStrictEqual(siteWithoutGitToken)
     })
   })
 })

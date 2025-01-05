@@ -1,6 +1,5 @@
-import { z } from 'zod'
+import { z } from '@hono/zod-openapi'
 
-import { siteGetResponseSchema } from '@/types/sites'
 import { insertUsersSchema, selectUsersSchema } from '@db/users'
 
 export const userCreateRequestSchema = insertUsersSchema.omit({ id: true })
@@ -9,11 +8,9 @@ export const userUpdateRequestSchema = userCreateRequestSchema
   .omit({ password: true, email: true })
   .partial()
 
-export const userGetResponseSchema = selectUsersSchema
-  .omit({ password: true })
-  .extend({ sites: z.array(siteGetResponseSchema) })
+export const userGetResponseSchema = selectUsersSchema.omit({ password: true })
 
-export const userListResponseSchema = z.array(selectUsersSchema.omit({ password: true }))
+export const userListResponseSchema = z.array(userGetResponseSchema)
 
 export type UserCreateRequest = z.infer<typeof userCreateRequestSchema>
 export type UserUpdateRequest = z.infer<typeof userUpdateRequestSchema>

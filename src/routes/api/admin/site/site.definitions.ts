@@ -3,13 +3,13 @@ import * as HttpStatusCodes from 'stoker/http-status-codes'
 import * as HttpStatusPhrases from 'stoker/http-status-phrases'
 import { jsonContent } from 'stoker/openapi/helpers'
 import {
-  createErrorSchema,
   createMessageObjectSchema,
   IdUUIDParamsSchema,
 } from 'stoker/openapi/schemas'
 
-import { notFoundContent, unauthorizedContent } from '@/src/common/openapi'
+import { notFoundContent, unauthorizedContent, validationErrorContent } from '@/src/common/openapi'
 import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
+import { userEmailSchema } from '@/types/account'
 import {
   siteCreateRequestSchema,
   siteGetResponseSchema,
@@ -19,9 +19,6 @@ import { userListResponseSchema } from '@/types/user'
 
 const tags = ['Site']
 
-const userEmailSchema = z.object({
-  email: z.string().email().openapi({ description: 'The email of the user.' }),
-})
 const userEmailJsonContent = jsonContent(userEmailSchema, 'User email')
 
 export const createSite = createRoute({
@@ -43,10 +40,7 @@ export const createSite = createRoute({
       createMessageObjectSchema('Site already exists'),
       HttpStatusPhrases.BAD_REQUEST,
     ),
-    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(siteCreateRequestSchema),
-      'The validation error(s)',
-    ),
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: validationErrorContent(siteCreateRequestSchema),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],
@@ -88,10 +82,7 @@ export const updateSite = createRoute({
   responses: {
     [HttpStatusCodes.OK]: jsonContent(siteGetResponseSchema, 'Site updated successfully'),
     [HttpStatusCodes.NOT_FOUND]: notFoundContent(),
-    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(siteUpdateRequestSchema),
-      'The validation error(s)',
-    ),
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: validationErrorContent(siteUpdateRequestSchema),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],
@@ -154,10 +145,7 @@ export const addUserToSite = createRoute({
       createMessageObjectSchema('User already added to the site'),
       'User already added to the site',
     ),
-    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: jsonContent(
-      createErrorSchema(userEmailSchema),
-      'The validation error(s)',
-    ),
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: validationErrorContent(userEmailSchema),
     [HttpStatusCodes.NOT_FOUND]: notFoundContent(),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
@@ -185,6 +173,7 @@ export const removeUserFromSite = createRoute({
       'User not in the site',
     ),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: validationErrorContent(userEmailSchema),
   },
   security: [{ Bearer: [] }],
 })
@@ -202,6 +191,7 @@ export const getSiteUsers = createRoute({
   responses: {
     [HttpStatusCodes.OK]: jsonContent(userListResponseSchema, 'Get users of a site successfully'),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
+    [HttpStatusCodes.NOT_FOUND]: notFoundContent('Site not found.'),
   },
   security: [{ Bearer: [] }],
 })

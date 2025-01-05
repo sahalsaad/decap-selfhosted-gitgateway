@@ -156,6 +156,17 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
   .openapi(getSiteUsers, async (ctx) => {
     const { id } = ctx.req.valid('param')
 
+    const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+    const site = await siteService.getSiteById(id)
+    if (!site) {
+      return ctx.json(
+        {
+          message: 'Site not found.',
+        },
+        HttpStatusCodes.NOT_FOUND,
+      )
+    }
+
     const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
     const users = await userService.getUsersBySiteId(id)
     return ctx.json(users, HttpStatusCodes.OK)

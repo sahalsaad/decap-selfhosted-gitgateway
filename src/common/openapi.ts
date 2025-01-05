@@ -1,7 +1,7 @@
 import { z } from '@hono/zod-openapi'
 import * as HttpStatusPhrases from 'stoker/http-status-phrases'
 import { jsonContent } from 'stoker/openapi/helpers'
-import { createMessageObjectSchema } from 'stoker/openapi/schemas'
+import { createErrorSchema, createMessageObjectSchema } from 'stoker/openapi/schemas'
 
 export function notFoundContent(message = HttpStatusPhrases.NOT_FOUND) {
   return jsonContent(
@@ -17,4 +17,11 @@ export const unauthorizedContent = {
       schema: z.string().openapi({ example: HttpStatusPhrases.UNAUTHORIZED }),
     },
   },
+}
+
+export function validationErrorContent(schema: z.ZodTypeAny) {
+  return jsonContent(
+    createErrorSchema(schema),
+    'The validation error(s)',
+  )
 }

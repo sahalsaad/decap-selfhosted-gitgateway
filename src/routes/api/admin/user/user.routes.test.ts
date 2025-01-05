@@ -127,6 +127,7 @@ describe('users route', () => {
       const user = {
         ...generateUserCreateRequest(),
         id: userId,
+        createdAt: faker.date.recent().toISOString(),
       }
       mockUserService.getUserById.mockResolvedValue(user)
 
@@ -141,7 +142,8 @@ describe('users route', () => {
         MOCK_ENV,
       )
       expect(response.status).toBe(200)
-      expect(await response.json()).toStrictEqual(user)
+      const { password, ...userWithoutPassword } = user
+      expect(await response.json()).toStrictEqual(userWithoutPassword)
     })
   })
   describe('updateUser', () => {
@@ -195,9 +197,14 @@ describe('users route', () => {
       expect(response.status).toBe(404)
     })
 
-    it('should return 204 if user updated', async () => {
+    it('should return 202 if user updated', async () => {
       const userId = faker.string.uuid()
-      mockUserService.updateUser.mockResolvedValue(true)
+      const user = {
+        ...generateUserCreateRequest(),
+        id: userId,
+        createdAt: faker.date.recent().toISOString(),
+      }
+      mockUserService.updateUser.mockResolvedValue(user)
 
       const response = await userRoutes.request(
         `/${userId}`,
@@ -211,7 +218,9 @@ describe('users route', () => {
         },
         MOCK_ENV,
       )
-      expect(response.status).toBe(204)
+      expect(response.status).toBe(202)
+      const { password, ...userWithoutPassword } = user
+      expect(await response.json()).toStrictEqual(userWithoutPassword)
     })
 
     it('should return 400 if invalid request', async () => {

@@ -3,7 +3,7 @@ import { Hono } from 'hono'
 
 import type { BaseAppBindings } from '@/types/app-bindings'
 
-import { setPasswordRequestSchema } from '@/types/password'
+import { setPasswordRequestSchema } from '@/types/account'
 import { ErrorMessage } from '@client/components/error-message'
 import { SuccessMessage } from '@client/components/success-message'
 import { hashPassword } from '@services/encryption-service'

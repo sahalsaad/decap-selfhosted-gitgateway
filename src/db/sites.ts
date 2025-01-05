@@ -1,6 +1,7 @@
+import { z } from '@hono/zod-openapi'
 import { sql } from 'drizzle-orm'
 import { index, sqliteTable, text, unique } from 'drizzle-orm/sqlite-core'
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
+import { createSchemaFactory } from 'drizzle-zod'
 import { randomUUID } from 'node:crypto'
 
 const sites = sqliteTable(
@@ -26,6 +27,7 @@ const sites = sqliteTable(
   table => [unique().on(table.cmsUrl), index('site_id_index').on(table.id)],
 )
 
+const { createInsertSchema, createSelectSchema } = createSchemaFactory({ zodInstance: z })
 const insertSitesSchema = createInsertSchema(sites, {
   cmsUrl: schema => schema.openapi({ description: 'The URL of the CMS', example: 'https://example.com/admin' }),
   gitToken: schema => schema.openapi({ description: 'The Git PAT token' }),

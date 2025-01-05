@@ -1,6 +1,7 @@
+import { z } from '@hono/zod-openapi'
 import { sql } from 'drizzle-orm'
 import { sqliteTable, text, unique } from 'drizzle-orm/sqlite-core'
-import { createInsertSchema } from 'drizzle-zod'
+import { createSchemaFactory } from 'drizzle-zod'
 import { randomUUID } from 'node:crypto'
 
 const invite = sqliteTable(
@@ -21,6 +22,7 @@ const invite = sqliteTable(
   table => [unique().on(table.email)],
 )
 
+const { createInsertSchema } = createSchemaFactory({ zodInstance: z })
 const insertInviteSchema = createInsertSchema(invite, {
   email: schema => schema.openapi({ description: 'The email of the user. If not specified, user can set their own email during registration.' }),
   siteId: schema => schema.openapi({ description: 'The site ID. If not specified, user will not be added to any site. Its an option to create admin user.' }),

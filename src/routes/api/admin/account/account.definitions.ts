@@ -2,21 +2,22 @@ import { createRoute } from '@hono/zod-openapi'
 import * as HttpStatusCodes from 'stoker/http-status-codes'
 import { jsonContent } from 'stoker/openapi/helpers'
 
-import { notFoundContent, unauthorizedContent } from '@/src/common/openapi'
+import { notFoundContent, unauthorizedContent, validationErrorContent } from '@/src/common/openapi'
 import { jwtAdminMiddleware, jwtMiddleware } from '@/src/middlewares/jwt'
+import { resetPasswordResponseSchema, userEmailSchema } from '@/types/account'
 import { inviteRequestSchema, inviteResponseSchema } from '@/types/invite'
-import { resetPasswordRequestSchema, resetPasswordResponseSchema } from '@/types/password'
 
 const tags = ['Account']
 
 export const resetPassword = createRoute({
   tags,
-  description: 'Reset password',
+  summary: 'Reset password',
+  description: 'Reset user password',
   method: 'post',
   path: '/reset-password',
   middleware: [jwtMiddleware, jwtAdminMiddleware] as const,
   request: {
-    body: jsonContent(resetPasswordRequestSchema, 'Reset password request'),
+    body: jsonContent(userEmailSchema, 'Reset password request'),
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
@@ -25,13 +26,15 @@ export const resetPassword = createRoute({
     ),
     [HttpStatusCodes.NOT_FOUND]: notFoundContent(),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: validationErrorContent(userEmailSchema),
   },
   security: [{ Bearer: [] }],
 })
 
 export const createInvite = createRoute({
   tags,
-  description: 'Create an invite. If user already registered, please use `site/{id}/user` to add user to a site.',
+  summary: 'Invite new user',
+  description: 'Invite a new user. If user already registered, please use `site/{id}/user` to add user to a site.',
   method: 'post',
   path: '/invite',
   middleware: [jwtMiddleware, jwtAdminMiddleware] as const,
@@ -48,6 +51,7 @@ export const createInvite = createRoute({
       },
     },
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
+    [HttpStatusCodes.UNPROCESSABLE_ENTITY]: validationErrorContent(inviteRequestSchema),
   },
   security: [{ Bearer: [] }],
 })

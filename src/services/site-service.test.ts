@@ -8,6 +8,7 @@ import { generateSiteRequest } from '@/vitest/data-helpers'
 import { sites } from '@db/sites'
 
 import { SiteService } from './site-service'
+import '@hono/zod-openapi'
 
 describe('site service', () => {
   describe('getSiteById', () => {
@@ -47,13 +48,12 @@ describe('site service', () => {
   })
 
   describe('createSite', () => {
-    it('should return error if site already exists', async () => {
+    it('should return undefined if site already exists', async () => {
       const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
       const createSiteRequest = generateSiteRequest()
       await siteService.createSite(createSiteRequest)
-      await expect(() => siteService.createSite(createSiteRequest)).rejects.toThrowError(
-        'UNIQUE constraint failed: sites.cms_url',
-      )
+      const result = await siteService.createSite(createSiteRequest)
+      expect(result).toBeUndefined()
     })
 
     it('should return success if site does not exist', async () => {
@@ -75,13 +75,13 @@ describe('site service', () => {
   })
 
   describe('updateSite', () => {
-    it('should return false if site does not exist', async () => {
+    it('should return null if site does not exist', async () => {
       const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
       const result = await siteService.updateSite(faker.string.uuid(), {})
-      expect(result).toBe(false)
+      expect(result).toBeNull()
     })
 
-    it('should return true if site exists', async () => {
+    it('should return updated site if site exists', async () => {
       const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
       const site = await siteService.createSite(generateSiteRequest())
 
@@ -91,11 +91,9 @@ describe('site service', () => {
         gitHost: faker.internet.url(),
       }
       const result = await siteService.updateSite(site.id, updateSiteRequest)
-      const siteAfterUpdate = await siteService.getSiteById(site.id)
-      expect(result).toBe(true)
-      expect(siteAfterUpdate?.gitRepo).toBe(updateSiteRequest.gitRepo)
-      expect(siteAfterUpdate?.gitProvider).toBe(updateSiteRequest.gitProvider)
-      expect(siteAfterUpdate?.gitHost).toBe(updateSiteRequest.gitHost)
+      expect(result?.gitRepo).toBe(updateSiteRequest.gitRepo)
+      expect(result?.gitProvider).toBe(updateSiteRequest.gitProvider)
+      expect(result?.gitHost).toBe(updateSiteRequest.gitHost)
     })
 
     it('should encrypt gitToken', async () => {

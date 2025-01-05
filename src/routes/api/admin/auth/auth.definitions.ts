@@ -19,6 +19,7 @@ export const JwtResponseSchema = z.object({
 
 export const getToken = createRoute({
   tags: ['Auth'],
+  summary: 'Get auth token',
   description: 'Retrieve the auth token',
   method: 'get',
   path: '/',

@@ -62,8 +62,6 @@ describe('user service', () => {
 
       expect(user).toBeDefined()
       expect(user!.id).toBe(createdUser.id)
-      expect(user!.sites).toHaveLength(1)
-      expect(user!.sites[0].id).toBe(createdSite.id)
     })
   })
 
@@ -111,13 +109,13 @@ describe('user service', () => {
   })
 
   describe('updateUser', () => {
-    it('should return false if user does not exist', async () => {
+    it('should return null if user does not exist', async () => {
       const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
       const result = await userService.updateUser(faker.string.uuid(), {})
-      expect(result).toBe(false)
+      expect(result).toBeNull()
     })
 
-    it('should return true if user updated', async () => {
+    it('should return updated user if user updated', async () => {
       const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
       const user = await userService.createUser(generateUserCreateRequest())
 
@@ -127,11 +125,9 @@ describe('user service', () => {
         role: faker.helpers.arrayElement(['admin', 'contributor']),
       }
       const result = await userService.updateUser(user.id, updateUserRequest)
-      const userAfterUpdate = await userService.getUserById(user.id)
-      expect(result).toBe(true)
-      expect(userAfterUpdate?.firstName).toBe(updateUserRequest.firstName)
-      expect(userAfterUpdate?.lastName).toBe(updateUserRequest.lastName)
-      expect(userAfterUpdate?.role).toBe(updateUserRequest.role)
+      expect(result?.firstName).toBe(updateUserRequest.firstName)
+      expect(result?.lastName).toBe(updateUserRequest.lastName)
+      expect(result?.role).toBe(updateUserRequest.role)
     })
   })
 
