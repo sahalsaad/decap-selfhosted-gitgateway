@@ -28,9 +28,7 @@ export function SiteService(d1Database: D1Database, authSecretKey: string) {
           gitToken: encryptedToken,
           gitHost: siteRequest.gitHost,
         })
-        .returning({
-          id: sites.id,
-        })
+        .returning()
         .onConflictDoNothing()
         .get()
     },

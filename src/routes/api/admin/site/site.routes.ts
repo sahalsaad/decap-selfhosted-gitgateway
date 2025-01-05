@@ -38,7 +38,8 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
     const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
     await userService.addUserSite(user.id, createdSite.id)
 
-    return ctx.json(createdSite, HttpStatusCodes.CREATED)
+    const cleanResult = siteGetResponseSchema.parse(createdSite)
+    return ctx.json(cleanResult, HttpStatusCodes.CREATED)
   })
   .openapi(getSite, async (ctx) => {
     const { id } = ctx.req.valid('param')
@@ -118,7 +119,7 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
         {
           message: 'User already added to the site',
         },
-        HttpStatusCodes.UNPROCESSABLE_ENTITY,
+        HttpStatusCodes.BAD_REQUEST,
       )
     }
 
@@ -146,7 +147,7 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
         {
           message: 'User not in the site',
         },
-        HttpStatusCodes.UNPROCESSABLE_ENTITY,
+        HttpStatusCodes.BAD_REQUEST,
       )
     }
 

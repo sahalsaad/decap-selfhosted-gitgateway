@@ -40,19 +40,23 @@ app.doc('/doc', {
   },
 })
 
-app.openAPIRegistry.registerComponent('securitySchemes', 'Basic', {
-  type: 'http',
-  scheme: 'Basic',
-})
-
 app.openAPIRegistry.registerComponent('securitySchemes', 'Bearer', {
   type: 'http',
   scheme: 'Bearer',
 })
 
+app.openAPIRegistry.registerComponent('securitySchemes', 'Basic', {
+  type: 'http',
+  scheme: 'Basic',
+})
+
 app.get(
   '/reference',
   apiReference({
+    defaultHttpClient: {
+      targetKey: 'node',
+      clientKey: 'fetch',
+    },
     spec: {
       url: '/doc',
     },

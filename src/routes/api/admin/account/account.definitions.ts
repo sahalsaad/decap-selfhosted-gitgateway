@@ -16,13 +16,7 @@ export const resetPassword = createRoute({
   path: '/reset-password',
   middleware: [jwtMiddleware, jwtAdminMiddleware] as const,
   request: {
-    body: {
-      content: {
-        'application/json': {
-          schema: resetPasswordRequestSchema,
-        },
-      },
-    },
+    body: jsonContent(resetPasswordRequestSchema, 'Reset password request'),
   },
   responses: {
     [HttpStatusCodes.OK]: jsonContent(
@@ -42,13 +36,7 @@ export const createInvite = createRoute({
   path: '/invite',
   middleware: [jwtMiddleware, jwtAdminMiddleware] as const,
   request: {
-    body: {
-      content: {
-        'application/json': {
-          schema: inviteRequestSchema,
-        },
-      },
-    },
+    body: jsonContent(inviteRequestSchema, 'Invite request'),
   },
   responses: {
     [HttpStatusCodes.CREATED]: {
