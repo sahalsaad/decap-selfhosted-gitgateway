@@ -11,5 +11,5 @@ export const setPasswordRequestSchema = z.object({
 })
 
 export const resetPasswordResponseSchema = z.object({
-  temporaryPassword: z.string().url(),
+  temporaryPassword: z.string(),
 })

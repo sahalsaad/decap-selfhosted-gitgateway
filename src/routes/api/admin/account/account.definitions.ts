@@ -29,7 +29,7 @@ export const resetPassword = createRoute({
       resetPasswordResponseSchema,
       'Password reset successfully',
     ),
-    [HttpStatusCodes.NOT_FOUND]: notFoundContent,
+    [HttpStatusCodes.NOT_FOUND]: notFoundContent(),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],

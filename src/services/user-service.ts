@@ -3,6 +3,7 @@ import { drizzle } from 'drizzle-orm/d1'
 
 import type { UserCreateRequest, UserGetResponse, UserUpdateRequest } from '@/types/user'
 
+import { userListResponseSchema } from '@/types/user'
 import { sites } from '@db/sites'
 import { users } from '@db/users'
 import { usersToSites } from '@db/users-sites'
@@ -131,8 +132,16 @@ export function UserService(d1Database: D1Database, authSecretKey: string) {
       return result.meta.rows_written > 0
     },
     addUserSite: async (userId: string, siteId: string) => {
-      const result = await db.insert(usersToSites).values({ siteId, userId })
+      const result = await db.insert(usersToSites).values({ siteId, userId }).onConflictDoNothing()
       return result.meta.rows_written > 0
+    },
+    removeUserSite: async (userId: string, siteId: string) => {
+      const result = await db.delete(usersToSites).where(and(eq(usersToSites.userId, userId), eq(usersToSites.siteId, siteId)))
+      return result.meta.rows_written > 0
+    },
+    getUsersBySiteId: async (siteId: string) => {
+      const result = await db.select().from(usersToSites).innerJoin(users, eq(users.id, usersToSites.userId)).where(eq(usersToSites.siteId, siteId)).all()
+      return userListResponseSchema.parse(result.map(row => row.users))
     },
     setPassword: async (email: string, password: string) => {
       const hashedPassword = hashPassword(password, authSecretKey)

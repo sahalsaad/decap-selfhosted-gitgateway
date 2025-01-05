@@ -32,7 +32,7 @@ export const updateUser = createRoute({
     [HttpStatusCodes.NO_CONTENT]: {
       description: 'User updated successfully',
     },
-    [HttpStatusCodes.NOT_FOUND]: notFoundContent,
+    [HttpStatusCodes.NOT_FOUND]: notFoundContent(),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],
@@ -51,7 +51,7 @@ export const deleteUser = createRoute({
     [HttpStatusCodes.NO_CONTENT]: {
       description: 'User deleted successfully',
     },
-    [HttpStatusCodes.NOT_FOUND]: notFoundContent,
+    [HttpStatusCodes.NOT_FOUND]: notFoundContent(),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],
@@ -75,7 +75,7 @@ export const getUser = createRoute({
         },
       },
     },
-    [HttpStatusCodes.NOT_FOUND]: notFoundContent,
+    [HttpStatusCodes.NOT_FOUND]: notFoundContent(),
     [HttpStatusCodes.UNAUTHORIZED]: unauthorizedContent,
   },
   security: [{ Bearer: [] }],

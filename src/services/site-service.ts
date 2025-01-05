@@ -31,6 +31,7 @@ export function SiteService(d1Database: D1Database, authSecretKey: string) {
         .returning({
           id: sites.id,
         })
+        .onConflictDoNothing()
         .get()
     },
     updateSite: async (siteId: string, siteRequest: SiteUpdateRequest) => {
@@ -40,7 +41,7 @@ export function SiteService(d1Database: D1Database, authSecretKey: string) {
         .where(eq(sites.id, siteId))
         .get()
       if (!existingSite) {
-        return false
+        return null
       }
 
       let updateSite = {}
@@ -68,11 +69,12 @@ export function SiteService(d1Database: D1Database, authSecretKey: string) {
         updateSite = { ...updateSite, gitHost: siteRequest.gitHost }
       }
 
-      const result = await db
+      return db
         .update(sites)
         .set(updateSite)
         .where(eq(sites.id, siteId))
-      return result.meta.rows_written === 1
+        .returning()
+        .get()
     },
     deleteSite: async (siteId: string) => {
       const result = await db.delete(sites).where(eq(sites.id, siteId))

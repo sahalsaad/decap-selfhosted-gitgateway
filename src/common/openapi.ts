@@ -3,10 +3,12 @@ import * as HttpStatusPhrases from 'stoker/http-status-phrases'
 import { jsonContent } from 'stoker/openapi/helpers'
 import { createMessageObjectSchema } from 'stoker/openapi/schemas'
 
-export const notFoundContent = jsonContent(
-  createMessageObjectSchema(HttpStatusPhrases.NOT_FOUND),
-  HttpStatusPhrases.NOT_FOUND,
-)
+export function notFoundContent(message = HttpStatusPhrases.NOT_FOUND) {
+  return jsonContent(
+    createMessageObjectSchema(message),
+    HttpStatusPhrases.NOT_FOUND,
+  )
+}
 
 export const unauthorizedContent = {
   description: HttpStatusPhrases.UNAUTHORIZED,

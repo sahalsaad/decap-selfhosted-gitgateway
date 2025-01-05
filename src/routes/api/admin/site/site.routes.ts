@@ -6,10 +6,13 @@ import type { AppBindings } from '@/types/app-bindings'
 import type { JwtVariables } from '@/types/jwt-variables'
 
 import {
+  addUserToSite,
   createSite,
   deleteSite,
   getSite,
   getSites,
+  getSiteUsers,
+  removeUserFromSite,
   updateSite,
 } from '@/src/routes/api/admin/site/site.definitions'
 import { siteGetResponseSchema } from '@/types/sites'
@@ -22,6 +25,16 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
     const siteCreateRequest = ctx.req.valid('json')
     const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
     const createdSite = await siteService.createSite(siteCreateRequest)
+
+    if (!createdSite) {
+      return ctx.json(
+        {
+          message: 'Site already exists',
+        },
+        HttpStatusCodes.BAD_REQUEST,
+      )
+    }
+
     const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
     await userService.addUserSite(user.id, createdSite.id)
 
@@ -49,9 +62,9 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
     const { id } = ctx.req.valid('param')
 
     const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
-    const isSuccess = await siteService.updateSite(id, siteUpdateRequest)
+    const updatedSite = await siteService.updateSite(id, siteUpdateRequest)
 
-    if (!isSuccess) {
+    if (!updatedSite) {
       return ctx.json(
         {
           message: HttpStatusPhrases.NOT_FOUND,
@@ -60,7 +73,8 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
       )
     }
 
-    return ctx.body(null, HttpStatusCodes.NO_CONTENT)
+    const cleanResult = siteGetResponseSchema.parse(updatedSite)
+    return ctx.json(cleanResult, HttpStatusCodes.OK)
   })
   .openapi(deleteSite, async (ctx) => {
     const { id } = ctx.req.valid('param')
@@ -83,4 +97,65 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
     const result = await siteService.getAllSite()
     const cleanResult = z.array(siteGetResponseSchema).parse(result)
     return ctx.json(cleanResult, HttpStatusCodes.OK)
+  })
+  .openapi(addUserToSite, async (ctx) => {
+    const { email } = ctx.req.valid('json')
+    const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+    const user = await userService.getUserByEmail(email)
+    if (!user) {
+      return ctx.json(
+        {
+          message: HttpStatusPhrases.NOT_FOUND,
+        },
+        HttpStatusCodes.NOT_FOUND,
+      )
+    }
+
+    const { id } = ctx.req.valid('param')
+    const success = await userService.addUserSite(user.id, id)
+    if (!success) {
+      return ctx.json(
+        {
+          message: 'User already added to the site',
+        },
+        HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      )
+    }
+
+    return ctx.body(null, HttpStatusCodes.NO_CONTENT)
+  })
+  .openapi(removeUserFromSite, async (ctx) => {
+    const { id } = ctx.req.valid('param')
+    const { email } = ctx.req.valid('json')
+    const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+    const user = await userService.getUserByEmail(email)
+
+    if (!user) {
+      return ctx.json(
+        {
+          message: 'User not found',
+        },
+        HttpStatusCodes.NOT_FOUND,
+      )
+    }
+
+    const success = await userService.removeUserSite(user.id, id)
+
+    if (!success) {
+      return ctx.json(
+        {
+          message: 'User not in the site',
+        },
+        HttpStatusCodes.UNPROCESSABLE_ENTITY,
+      )
+    }
+
+    return ctx.body(null, HttpStatusCodes.NO_CONTENT)
+  })
+  .openapi(getSiteUsers, async (ctx) => {
+    const { id } = ctx.req.valid('param')
+
+    const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+    const users = await userService.getUsersBySiteId(id)
+    return ctx.json(users, HttpStatusCodes.OK)
   })
