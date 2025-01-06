@@ -56,7 +56,7 @@ describe('user service', () => {
       const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
       const createdSite = await siteService.createSite(generateSiteRequest())
 
-      await userService.addUserSite(createdUser.id, createdSite.id)
+      await siteService.addUser(createdUser.id, createdSite.id)
 
       const user = await userService.getUserById(createdUser.id)
 
@@ -83,7 +83,7 @@ describe('user service', () => {
       const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
       const createdSite = await siteService.createSite(generateSiteRequest())
 
-      await userService.addUserSite(createdUser.id, createdSite.id)
+      await siteService.addUser(createdUser.id, createdSite.id)
 
       const user = await userService.getUserByEmailAndSite(createUserRequest.email, createdSite.id)
 
@@ -142,32 +142,6 @@ describe('user service', () => {
       const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
       const user = await userService.createUser(generateUserCreateRequest())
       const result = await userService.deleteUser(user.id)
-      expect(result).toBe(true)
-    })
-  })
-
-  describe('addUserSite', () => {
-    it('should return false if user does not exist', async () => {
-      const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
-      await expect(() =>
-        userService.addUserSite(faker.string.uuid(), faker.string.uuid()),
-      ).rejects.toThrowError('FOREIGN KEY')
-    })
-
-    it('should return false if site does not exist', async () => {
-      const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
-      const user = await userService.createUser(generateUserCreateRequest())
-      await expect(() =>
-        userService.addUserSite(user.id, faker.string.uuid()),
-      ).rejects.toThrowError('FOREIGN KEY')
-    })
-
-    it('should return true if user and site exists', async () => {
-      const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
-      const user = await userService.createUser(generateUserCreateRequest())
-      const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
-      const site = await siteService.createSite(generateSiteRequest())
-      const result = await userService.addUserSite(user.id, site.id)
       expect(result).toBe(true)
     })
   })

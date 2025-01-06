@@ -15,6 +15,13 @@
       "when": 1735494566274,
       "tag": "0001_seed-first-user-invite",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1736174954082,
+      "tag": "0002_superb_mister_sinister",
+      "breakpoints": true
     }
   ]
 }

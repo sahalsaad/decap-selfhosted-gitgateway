@@ -16,19 +16,11 @@ const mockedSiteService = {
   getSiteById: vi.fn(),
   deleteSite: vi.fn(),
   updateSite: vi.fn(),
+  addUser: vi.fn(),
 }
 vi.mock('@services/site-service', () => {
   return {
     SiteService: vi.fn().mockImplementation(() => mockedSiteService),
-  }
-})
-
-const mockedUserService = {
-  addUserSite: vi.fn(),
-}
-vi.mock('@services/user-service', () => {
-  return {
-    UserService: vi.fn().mockImplementation(() => mockedUserService),
   }
 })
 
@@ -145,7 +137,7 @@ describe('sites route', () => {
         createdAt: faker.date.recent().toISOString(),
       }
       mockedSiteService.createSite.mockResolvedValue(mockedSite)
-      mockedUserService.addUserSite.mockResolvedValue(true)
+      mockedSiteService.addUser.mockResolvedValue(true)
 
       const response = await siteRoutes.request(
         '/',

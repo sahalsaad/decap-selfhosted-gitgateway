@@ -4,11 +4,13 @@ import { eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
 import { seed } from 'drizzle-seed'
 
-import { generateSiteRequest } from '@/vitest/data-helpers'
+import { generateSiteRequest, generateUserCreateRequest } from '@/vitest/data-helpers'
 import { sites } from '@db/sites'
+import { UserService } from '@services/user-service'
+
+import '@hono/zod-openapi'
 
 import { SiteService } from './site-service'
-import '@hono/zod-openapi'
 
 describe('site service', () => {
   describe('getSiteById', () => {
@@ -119,6 +121,32 @@ describe('site service', () => {
       const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
       const site = await siteService.createSite(generateSiteRequest())
       const result = await siteService.deleteSite(site.id)
+      expect(result).toBe(true)
+    })
+  })
+  describe('addUser', () => {
+    it('should return false if user does not exist', async () => {
+      const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
+      await expect(() =>
+        siteService.addUser(faker.string.uuid(), faker.string.uuid()),
+      ).rejects.toThrowError('FOREIGN KEY')
+    })
+
+    it('should return false if site does not exist', async () => {
+      const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
+      const user = await userService.createUser(generateUserCreateRequest())
+      const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
+      await expect(() =>
+        siteService.addUser(user.id, faker.string.uuid()),
+      ).rejects.toThrowError('FOREIGN KEY')
+    })
+
+    it('should return true if user and site exists', async () => {
+      const userService = UserService(env.DB, env.AUTH_SECRET_KEY!)
+      const user = await userService.createUser(generateUserCreateRequest())
+      const siteService = SiteService(env.DB, env.AUTH_SECRET_KEY!)
+      const site = await siteService.createSite(generateSiteRequest())
+      const result = await siteService.addUser(user.id, site.id)
       expect(result).toBe(true)
     })
   })

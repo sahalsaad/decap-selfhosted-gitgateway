@@ -35,9 +35,7 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
       )
     }
 
-    const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
-    await userService.addUserSite(user.id, createdSite.id)
-
+    await siteService.addUser(user.id, createdSite.id)
     const cleanResult = siteGetResponseSchema.parse(createdSite)
     return ctx.json(cleanResult, HttpStatusCodes.CREATED)
   })
@@ -113,7 +111,8 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
     }
 
     const { id } = ctx.req.valid('param')
-    const success = await userService.addUserSite(user.id, id)
+    const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+    const success = await siteService.addUser(user.id, id)
     if (!success) {
       return ctx.json(
         {
@@ -140,7 +139,8 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
       )
     }
 
-    const success = await userService.removeUserSite(user.id, id)
+    const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+    const success = await siteService.removeUser(user.id, id)
 
     if (!success) {
       return ctx.json(
@@ -167,7 +167,6 @@ export default new OpenAPIHono<AppBindings<JwtVariables>>()
       )
     }
 
-    const userService = UserService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
-    const users = await userService.getUsersBySiteId(id)
+    const users = await siteService.getUsers(id)
     return ctx.json(users, HttpStatusCodes.OK)
   })

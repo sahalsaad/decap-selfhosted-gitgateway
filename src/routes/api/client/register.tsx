@@ -49,8 +49,8 @@ export default new Hono<BaseAppBindings>()
     ]
 
     if (invite.siteId) {
-      await userService.addUserSite(createdUser.id, invite.siteId)
       const siteService = SiteService(ctx.env.DB, ctx.env.AUTH_SECRET_KEY!)
+      await siteService.addUser(createdUser.id, invite.siteId)
       const site = await siteService.getSiteById(invite.siteId)
       successMessage.push(
         <a className="text-blue-500" href={site!.cmsUrl}>

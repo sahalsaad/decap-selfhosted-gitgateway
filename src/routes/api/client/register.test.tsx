@@ -10,11 +10,11 @@ const mockInviteService = {
 
 const mockSiteService = {
   getSiteById: vi.fn(),
+  addUser: vi.fn(),
 }
 
 const mockUserService = {
   createUser: vi.fn(),
-  addUserSite: vi.fn(),
 }
 
 vi.mock('@services/invite-service', () => ({
@@ -100,7 +100,7 @@ describe('register route', () => {
     }
     mockSiteService.getSiteById.mockResolvedValue(mockSite)
 
-    mockUserService.addUserSite.mockResolvedValue(true)
+    mockSiteService.addUser.mockResolvedValue(true)
     mockUserService.createUser.mockResolvedValue({
       id: faker.string.uuid(),
     })

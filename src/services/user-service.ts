@@ -4,10 +4,9 @@ import { drizzle } from 'drizzle-orm/d1'
 import type { UserCreateRequest, UserUpdateRequest } from '@/types/user'
 
 import { siteListResponseSchema } from '@/types/sites'
-import { userListResponseSchema } from '@/types/user'
 import { sites } from '@db/sites'
+import { sitesUsers } from '@db/sites-users'
 import { users } from '@db/users'
-import { usersToSites } from '@db/users-sites'
 
 import { hashPassword } from './encryption-service'
 
@@ -26,9 +25,9 @@ export function UserService(d1Database: D1Database, authSecretKey: string) {
       const result = await db
         .select()
         .from(users)
-        .leftJoin(usersToSites, eq(usersToSites.userId, users.id))
-        .leftJoin(sites, eq(sites.id, usersToSites.siteId))
-        .where(and(eq(users.email, email), eq(usersToSites.siteId, siteId)))
+        .leftJoin(sitesUsers, eq(sitesUsers.userId, users.id))
+        .leftJoin(sites, eq(sites.id, sitesUsers.siteId))
+        .where(and(eq(users.email, email), eq(sitesUsers.siteId, siteId)))
         .get()
 
       if (!result) {
@@ -94,18 +93,6 @@ export function UserService(d1Database: D1Database, authSecretKey: string) {
       const result = await db.delete(users).where(eq(users.id, userId))
       return result.meta.rows_written > 0
     },
-    addUserSite: async (userId: string, siteId: string) => {
-      const result = await db.insert(usersToSites).values({ siteId, userId }).onConflictDoNothing()
-      return result.meta.rows_written > 0
-    },
-    removeUserSite: async (userId: string, siteId: string) => {
-      const result = await db.delete(usersToSites).where(and(eq(usersToSites.userId, userId), eq(usersToSites.siteId, siteId)))
-      return result.meta.rows_written > 0
-    },
-    getUsersBySiteId: async (siteId: string) => {
-      const result = await db.select().from(usersToSites).innerJoin(users, eq(users.id, usersToSites.userId)).where(eq(usersToSites.siteId, siteId)).all()
-      return userListResponseSchema.parse(result.map(row => row.users))
-    },
     setPassword: async (email: string, password: string) => {
       const hashedPassword = hashPassword(password, authSecretKey)
       const result = await db
@@ -115,7 +102,7 @@ export function UserService(d1Database: D1Database, authSecretKey: string) {
       return result.meta.rows_written > 0
     },
     getUserSites: async (userId: string) => {
-      const result = await db.select().from(usersToSites).innerJoin(sites, eq(sites.id, usersToSites.siteId)).where(eq(usersToSites.userId, userId)).all()
+      const result = await db.select().from(sitesUsers).innerJoin(sites, eq(sites.id, sitesUsers.siteId)).where(eq(sitesUsers.userId, userId)).all()
       return siteListResponseSchema.parse(result.map(row => row.sites))
     },
   }

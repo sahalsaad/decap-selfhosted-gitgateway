@@ -1,9 +1,12 @@
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 import { drizzle } from 'drizzle-orm/d1'
 
 import type { SiteCreateRequest, SiteUpdateRequest } from '@selfTypes/sites'
 
+import { userListResponseSchema } from '@/types/user'
 import { sites } from '@db/sites'
+import { sitesUsers } from '@db/sites-users'
+import { users } from '@db/users'
 
 import { encrypt } from './encryption-service'
 
@@ -77,6 +80,18 @@ export function SiteService(d1Database: D1Database, authSecretKey: string) {
     deleteSite: async (siteId: string) => {
       const result = await db.delete(sites).where(eq(sites.id, siteId))
       return result.meta.rows_written === 1
+    },
+    addUser: async (userId: string, siteId: string) => {
+      const result = await db.insert(sitesUsers).values({ siteId, userId }).onConflictDoNothing()
+      return result.meta.rows_written > 0
+    },
+    removeUser: async (userId: string, siteId: string) => {
+      const result = await db.delete(sitesUsers).where(and(eq(sitesUsers.userId, userId), eq(sitesUsers.siteId, siteId)))
+      return result.meta.rows_written > 0
+    },
+    getUsers: async (siteId: string) => {
+      const result = await db.select().from(sitesUsers).innerJoin(users, eq(users.id, sitesUsers.userId)).where(eq(sitesUsers.siteId, siteId)).all()
+      return userListResponseSchema.parse(result.map(row => row.users))
     },
   }
 }
