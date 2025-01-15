@@ -1,0 +1,21 @@
+# :schema node_modules/wrangler/config-schema.json
+name = "decap-selfhosted-gitgateway"
+main = "dist/index.js"
+assets = { directory = "./assets/" }
+compatibility_date = "2024-12-18"
+compatibility_flags = [ "nodejs_compat" ]
+
+# Workers Logs
+# Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/
+# Configuration: https://developers.cloudflare.com/workers/observability/logs/workers-logs/#enable-workers-logs
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "git-gateway-db"
+database_id = "<database_id>"
+migrations_dir = "migrations"
+
+[vars]
+AUTH_SECRET_KEY = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
